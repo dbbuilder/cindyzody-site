@@ -7,11 +7,12 @@
    - Click "New Project"
    - Import `dbbuilder/cindyzody-site` from GitHub
 
-2. **Configure Build Settings:**
-   - Framework Preset: **Vite**
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-   - Install Command: `npm install`
+2. **Auto-Configuration:**
+   - Vercel automatically detects Vite framework
+   - Build settings are configured automatically:
+     - Build Command: `npm run build`
+     - Output Directory: `dist`
+     - Install Command: `npm install`
 
 3. **Environment Variables:**
    Add these in Vercel Dashboard → Settings → Environment Variables:
