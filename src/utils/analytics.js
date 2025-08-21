@@ -31,7 +31,8 @@ export function loadAnalytics() {
   }
 
   // LinkedIn Insight Tag (optional)
-  const linkedinId = import.meta.env.VITE_LINKEDIN_PARTNER_ID  if (linkedinId) {
+  const linkedinId = import.meta.env.VITE_LINKEDIN_PARTNER_ID
+  if (linkedinId) {
     const s = document.createElement('script')
     s.innerHTML = `
       _linkedin_partner_id = "${linkedinId}";
