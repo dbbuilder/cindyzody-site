@@ -3,7 +3,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
       <div class="grid gap-8 md:grid-cols-3">
         <div>
-          <img src="/src/assets/logo.svg" class="h-10" alt="logo" />
+          <img src="/logo.png" class="h-10" alt="Cindy Zody Logo" />
           <p class="mt-3 text-sm text-slate-600">
             Creating healing relationships — one moment at a time.
           </p>

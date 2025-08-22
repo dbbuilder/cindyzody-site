@@ -3,7 +3,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
         <RouterLink to="/" class="flex items-center gap-3">
-          <img src="/src/assets/logo.svg" class="h-9 w-auto" alt="Logo" />
+          <img src="/logo.png" class="h-9 w-auto" alt="Cindy Zody Logo" />
           <span class="font-semibold tracking-tight">Cindy Zody</span>
           <span class="hidden sm:inline text-slate-500">— Communications Practitioner</span>
         </RouterLink>
