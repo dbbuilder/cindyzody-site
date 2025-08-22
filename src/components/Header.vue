@@ -10,6 +10,7 @@
         <nav class="hidden md:flex items-center gap-6">
           <RouterLink class="hover:text-brand-600" to="/services">Services</RouterLink>
           <RouterLink class="hover:text-brand-600" to="/approach">Approach</RouterLink>
+          <RouterLink class="hover:text-brand-600" to="/practice">AI Practice</RouterLink>
           <RouterLink class="hover:text-brand-600" to="/groups">Groups</RouterLink>
           <RouterLink class="hover:text-brand-600" to="/resources">Resources</RouterLink>
           <RouterLink class="hover:text-brand-600" to="/about">About</RouterLink>
@@ -30,6 +31,7 @@
       <div class="px-4 py-3 flex flex-col gap-3">
         <RouterLink @click="open=false" to="/services">Services</RouterLink>
         <RouterLink @click="open=false" to="/approach">Approach</RouterLink>
+        <RouterLink @click="open=false" to="/practice">AI Practice</RouterLink>
         <RouterLink @click="open=false" to="/groups">Groups</RouterLink>
         <RouterLink @click="open=false" to="/resources">Resources</RouterLink>
         <RouterLink @click="open=false" to="/about">About</RouterLink>        <RouterLink

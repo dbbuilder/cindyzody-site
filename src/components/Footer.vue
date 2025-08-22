@@ -21,6 +21,7 @@
           <ul class="mt-2 space-y-1 text-sm">
             <li><RouterLink to="/services">Services</RouterLink></li>
             <li><RouterLink to="/approach">Approach</RouterLink></li>
+            <li><RouterLink to="/practice">AI Practice</RouterLink></li>
             <li><RouterLink to="/groups">Groups & Workshops</RouterLink></li>
             <li><RouterLink to="/resources">Resources</RouterLink></li>
             <li><RouterLink to="/privacy">Privacy</RouterLink></li>

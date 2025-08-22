@@ -111,6 +111,27 @@
       <div class="mb-16">
         <h2 class="text-2xl font-semibold mb-8 text-center">Online Resources</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow border-brand-200">
+            <div class="mb-4">
+              <div class="w-12 h-12 bg-brand-100 rounded-lg mb-3 flex items-center justify-center">
+                <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+              </div>
+              <h3 class="font-semibold">NVC AI Practice</h3>
+              <span class="text-xs bg-brand-100 text-brand-700 px-2 py-1 rounded-full">New!</span>
+            </div>
+            <p class="text-sm text-slate-700 mb-4">
+              Practice NVC conversations with our AI facilitator - available 24/7 for guided practice sessions.
+            </p>
+            <RouterLink 
+              to="/practice"
+              class="inline-flex items-center text-brand-600 hover:text-brand-700 text-sm font-medium"
+            >
+              Start Practice →
+            </RouterLink>
+          </div>
+
           <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow">
             <div class="mb-4">
               <div class="w-12 h-12 bg-brand-100 rounded-lg mb-3 flex items-center justify-center">

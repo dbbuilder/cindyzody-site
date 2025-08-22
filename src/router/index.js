@@ -4,6 +4,7 @@ import Home from '../pages/Home.vue'
 import About from '../pages/About.vue'
 import Services from '../pages/Services.vue'
 import Approach from '../pages/Approach.vue'
+import Practice from '../pages/Practice.vue'
 import Groups from '../pages/Groups.vue'
 import Resources from '../pages/Resources.vue'
 import Contact from '../pages/Contact.vue'
@@ -14,6 +15,7 @@ const routes = [
   { path: '/about', component: About },
   { path: '/services', component: Services },
   { path: '/approach', component: Approach },
+  { path: '/practice', component: Practice },
   { path: '/groups', component: Groups },
   { path: '/resources', component: Resources },
   { path: '/contact', component: Contact },
