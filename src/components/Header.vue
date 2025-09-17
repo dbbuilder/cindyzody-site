@@ -14,11 +14,7 @@
           <RouterLink class="hover:text-brand-600" to="/groups">Groups</RouterLink>
           <RouterLink class="hover:text-brand-600" to="/resources">Resources</RouterLink>
           <RouterLink class="hover:text-brand-600" to="/about">About</RouterLink>
-          <RouterLink
-            class="inline-flex items-center rounded-md bg-brand-600 px-4 py-2 text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500"
-            to="/contact"
-            @click="emitLead('HeaderCTA')"
-          >Book a Free 15-min Call</RouterLink>
+          <ScheduleButton />
         </nav>
         <button class="md:hidden inline-flex items-center p-2" @click="open = !open" aria-label="Menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -34,11 +30,9 @@
         <RouterLink @click="open=false" to="/practice">AI Practice</RouterLink>
         <RouterLink @click="open=false" to="/groups">Groups</RouterLink>
         <RouterLink @click="open=false" to="/resources">Resources</RouterLink>
-        <RouterLink @click="open=false" to="/about">About</RouterLink>        <RouterLink
-          class="mt-2 inline-flex items-center justify-center rounded-md bg-brand-600 px-4 py-2 text-white"
-          @click="emitLead('HeaderCTA-Mobile')"
-          to="/contact"
-        >Free 15-min Call</RouterLink>
+        <RouterLink @click="open=false" to="/about">About</RouterLink>        <div class="mt-2">
+          <ScheduleButton />
+        </div>
       </div>
     </div>
   </header>
@@ -47,6 +41,8 @@
 <script setup>
 import { ref } from 'vue'
 import { trackEvent } from '../utils/analytics'
+import ScheduleButton from './ScheduleButton.vue'
+
 const open = ref(false)
 const emitLead = (where) => trackEvent('lead_click', { where })
 </script>
