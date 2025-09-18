@@ -24,10 +24,23 @@
     </div>
 
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Floating Profile Photo (Desktop) -->
+      <div class="hidden lg:block absolute top-8 right-8 xl:right-16 z-20">
+        <div class="relative">
+          <div class="w-32 h-32 xl:w-40 xl:h-40 rounded-full overflow-hidden border-4 border-white shadow-xl">
+            <img src="/images/cindy-profile.jpg" alt="Cindy Zody" class="w-full h-full object-cover" />
+          </div>
+          <!-- Decorative elements around photo -->
+          <div class="absolute -top-1 -right-1 w-4 h-4 bg-brand-400 rounded-full"></div>
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-sage-400 rounded-full"></div>
+          <div class="absolute top-1/4 -left-2 w-2 h-2 bg-earth-400 rounded-full"></div>
+        </div>
+      </div>
+
       <div class="pt-16 pb-20 md:pt-20 md:pb-28">
         <div class="mx-auto max-w-7xl">
           <div class="lg:grid lg:grid-cols-12 lg:gap-8">
-            <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex lg:items-center">
+            <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 xl:col-span-8 lg:text-left lg:flex lg:items-center">
               <div>
                 <!-- Badge -->
                 <div class="inline-flex items-center rounded-full bg-brand-100 px-3 py-1 text-sm font-medium text-brand-800">
@@ -79,13 +92,12 @@
               </div>
             </div>
 
-            <!-- Hero Image/Stats Side -->
-            <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
+            <!-- Hero Stats/Info Side (Desktop) + Mobile Profile Photo -->
+            <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-5 xl:col-span-4 lg:flex lg:items-center">
               <div class="relative mx-auto w-full rounded-lg lg:max-w-md">
-                <!-- Profile Photo -->
-                <div class="relative mb-6">
+                <!-- Profile Photo (Mobile Only) -->
+                <div class="relative mb-6 lg:hidden">
                   <div class="mx-auto w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
-                    <!-- Cindy's Profile Photo -->
                     <img src="/images/cindy-profile.jpg" alt="Cindy Zody" class="w-full h-full object-cover" />
                   </div>
                   <!-- Decorative elements around photo -->
