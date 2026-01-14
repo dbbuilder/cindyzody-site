@@ -55,7 +55,14 @@ export async function initClerk() {
           colorPrimary: '#4a7c59', // brand-600
           borderRadius: '0.5rem'
         }
-      }
+      },
+      // Allow redirects for both web and native app
+      allowedRedirectOrigins: [
+        'http://localhost:5173',
+        'https://www.cindyzody.com',
+        'https://cindyzody-site.onrender.com',
+        'feelingsneeds://auth/callback'
+      ]
     })
 
     // Set up deep link handler for native app
