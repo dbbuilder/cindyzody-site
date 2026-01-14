@@ -8,3 +8,10 @@ secrets.json
 .DS_Store
 .vscode
 .idea
+
+# iOS
+ios/App/App/public
+ios/App/Pods
+ios/App/*.xcworkspace/xcuserdata
+ios/App/DerivedData
+*.xcuserstate
