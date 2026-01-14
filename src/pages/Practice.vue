@@ -2,12 +2,30 @@
   <section class="py-14">
     <div class="mx-auto max-w-6xl px-4">
       <!-- Hero Section -->
-      <div class="text-center mb-12">
+      <div class="text-center mb-8">
         <h1 class="text-4xl font-bold mb-4">Feelings & Needs Practice</h1>
         <p class="text-lg text-slate-600 max-w-3xl mx-auto">
           Explore your feelings and connect them to your underlying needs.
           Practice Nonviolent Communication with our interactive tools and AI facilitator.
         </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="flex flex-wrap justify-center gap-4 mb-8">
+        <RouterLink
+          to="/progress"
+          class="inline-flex items-center px-4 py-2 bg-brand-50 text-brand-700 rounded-lg hover:bg-brand-100 transition-colors text-sm font-medium"
+        >
+          <ChartBarIcon class="w-4 h-4 mr-2" />
+          Your Progress
+        </RouterLink>
+        <RouterLink
+          to="/history"
+          class="inline-flex items-center px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors text-sm font-medium"
+        >
+          <ClockIcon class="w-4 h-4 mr-2" />
+          Session History
+        </RouterLink>
       </div>
 
       <!-- Tab Navigation -->
@@ -335,7 +353,9 @@ import {
   ChatBubbleLeftRightIcon,
   ArrowRightIcon,
   SparklesIcon,
-  CheckCircleIcon
+  CheckCircleIcon,
+  ChartBarIcon,
+  ClockIcon
 } from '@heroicons/vue/24/outline'
 import { EmotionWheel, NeedsWheel, ChatInterface } from '../components/lib'
 import { useAI, useMockAI } from '../composables/useAI'
