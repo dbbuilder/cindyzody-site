@@ -40,7 +40,7 @@
       <div class="pt-16 pb-20 md:pt-20 md:pb-28">
         <div class="mx-auto max-w-7xl">
           <div class="lg:grid lg:grid-cols-12 lg:gap-8">
-            <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 xl:col-span-8 lg:text-left lg:flex lg:items-center">
+            <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left lg:flex lg:items-center">
               <div>
                 <!-- Badge -->
                 <div class="inline-flex items-center rounded-full bg-brand-100 px-3 py-1 text-sm font-medium text-brand-800">
@@ -93,8 +93,8 @@
             </div>
 
             <!-- Hero Stats/Info Side (Desktop) + Mobile Profile Photo -->
-            <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-5 xl:col-span-4 lg:flex lg:items-center">
-              <div class="relative mx-auto w-full rounded-lg lg:max-w-md">
+            <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-5 lg:flex lg:items-center">
+              <div class="relative mx-auto w-full rounded-lg lg:max-w-sm xl:max-w-md">
                 <!-- Profile Photo (Mobile Only) -->
                 <div class="relative mb-6 lg:hidden">
                   <div class="mx-auto w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
@@ -110,7 +110,7 @@
                 <div class="relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-sage-200 p-6">
                   <div class="space-y-4">
                     <!-- Credentials -->
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-start space-x-3">
                       <div class="flex-shrink-0">
                         <div class="h-10 w-10 rounded-lg bg-sage-100 flex items-center justify-center">
                           <svg class="h-5 w-5 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,9 +118,9 @@
                           </svg>
                         </div>
                       </div>
-                      <div>
-                        <p class="text-sm font-medium text-gray-900">M.Ed. Curriculum & Instruction</p>
-                        <p class="text-sm text-gray-500">Certified NVC/IFS Facilitator</p>
+                      <div class="min-w-0">
+                        <p class="text-sm font-medium text-gray-900 leading-tight">M.Ed. Curriculum & Instruction</p>
+                        <p class="text-sm text-gray-500 leading-tight mt-0.5">Certified NVC/IFS Facilitator</p>
                       </div>
                     </div>
 

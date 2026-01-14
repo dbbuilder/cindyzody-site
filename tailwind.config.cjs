@@ -1,6 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./index.html', './src/**/*.{vue,js}'],
+  safelist: [
+    // Need category classes (used with dynamic category IDs)
+    ...['connection', 'physical', 'honesty', 'play', 'peace', 'autonomy', 'meaning'].flatMap(cat => [
+      `bg-need-${cat}`,
+      `bg-need-${cat}-light`,
+      `bg-need-${cat}-dark`,
+      `text-need-${cat}`,
+      `text-need-${cat}-light`,
+      `text-need-${cat}-dark`,
+      `border-need-${cat}`,
+      `border-need-${cat}-light`,
+      `border-need-${cat}/30`,
+      `bg-need-${cat}/20`,
+      `hover:border-need-${cat}`,
+    ]),
+  ],
   theme: {
     extend: {
       colors: {
@@ -44,6 +60,85 @@ module.exports = {
           700: '#3d5d3c',   // Deep sage
           800: '#2f4a2f',   // Very dark sage
           900: '#243a24'    // Darkest sage
+        },
+        // Feelings & Needs Design Tokens
+        // Feelings when needs are MET (warm, positive colors)
+        feeling: {
+          met: {
+            light: '#ecfdf5',   // Very light teal
+            DEFAULT: '#10b981', // Emerald - met needs
+            dark: '#047857'     // Dark emerald
+          },
+          // Feelings when needs are UNMET (cool, softer colors)
+          unmet: {
+            light: '#f0f9ff',   // Very light blue
+            DEFAULT: '#6366f1', // Indigo - unmet needs
+            dark: '#4338ca'     // Dark indigo
+          }
+        },
+        // Need category colors
+        need: {
+          connection: {
+            light: '#fdf2f8',   // Pink light
+            DEFAULT: '#ec4899', // Pink
+            dark: '#be185d'     // Pink dark
+          },
+          physical: {
+            light: '#f0fdf4',   // Green light
+            DEFAULT: '#22c55e', // Green
+            dark: '#15803d'     // Green dark
+          },
+          honesty: {
+            light: '#eff6ff',   // Blue light
+            DEFAULT: '#3b82f6', // Blue
+            dark: '#1d4ed8'     // Blue dark
+          },
+          play: {
+            light: '#fefce8',   // Yellow light
+            DEFAULT: '#eab308', // Yellow
+            dark: '#a16207'     // Yellow dark
+          },
+          peace: {
+            light: '#faf5ff',   // Purple light
+            DEFAULT: '#a855f7', // Purple
+            dark: '#7e22ce'     // Purple dark
+          },
+          autonomy: {
+            light: '#fff7ed',   // Orange light
+            DEFAULT: '#f97316', // Orange
+            dark: '#c2410c'     // Orange dark
+          },
+          meaning: {
+            light: '#eef2ff',   // Indigo light
+            DEFAULT: '#6366f1', // Indigo
+            dark: '#4338ca'     // Indigo dark
+          }
+        },
+        // Intensity levels for feelings
+        intensity: {
+          low: '#94a3b8',      // Slate 400
+          medium: '#64748b',   // Slate 500
+          high: '#334155'      // Slate 700
+        }
+      },
+      // Animation for card interactions
+      animation: {
+        'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'slide-up': 'slide-up 0.3s ease-out',
+        'fade-in': 'fade-in 0.2s ease-out'
+      },
+      keyframes: {
+        'pulse-soft': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' }
+        },
+        'slide-up': {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' }
         }
       }
     }

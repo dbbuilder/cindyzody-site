@@ -3,229 +3,319 @@
     <div class="mx-auto max-w-6xl px-4">
       <!-- Hero Section -->
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold mb-4">AI-Powered NVC Practice</h1>
+        <h1 class="text-4xl font-bold mb-4">Feelings & Needs Practice</h1>
         <p class="text-lg text-slate-600 max-w-3xl mx-auto">
-          Practice Nonviolent Communication with our AI facilitator. Get real-time guidance 
-          through NVC steps, receive personalized feedback, and develop empathic communication skills 
-          in a safe, judgment-free environment.
+          Explore your feelings and connect them to your underlying needs.
+          Practice Nonviolent Communication with our interactive tools and AI facilitator.
         </p>
       </div>
 
-      <!-- NVC AI Tool Card -->
-      <div class="bg-gradient-to-br from-brand-50 to-rose-50 rounded-2xl p-8 mb-12 border">
-        <div class="grid lg:grid-cols-2 gap-8 items-center">
-          <div>
-            <div class="inline-flex items-center gap-2 bg-brand-100 text-brand-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-              </svg>
-              AI-Powered
-            </div>
-            <h2 class="text-3xl font-bold mb-4">NVC AI Facilitator</h2>
-            <p class="text-slate-700 mb-6">
-              An intelligent conversation partner that guides you through the four steps of NVC: 
-              observation, feelings, needs, and requests. Perfect for practicing difficult conversations 
-              before they happen or processing conflicts after they occur.
-            </p>
-            
-            <div class="space-y-3 mb-6">
-              <div class="flex items-center gap-3">
-                <div class="w-2 h-2 bg-brand-500 rounded-full"></div>
-                <span class="text-sm">Step-by-step NVC guidance</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <div class="w-2 h-2 bg-brand-500 rounded-full"></div>
-                <span class="text-sm">Real-time empathy and feedback</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <div class="w-2 h-2 bg-brand-500 rounded-full"></div>
-                <span class="text-sm">Practice conversations safely</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <div class="w-2 h-2 bg-brand-500 rounded-full"></div>
-                <span class="text-sm">Available 24/7 for practice</span>
-              </div>
-            </div>
+      <!-- Tab Navigation -->
+      <div class="flex justify-center mb-8">
+        <div class="inline-flex bg-slate-100 rounded-lg p-1">
+          <button
+            v-for="tab in tabs"
+            :key="tab.id"
+            @click="activeTab = tab.id"
+            class="px-6 py-2.5 rounded-md font-medium text-sm transition-all"
+            :class="activeTab === tab.id
+              ? 'bg-white shadow text-slate-900'
+              : 'text-slate-600 hover:text-slate-900'"
+          >
+            <component :is="tab.icon" class="w-4 h-4 inline-block mr-2 -mt-0.5" />
+            {{ tab.label }}
+          </button>
+        </div>
+      </div>
 
-            <div class="flex flex-wrap gap-4">
-              <button
-                @click="openNVCAI"
-                class="inline-flex items-center bg-brand-600 text-white px-6 py-3 rounded-lg hover:bg-brand-700 transition-colors font-medium"
-              >
-                Start Practice Session
-                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                </svg>
-              </button>
-              <button
-                @click="showDemo = !showDemo"
-                class="inline-flex items-center border border-slate-300 px-6 py-3 rounded-lg hover:bg-slate-50 transition-colors"
-              >
-                {{ showDemo ? 'Hide' : 'View' }} Demo
-              </button>
+      <!-- Feelings Explorer Tab -->
+      <div v-if="activeTab === 'feelings'" class="animate-fade-in">
+        <div class="bg-white rounded-2xl border shadow-sm p-6 mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl font-bold">Explore Feelings</h2>
+              <p class="text-slate-600 mt-1">
+                Select feelings that resonate with your current experience
+              </p>
             </div>
+            <button
+              v-if="selectedFeelings.length > 0"
+              @click="proceedToNeeds"
+              class="inline-flex items-center bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors font-medium"
+            >
+              Continue to Needs
+              <ArrowRightIcon class="w-4 h-4 ml-2" />
+            </button>
           </div>
 
-          <div class="relative">
-            <div class="bg-white rounded-xl shadow-lg p-6 border">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-8 h-8 bg-brand-600 rounded-full flex items-center justify-center">
-                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
+          <EmotionWheel
+            v-model="selectedFeelings"
+            :maxSelections="5"
+          />
+        </div>
+
+        <!-- Selected feelings summary -->
+        <div v-if="selectedFeelings.length > 0" class="bg-feeling-met-light/50 rounded-xl p-6 border border-feeling-met/20">
+          <h3 class="font-semibold mb-3">Your selected feelings</h3>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span
+              v-for="feeling in selectedFeelings"
+              :key="feeling.id"
+              class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium"
+              :class="feeling.category === 'needs_met'
+                ? 'bg-feeling-met text-white'
+                : 'bg-feeling-unmet text-white'"
+            >
+              {{ feeling.label }}
+            </span>
+          </div>
+          <p class="text-sm text-slate-600">
+            These feelings might be pointing to needs for:
+            <strong>{{ suggestedNeeds.join(', ') }}</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Needs Explorer Tab -->
+      <div v-if="activeTab === 'needs'" class="animate-fade-in">
+        <div class="bg-white rounded-2xl border shadow-sm p-6 mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl font-bold">Explore Needs</h2>
+              <p class="text-slate-600 mt-1">
+                Identify the universal human needs underneath your feelings
+              </p>
+            </div>
+            <button
+              v-if="selectedNeeds.length > 0"
+              @click="activeTab = 'practice'"
+              class="inline-flex items-center bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors font-medium"
+            >
+              Practice with AI
+              <ArrowRightIcon class="w-4 h-4 ml-2" />
+            </button>
+          </div>
+
+          <NeedsWheel
+            v-model="selectedNeeds"
+            :maxSelections="5"
+          />
+        </div>
+
+        <!-- Selected needs summary -->
+        <div v-if="selectedNeeds.length > 0" class="bg-brand-50 rounded-xl p-6 border border-brand-200">
+          <h3 class="font-semibold mb-3">Your identified needs</h3>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span
+              v-for="need in selectedNeeds"
+              :key="need.id"
+              class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-brand-600 text-white"
+            >
+              {{ need.label }}
+            </span>
+          </div>
+          <p class="text-sm text-slate-600">
+            Consider: How might you meet these needs? What requests could you make?
+          </p>
+        </div>
+      </div>
+
+      <!-- AI Practice Tab -->
+      <div v-if="activeTab === 'practice'" class="animate-fade-in">
+        <!-- Context from selections -->
+        <div v-if="selectedFeelings.length > 0 || selectedNeeds.length > 0" class="bg-slate-50 rounded-xl p-4 mb-6 border">
+          <p class="text-sm text-slate-600 mb-2">Your current exploration:</p>
+          <div class="flex flex-wrap gap-2">
+            <span
+              v-for="feeling in selectedFeelings"
+              :key="'f-' + feeling.id"
+              class="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
+              :class="feeling.category === 'needs_met'
+                ? 'bg-feeling-met-light text-feeling-met-dark'
+                : 'bg-feeling-unmet-light text-feeling-unmet-dark'"
+            >
+              {{ feeling.label }}
+            </span>
+            <span v-if="selectedFeelings.length > 0 && selectedNeeds.length > 0" class="text-slate-400">→</span>
+            <span
+              v-for="need in selectedNeeds"
+              :key="'n-' + need.id"
+              class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-brand-100 text-brand-700"
+            >
+              {{ need.label }}
+            </span>
+          </div>
+        </div>
+
+        <!-- NVC AI Tool Card -->
+        <div class="bg-gradient-to-br from-brand-50 to-sage-50 rounded-2xl p-8 mb-8 border">
+          <div class="grid lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <div class="inline-flex items-center gap-2 bg-brand-100 text-brand-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
+                <BoltIcon class="w-4 h-4" />
+                AI-Powered
+              </div>
+              <h2 class="text-3xl font-bold mb-4">NVC AI Facilitator</h2>
+              <p class="text-slate-700 mb-6">
+                An intelligent conversation partner that guides you through the four steps of NVC:
+                observation, feelings, needs, and requests. Perfect for practicing difficult conversations
+                before they happen or processing conflicts after they occur.
+              </p>
+
+              <div class="space-y-3 mb-6">
+                <div class="flex items-center gap-3">
+                  <CheckCircleIcon class="w-5 h-5 text-brand-500" />
+                  <span class="text-sm">Step-by-step NVC guidance</span>
                 </div>
-                <div>
-                  <h3 class="font-semibold">AI Facilitator</h3>
-                  <p class="text-xs text-slate-500">Online now</p>
+                <div class="flex items-center gap-3">
+                  <CheckCircleIcon class="w-5 h-5 text-brand-500" />
+                  <span class="text-sm">Real-time empathy and feedback</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <CheckCircleIcon class="w-5 h-5 text-brand-500" />
+                  <span class="text-sm">Practice conversations safely</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <CheckCircleIcon class="w-5 h-5 text-brand-500" />
+                  <span class="text-sm">Available 24/7 for practice</span>
                 </div>
               </div>
-              <div class="space-y-3 text-sm">
-                <div class="bg-slate-50 rounded-lg p-3">
-                  <p class="text-slate-700">Hello! I'm here to help you practice NVC. What situation would you like to work through today?</p>
+
+              <div class="flex flex-wrap gap-4">
+                <button
+                  v-if="!sessionActive"
+                  @click="startSession"
+                  :disabled="ai.isLoading.value"
+                  class="inline-flex items-center bg-brand-600 text-white px-6 py-3 rounded-lg hover:bg-brand-700 transition-colors font-medium disabled:opacity-50"
+                >
+                  <template v-if="ai.isLoading.value">
+                    Starting...
+                  </template>
+                  <template v-else>
+                    Start Practice Session
+                    <SparklesIcon class="w-4 h-4 ml-2" />
+                  </template>
+                </button>
+                <button
+                  v-else
+                  @click="endSession"
+                  class="inline-flex items-center bg-slate-600 text-white px-6 py-3 rounded-lg hover:bg-slate-700 transition-colors font-medium"
+                >
+                  End Session
+                </button>
+              </div>
+            </div>
+
+            <div class="relative">
+              <div class="bg-white rounded-xl shadow-lg p-6 border">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-8 h-8 bg-brand-600 rounded-full flex items-center justify-center">
+                    <SparklesIcon class="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <h3 class="font-semibold">AI Facilitator</h3>
+                    <p class="text-xs text-slate-500">Online now</p>
+                  </div>
                 </div>
-                <div class="bg-brand-50 rounded-lg p-3 ml-8">
-                  <p class="text-slate-700">I had a conflict with my colleague about a project deadline...</p>
-                </div>
-                <div class="bg-slate-50 rounded-lg p-3">
-                  <p class="text-slate-700">Let's start with observation. Can you describe what specifically happened without evaluation or judgment?</p>
+                <div class="space-y-3 text-sm">
+                  <div class="bg-slate-50 rounded-lg p-3">
+                    <p class="text-slate-700">Hello! I'm here to help you practice NVC. What situation would you like to work through today?</p>
+                  </div>
+                  <div class="bg-brand-50 rounded-lg p-3 ml-8">
+                    <p class="text-slate-700">I had a conflict with my colleague about a project deadline...</p>
+                  </div>
+                  <div class="bg-slate-50 rounded-lg p-3">
+                    <p class="text-slate-700">Let's start with observation. Can you describe what specifically happened without evaluation or judgment?</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Demo Section -->
-      <div v-if="showDemo" class="mb-12 transition-all duration-300">
-        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
-          <div class="p-6 bg-slate-50 border-b">
-            <h3 class="font-semibold text-lg">Interactive Demo</h3>
-            <p class="text-slate-600 text-sm mt-1">See the NVC AI Facilitator in action</p>
+        <!-- Active Chat Session -->
+        <div v-if="sessionActive" class="mb-8 transition-all duration-300">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span class="text-sm font-medium text-slate-600">Session Active</span>
+              <span v-if="useMock" class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Demo Mode</span>
+            </div>
+            <button
+              @click="endSession"
+              class="text-sm text-slate-500 hover:text-slate-700"
+            >
+              End Session
+            </button>
           </div>
-          <div class="aspect-video bg-slate-100 flex items-center justify-center">
-            <iframe 
-              :src="nvcaiUrl" 
-              class="w-full h-full"
-              frameborder="0"
-              title="NVC AI Facilitator Demo"
-            ></iframe>
+          <div class="h-[500px]">
+            <ChatInterface
+              ref="chatRef"
+              :aiService="ai"
+              :initialContext="{ feelings: selectedFeelings, needs: selectedNeeds }"
+              placeholder="Share what's on your mind..."
+              @suggest-feeling="handleFeelingSuggestion"
+              @suggest-need="handleNeedSuggestion"
+              @reset="endSession"
+            />
           </div>
         </div>
-      </div>
+
+        </div>
 
       <!-- How It Works Section -->
-      <div class="mb-12">
-        <h2 class="text-2xl font-semibold text-center mb-8">How It Works</h2>
+      <div class="mt-12 mb-12">
+        <h2 class="text-2xl font-semibold text-center mb-8">The OFNR Process</h2>
         <div class="grid md:grid-cols-4 gap-6">
           <div class="text-center">
             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span class="text-blue-600 font-bold">1</span>
+              <EyeIcon class="w-6 h-6 text-blue-600" />
             </div>
-            <h3 class="font-semibold mb-2">Share Your Situation</h3>
-            <p class="text-sm text-slate-600">Describe a conflict or communication challenge you're facing.</p>
+            <h3 class="font-semibold mb-2">Observation</h3>
+            <p class="text-sm text-slate-600">Describe what happened without judgment or evaluation.</p>
           </div>
           <div class="text-center">
-            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span class="text-green-600 font-bold">2</span>
+            <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <HeartIcon class="w-6 h-6 text-rose-600" />
             </div>
-            <h3 class="font-semibold mb-2">Follow NVC Steps</h3>
-            <p class="text-sm text-slate-600">AI guides you through observation, feelings, needs, and requests.</p>
+            <h3 class="font-semibold mb-2">Feelings</h3>
+            <p class="text-sm text-slate-600">Identify what you're feeling in response to the observation.</p>
           </div>
           <div class="text-center">
             <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span class="text-purple-600 font-bold">3</span>
+              <StarIcon class="w-6 h-6 text-purple-600" />
             </div>
-            <h3 class="font-semibold mb-2">Receive Feedback</h3>
-            <p class="text-sm text-slate-600">Get personalized insights and suggestions for improvement.</p>
+            <h3 class="font-semibold mb-2">Needs</h3>
+            <p class="text-sm text-slate-600">Connect your feelings to the underlying universal needs.</p>
           </div>
           <div class="text-center">
-            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span class="text-orange-600 font-bold">4</span>
+            <div class="w-12 h-12 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <ChatBubbleLeftRightIcon class="w-6 h-6 text-brand-600" />
             </div>
-            <h3 class="font-semibold mb-2">Practice & Improve</h3>
-            <p class="text-sm text-slate-600">Build confidence through repeated practice in a safe environment.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Benefits Section -->
-      <div class="mb-12">
-        <h2 class="text-2xl font-semibold text-center mb-8">Why Use AI Practice?</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-white rounded-xl border p-6">
-            <div class="w-10 h-10 bg-brand-100 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <h3 class="font-semibold mb-2">Available 24/7</h3>
-            <p class="text-sm text-slate-600">Practice whenever you need it, without scheduling appointments.</p>
-          </div>
-          <div class="bg-white rounded-xl border p-6">
-            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-              </svg>
-            </div>
-            <h3 class="font-semibold mb-2">Safe Environment</h3>
-            <p class="text-sm text-slate-600">Practice without fear of judgment or making mistakes.</p>
-          </div>
-          <div class="bg-white rounded-xl border p-6">
-            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-              </svg>
-            </div>
-            <h3 class="font-semibold mb-2">Personalized Learning</h3>
-            <p class="text-sm text-slate-600">AI adapts to your communication style and learning pace.</p>
-          </div>
-          <div class="bg-white rounded-xl border p-6">
-            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-              </svg>
-            </div>
-            <h3 class="font-semibold mb-2">Builds Empathy</h3>
-            <p class="text-sm text-slate-600">Develop deeper understanding of yourself and others.</p>
-          </div>
-          <div class="bg-white rounded-xl border p-6">
-            <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-              </svg>
-            </div>
-            <h3 class="font-semibold mb-2">Instant Insights</h3>
-            <p class="text-sm text-slate-600">Get immediate feedback and suggestions for improvement.</p>
-          </div>
-          <div class="bg-white rounded-xl border p-6">
-            <div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
-              </svg>
-            </div>
-            <h3 class="font-semibold mb-2">Complement Coaching</h3>
-            <p class="text-sm text-slate-600">Perfect supplement to one-on-one sessions with Cindy.</p>
+            <h3 class="font-semibold mb-2">Request</h3>
+            <p class="text-sm text-slate-600">Make a clear, specific request to meet those needs.</p>
           </div>
         </div>
       </div>
 
       <!-- CTA Section -->
       <div class="bg-slate-50 rounded-xl p-8 text-center">
-        <h3 class="font-semibold text-lg mb-3">Ready to Transform Your Communication?</h3>
+        <h3 class="font-semibold text-lg mb-3">Ready to Go Deeper?</h3>
         <p class="text-slate-600 max-w-2xl mx-auto mb-6">
-          Combine AI practice with personalized coaching for accelerated learning. 
-          The AI tool helps you practice between sessions, while I provide deeper insights and support.
+          Combine self-guided practice with personalized coaching for accelerated learning.
+          The tools here help you practice between sessions, while Cindy provides deeper insights and support.
         </p>
         <div class="flex flex-wrap gap-4 justify-center">
           <button
-            @click="openNVCAI"
+            @click="startSession(); activeTab = 'practice'"
             class="inline-flex items-center bg-brand-600 text-white px-6 py-3 rounded-lg hover:bg-brand-700 transition-colors font-medium"
           >
             Try AI Practice Now
+            <SparklesIcon class="w-4 h-4 ml-2" />
           </button>
-          <RouterLink 
-            to="/contact" 
-            class="inline-flex items-center border border-slate-300 px-6 py-3 rounded-lg hover:bg-slate-50 transition-colors"
+          <RouterLink
+            to="/contact"
+            class="inline-flex items-center border border-slate-300 px-6 py-3 rounded-lg hover:bg-white transition-colors"
           >
             Schedule Human Coaching
           </RouterLink>
@@ -237,16 +327,94 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import {
+  HeartIcon,
+  StarIcon,
+  BoltIcon,
+  EyeIcon,
+  ChatBubbleLeftRightIcon,
+  ArrowRightIcon,
+  SparklesIcon,
+  CheckCircleIcon
+} from '@heroicons/vue/24/outline'
+import { EmotionWheel, NeedsWheel, ChatInterface } from '../components/lib'
+import { useAI, useMockAI } from '../composables/useAI'
 import { trackEvent } from '../utils/analytics'
 
-const showDemo = ref(false)
+// AI service - use mock in development if no API configured
+const useMock = import.meta.env.DEV && !import.meta.env.VITE_API_URL
+const ai = useMock ? useMockAI() : useAI()
 
-const nvcaiUrl = computed(() => {
-  return import.meta.env.VITE_NVCAI_URL || 'https://nvcai-production-c10a.up.railway.app'
+// Tab state
+const tabs = [
+  { id: 'feelings', label: 'Feelings', icon: HeartIcon },
+  { id: 'needs', label: 'Needs', icon: StarIcon },
+  { id: 'practice', label: 'AI Practice', icon: SparklesIcon }
+]
+const activeTab = ref('feelings')
+
+// Selection state
+const selectedFeelings = ref([])
+const selectedNeeds = ref([])
+
+// AI session state
+const sessionActive = ref(false)
+const chatRef = ref(null)
+
+// Compute suggested needs from selected feelings
+const suggestedNeeds = computed(() => {
+  const needsSet = new Set()
+  selectedFeelings.value.forEach(feeling => {
+    feeling.relatedNeeds?.forEach(need => needsSet.add(need))
+  })
+  return Array.from(needsSet).slice(0, 5)
 })
 
-const openNVCAI = () => {
-  trackEvent('nvcai_click', { source: 'practice_page' })
-  window.open(nvcaiUrl.value, '_blank', 'noopener,noreferrer')
+// Navigate to needs tab
+function proceedToNeeds() {
+  activeTab.value = 'needs'
+}
+
+// Start AI practice session
+async function startSession() {
+  trackEvent('nvc_session_start', {
+    source: 'practice_page',
+    feelings_selected: selectedFeelings.value.length,
+    needs_selected: selectedNeeds.value.length,
+    mode: useMock ? 'mock' : 'live'
+  })
+
+  try {
+    await ai.createSession({
+      type: 'self-empathy',
+      feelings: selectedFeelings.value,
+      needs: selectedNeeds.value
+    })
+    sessionActive.value = true
+  } catch (err) {
+    console.error('Failed to start session:', err)
+  }
+}
+
+// End current session
+function endSession() {
+  ai.resetSession()
+  sessionActive.value = false
+}
+
+// Handle feeling suggestion from AI
+function handleFeelingSuggestion(feeling) {
+  const feelingData = { id: feeling, label: feeling, category: 'needs_unmet' }
+  if (!selectedFeelings.value.find(f => f.label.toLowerCase() === feeling.toLowerCase())) {
+    selectedFeelings.value.push(feelingData)
+  }
+}
+
+// Handle need suggestion from AI
+function handleNeedSuggestion(need) {
+  const needData = { id: need, label: need, category: 'connection' }
+  if (!selectedNeeds.value.find(n => n.label.toLowerCase() === need.toLowerCase())) {
+    selectedNeeds.value.push(needData)
+  }
 }
 </script>

@@ -1,0 +1,23 @@
+# Render Blueprint Configuration
+# https://docs.render.com/blueprint-spec
+
+services:
+  - type: web
+    name: cindyzody-site
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ANTHROPIC_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: RESEND_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: CONTACT_EMAIL
+        value: cindy@cindyzody.com
+      - key: CORS_ORIGIN
+        sync: false  # Set to your domain, e.g., https://cindyzody.com
