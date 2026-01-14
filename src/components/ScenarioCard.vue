@@ -1,91 +1,64 @@
 <template>
   <div
-    class="bg-white rounded-xl border hover:shadow-md transition-all cursor-pointer"
-    :class="{ 'ring-2 ring-brand-500': selected }"
+    class="group relative flex-shrink-0 w-72 cursor-pointer transform transition-all duration-300 hover:scale-[1.03] hover:z-10"
     @click="$emit('select', scenario)"
   >
-    <div class="p-5">
-      <!-- Header -->
-      <div class="flex items-start justify-between mb-3">
-        <div class="flex items-center gap-2">
-          <div
-            class="w-8 h-8 rounded-lg flex items-center justify-center"
-            :class="categoryClasses"
-          >
-            <component :is="categoryIcon" class="w-4 h-4" />
+    <!-- Card with soft gradient background -->
+    <div
+      class="relative h-[340px] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow"
+      :class="cardGradient"
+    >
+      <!-- Soft organic shapes overlay -->
+      <div class="absolute inset-0 opacity-30">
+        <div class="absolute top-6 right-6 w-24 h-24 rounded-full bg-white/20 blur-xl"></div>
+        <div class="absolute bottom-12 left-6 w-16 h-16 rounded-full bg-white/15 blur-lg"></div>
+        <div class="absolute top-1/2 left-1/2 w-32 h-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10 blur-2xl"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="relative h-full flex flex-col p-5">
+        <!-- Category icon -->
+        <div class="mb-auto">
+          <div class="w-12 h-12 rounded-xl bg-white/25 backdrop-blur-sm flex items-center justify-center mb-3 shadow-sm">
+            <component :is="categoryIcon" class="w-6 h-6 text-white" />
           </div>
-          <span class="text-xs font-medium uppercase tracking-wide" :class="categoryTextClass">
+          <span class="text-xs font-medium uppercase tracking-wider text-white/90">
             {{ categoryLabel }}
           </span>
         </div>
-        <span
-          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-          :class="difficultyClasses"
-        >
-          {{ scenario.difficulty }}
-        </span>
-      </div>
 
-      <!-- Title & Description -->
-      <h3 class="font-semibold text-slate-900 mb-2">{{ scenario.title }}</h3>
-      <p class="text-sm text-slate-600 mb-4 line-clamp-2">{{ scenario.description }}</p>
+        <!-- Title and description -->
+        <div class="mt-auto">
+          <h3 class="text-lg font-semibold text-white mb-2 leading-snug">
+            {{ scenario.title }}
+          </h3>
+          <p class="text-sm text-white/80 line-clamp-2 mb-4">
+            {{ scenario.description }}
+          </p>
 
-      <!-- Suggested feelings/needs preview -->
-      <div class="flex flex-wrap gap-1.5 mb-4">
-        <span
-          v-for="feeling in scenario.suggestedFeelings?.slice(0, 3)"
-          :key="feeling"
-          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-rose-100 text-rose-700"
-        >
-          {{ feeling }}
-        </span>
-        <span
-          v-for="need in scenario.suggestedNeeds?.slice(0, 2)"
-          :key="need"
-          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-brand-100 text-brand-700"
-        >
-          {{ need }}
-        </span>
-      </div>
-
-      <!-- Action button -->
-      <button
-        @click.stop="$emit('start', scenario)"
-        class="w-full inline-flex items-center justify-center px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors text-sm font-medium"
-      >
-        Practice This Scenario
-        <ArrowRightIcon class="w-4 h-4 ml-2" />
-      </button>
-    </div>
-
-    <!-- Expanded details (when selected) -->
-    <div v-if="selected && showDetails" class="border-t border-slate-100 p-5 bg-slate-50">
-      <div class="space-y-4">
-        <!-- Context -->
-        <div>
-          <h4 class="text-sm font-medium text-slate-700 mb-1">Context</h4>
-          <p class="text-sm text-slate-600">{{ scenario.context }}</p>
-        </div>
-
-        <!-- Practice Goals -->
-        <div v-if="scenario.practiceGoals?.length > 0">
-          <h4 class="text-sm font-medium text-slate-700 mb-2">Practice Goals</h4>
-          <ul class="space-y-1">
-            <li
-              v-for="(goal, idx) in scenario.practiceGoals"
-              :key="idx"
-              class="flex items-start gap-2 text-sm text-slate-600"
+          <!-- Difficulty badge -->
+          <div class="flex items-center gap-2 mb-4">
+            <span
+              class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-white/20 text-white backdrop-blur-sm"
             >
-              <CheckCircleIcon class="w-4 h-4 text-brand-500 mt-0.5 flex-shrink-0" />
-              {{ goal }}
-            </li>
-          </ul>
-        </div>
+              {{ difficultyLabel }}
+            </span>
+            <span class="text-xs text-white/70 flex items-center">
+              <ClockIcon class="w-3.5 h-3.5 mr-1" />
+              10-15 min
+            </span>
+          </div>
 
-        <!-- Sample Opening -->
-        <div v-if="scenario.sampleOpening">
-          <h4 class="text-sm font-medium text-slate-700 mb-1">Sample Opening</h4>
-          <p class="text-sm text-slate-600 italic">"{{ scenario.sampleOpening }}"</p>
+          <!-- Hover action -->
+          <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+            <button
+              @click.stop="$emit('start', scenario)"
+              class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-white/95 text-slate-800 rounded-xl font-medium text-sm hover:bg-white transition-colors shadow-md"
+            >
+              <PlayIcon class="w-4 h-4 mr-2" />
+              Begin Practice
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -95,14 +68,15 @@
 <script setup>
 import { computed } from 'vue'
 import {
-  ArrowRightIcon,
-  CheckCircleIcon,
+  PlayIcon,
+  ClockIcon,
   BriefcaseIcon,
   HomeIcon,
   HeartIcon,
   UsersIcon,
   SparklesIcon
-} from '@heroicons/vue/24/outline'
+} from '@heroicons/vue/24/solid'
+import { categoryGradients, categoryLabels, difficultyStyles } from '../lib/colors'
 
 const props = defineProps({
   scenario: {
@@ -112,58 +86,21 @@ const props = defineProps({
   selected: {
     type: Boolean,
     default: false
-  },
-  showDetails: {
-    type: Boolean,
-    default: true
   }
 })
 
 defineEmits(['select', 'start'])
 
-const categoryData = {
-  workplace: {
-    icon: BriefcaseIcon,
-    label: 'Workplace',
-    bgClass: 'bg-blue-100',
-    textClass: 'text-blue-700'
-  },
-  family: {
-    icon: HomeIcon,
-    label: 'Family',
-    bgClass: 'bg-rose-100',
-    textClass: 'text-rose-700'
-  },
-  romantic: {
-    icon: HeartIcon,
-    label: 'Romantic',
-    bgClass: 'bg-pink-100',
-    textClass: 'text-pink-700'
-  },
-  friendship: {
-    icon: UsersIcon,
-    label: 'Friendship',
-    bgClass: 'bg-purple-100',
-    textClass: 'text-purple-700'
-  },
-  self: {
-    icon: SparklesIcon,
-    label: 'Self',
-    bgClass: 'bg-amber-100',
-    textClass: 'text-amber-700'
-  }
+const categoryIcons = {
+  workplace: BriefcaseIcon,
+  family: HomeIcon,
+  romantic: HeartIcon,
+  friendship: UsersIcon,
+  self: SparklesIcon
 }
 
-const difficultyColors = {
-  beginner: 'bg-green-100 text-green-700',
-  intermediate: 'bg-amber-100 text-amber-700',
-  advanced: 'bg-red-100 text-red-700'
-}
-
-const category = computed(() => categoryData[props.scenario.category] || categoryData.self)
-const categoryIcon = computed(() => category.value.icon)
-const categoryLabel = computed(() => category.value.label)
-const categoryClasses = computed(() => `${category.value.bgClass} ${category.value.textClass}`)
-const categoryTextClass = computed(() => category.value.textClass)
-const difficultyClasses = computed(() => difficultyColors[props.scenario.difficulty] || difficultyColors.beginner)
+const categoryIcon = computed(() => categoryIcons[props.scenario.category] || SparklesIcon)
+const categoryLabel = computed(() => categoryLabels[props.scenario.category] || 'Practice')
+const cardGradient = computed(() => categoryGradients[props.scenario.category] || categoryGradients.self)
+const difficultyLabel = computed(() => difficultyStyles[props.scenario.difficulty]?.label || 'Beginner')
 </script>

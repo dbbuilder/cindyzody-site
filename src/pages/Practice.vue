@@ -138,78 +138,245 @@
         </div>
       </div>
 
-      <!-- Scenarios Tab -->
-      <div v-if="activeTab === 'scenarios'" class="animate-fade-in">
-        <div class="mb-8">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <div>
-              <h2 class="text-2xl font-bold">Practice Scenarios</h2>
-              <p class="text-slate-600 mt-1">
-                Choose a real-world scenario to practice with guided NVC support
-              </p>
+      <!-- Scenarios Tab - Netflix-style -->
+      <div v-if="activeTab === 'scenarios'" class="animate-fade-in -mx-4 sm:-mx-6 lg:-mx-8">
+        <!-- Hero Featured Scenario -->
+        <div v-if="featuredScenario" class="relative mb-12">
+          <div class="relative h-80 sm:h-96 overflow-hidden">
+            <!-- Gradient background - serene teal/emerald -->
+            <div class="absolute inset-0 bg-gradient-to-br from-teal-600 via-emerald-700 to-cyan-800"></div>
+
+            <!-- Decorative circles -->
+            <div class="absolute inset-0 overflow-hidden">
+              <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full border border-white/10"></div>
+              <div class="absolute bottom-10 left-10 w-64 h-64 rounded-full border border-white/5"></div>
+              <div class="absolute top-1/2 left-1/3 w-48 h-48 rounded-full bg-white/5"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="relative h-full flex items-center px-6 sm:px-12 lg:px-16">
+              <div class="max-w-2xl">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white mb-4">
+                  <SparklesIcon class="w-3.5 h-3.5 mr-1.5" />
+                  Featured Practice
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-3">
+                  {{ featuredScenario.title }}
+                </h2>
+                <p class="text-lg text-white/80 mb-6 line-clamp-2">
+                  {{ featuredScenario.description }}
+                </p>
+                <div class="flex items-center gap-4">
+                  <button
+                    @click="startScenarioSession(featuredScenario)"
+                    class="inline-flex items-center px-6 py-3 bg-white text-slate-900 rounded-xl font-semibold hover:bg-white/90 transition-colors shadow-lg"
+                  >
+                    <PlayIcon class="w-5 h-5 mr-2" />
+                    Start Practice
+                  </button>
+                  <button
+                    @click="selectScenario(featuredScenario)"
+                    class="inline-flex items-center px-6 py-3 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition-colors backdrop-blur-sm"
+                  >
+                    <InformationCircleIcon class="w-5 h-5 mr-2" />
+                    More Info
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Carousels -->
+        <div class="space-y-10 px-4 sm:px-6 lg:px-8 pb-8">
+          <!-- Self-Compassion Row -->
+          <div v-if="selfScenarios.length > 0">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold text-slate-900 flex items-center">
+                <SparklesIcon class="w-5 h-5 mr-2 text-amber-500" />
+                Self-Compassion
+              </h3>
+              <span class="text-sm text-slate-500">{{ selfScenarios.length }} scenarios</span>
+            </div>
+            <div class="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+              <ScenarioCard
+                v-for="scenario in selfScenarios"
+                :key="scenario.id"
+                :scenario="scenario"
+                :selected="selectedScenario?.id === scenario.id"
+                @select="selectScenario"
+                @start="startScenarioSession"
+              />
             </div>
           </div>
 
-          <!-- Filters -->
-          <div class="flex flex-wrap gap-3 mb-6">
-            <!-- Category filter -->
-            <div class="relative">
-              <select
-                v-model="selectedCategory"
-                class="appearance-none pl-4 pr-10 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+          <!-- Workplace Row -->
+          <div v-if="workplaceScenarios.length > 0">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold text-slate-900 flex items-center">
+                <BriefcaseIcon class="w-5 h-5 mr-2 text-blue-600" />
+                Workplace & Career
+              </h3>
+              <span class="text-sm text-slate-500">{{ workplaceScenarios.length }} scenarios</span>
+            </div>
+            <div class="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+              <ScenarioCard
+                v-for="scenario in workplaceScenarios"
+                :key="scenario.id"
+                :scenario="scenario"
+                :selected="selectedScenario?.id === scenario.id"
+                @select="selectScenario"
+                @start="startScenarioSession"
+              />
+            </div>
+          </div>
+
+          <!-- Family Row -->
+          <div v-if="familyScenarios.length > 0">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold text-slate-900 flex items-center">
+                <HomeIcon class="w-5 h-5 mr-2 text-emerald-500" />
+                Family Dynamics
+              </h3>
+              <span class="text-sm text-slate-500">{{ familyScenarios.length }} scenarios</span>
+            </div>
+            <div class="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+              <ScenarioCard
+                v-for="scenario in familyScenarios"
+                :key="scenario.id"
+                :scenario="scenario"
+                :selected="selectedScenario?.id === scenario.id"
+                @select="selectScenario"
+                @start="startScenarioSession"
+              />
+            </div>
+          </div>
+
+          <!-- Romantic Row -->
+          <div v-if="romanticScenarios.length > 0">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold text-slate-900 flex items-center">
+                <HeartIcon class="w-5 h-5 mr-2 text-violet-500" />
+                Romantic Relationships
+              </h3>
+              <span class="text-sm text-slate-500">{{ romanticScenarios.length }} scenarios</span>
+            </div>
+            <div class="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+              <ScenarioCard
+                v-for="scenario in romanticScenarios"
+                :key="scenario.id"
+                :scenario="scenario"
+                :selected="selectedScenario?.id === scenario.id"
+                @select="selectScenario"
+                @start="startScenarioSession"
+              />
+            </div>
+          </div>
+
+          <!-- Friendship Row -->
+          <div v-if="friendshipScenarios.length > 0">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold text-slate-900 flex items-center">
+                <UsersIcon class="w-5 h-5 mr-2 text-purple-500" />
+                Friendships & Social
+              </h3>
+              <span class="text-sm text-slate-500">{{ friendshipScenarios.length }} scenarios</span>
+            </div>
+            <div class="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+              <ScenarioCard
+                v-for="scenario in friendshipScenarios"
+                :key="scenario.id"
+                :scenario="scenario"
+                :selected="selectedScenario?.id === scenario.id"
+                @select="selectScenario"
+                @start="startScenarioSession"
+              />
+            </div>
+          </div>
+
+          <!-- Beginner Picks -->
+          <div v-if="beginnerScenarios.length > 0" class="pt-6 border-t border-slate-200">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold text-slate-900 flex items-center">
+                <AcademicCapIcon class="w-5 h-5 mr-2 text-green-600" />
+                Great for Beginners
+              </h3>
+              <span class="text-sm text-slate-500">{{ beginnerScenarios.length }} scenarios</span>
+            </div>
+            <div class="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+              <ScenarioCard
+                v-for="scenario in beginnerScenarios"
+                :key="scenario.id"
+                :scenario="scenario"
+                :selected="selectedScenario?.id === scenario.id"
+                @select="selectScenario"
+                @start="startScenarioSession"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected Scenario Modal -->
+        <div
+          v-if="selectedScenario && showScenarioDetail"
+          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          @click.self="showScenarioDetail = false"
+        >
+          <div class="relative bg-white rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto shadow-2xl">
+            <!-- Header with gradient -->
+            <div class="relative h-48 rounded-t-2xl overflow-hidden" :class="getScenarioGradient(selectedScenario.category)">
+              <div class="absolute inset-0 flex items-end p-6">
+                <div>
+                  <span class="text-xs font-semibold uppercase tracking-wide text-white/80">
+                    {{ getCategoryLabel(selectedScenario.category) }}
+                  </span>
+                  <h3 class="text-2xl font-bold text-white mt-1">{{ selectedScenario.title }}</h3>
+                </div>
+              </div>
+              <button
+                @click="showScenarioDetail = false"
+                class="absolute top-4 right-4 p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors"
               >
-                <option value="all">All Categories</option>
-                <option v-for="cat in scenarioCategories" :key="cat.id" :value="cat.id">
-                  {{ cat.label }}
-                </option>
-              </select>
-              <FunnelIcon class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <XMarkIcon class="w-5 h-5 text-white" />
+              </button>
             </div>
 
-            <!-- Difficulty filter -->
-            <div class="relative">
-              <select
-                v-model="selectedDifficulty"
-                class="appearance-none pl-4 pr-10 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+            <!-- Content -->
+            <div class="p-6 space-y-5">
+              <p class="text-slate-600">{{ selectedScenario.description }}</p>
+
+              <div v-if="selectedScenario.context">
+                <h4 class="font-semibold text-slate-900 mb-2">Context</h4>
+                <p class="text-sm text-slate-600">{{ selectedScenario.context }}</p>
+              </div>
+
+              <div v-if="selectedScenario.practiceGoals?.length">
+                <h4 class="font-semibold text-slate-900 mb-2">Practice Goals</h4>
+                <ul class="space-y-2">
+                  <li v-for="(goal, idx) in selectedScenario.practiceGoals" :key="idx" class="flex items-start gap-2 text-sm text-slate-600">
+                    <CheckCircleIcon class="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    {{ goal }}
+                  </li>
+                </ul>
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                <span v-for="feeling in selectedScenario.suggestedFeelings" :key="feeling" class="px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700">
+                  {{ feeling }}
+                </span>
+                <span v-for="need in selectedScenario.suggestedNeeds" :key="need" class="px-2.5 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-700">
+                  {{ need }}
+                </span>
+              </div>
+
+              <button
+                @click="startScenarioSession(selectedScenario); showScenarioDetail = false"
+                class="w-full inline-flex items-center justify-center px-6 py-3 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition-colors"
               >
-                <option value="all">All Levels</option>
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-              </select>
-              <FunnelIcon class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <PlayIcon class="w-5 h-5 mr-2" />
+                Start Practice Session
+              </button>
             </div>
-
-            <!-- Results count -->
-            <span class="text-sm text-slate-500 py-2">
-              {{ filteredScenarios.length }} scenarios
-            </span>
-          </div>
-
-          <!-- Scenario grid -->
-          <div class="grid md:grid-cols-2 gap-4">
-            <ScenarioCard
-              v-for="scenario in filteredScenarios"
-              :key="scenario.id"
-              :scenario="scenario"
-              :selected="selectedScenario?.id === scenario.id"
-              @select="selectScenario"
-              @start="startScenarioSession"
-            />
-          </div>
-
-          <!-- Empty state -->
-          <div v-if="filteredScenarios.length === 0" class="text-center py-12">
-            <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <BookOpenIcon class="w-6 h-6 text-slate-400" />
-            </div>
-            <p class="text-slate-600">No scenarios match your filters.</p>
-            <button
-              @click="selectedCategory = 'all'; selectedDifficulty = 'all'"
-              class="mt-2 text-brand-600 hover:text-brand-700 text-sm font-medium"
-            >
-              Clear filters
-            </button>
           </div>
         </div>
       </div>
@@ -386,8 +553,8 @@
             <p class="text-sm text-slate-600">Describe what happened without judgment or evaluation.</p>
           </div>
           <div class="text-center">
-            <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <HeartIcon class="w-6 h-6 text-rose-600" />
+            <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <HeartIcon class="w-6 h-6 text-indigo-600" />
             </div>
             <h3 class="font-semibold mb-2">Feelings</h3>
             <p class="text-sm text-slate-600">Identify what you're feeling in response to the observation.</p>
@@ -450,13 +617,21 @@ import {
   ChartBarIcon,
   ClockIcon,
   BookOpenIcon,
-  FunnelIcon
+  FunnelIcon,
+  PlayIcon,
+  InformationCircleIcon,
+  BriefcaseIcon,
+  HomeIcon,
+  UsersIcon,
+  AcademicCapIcon,
+  XMarkIcon
 } from '@heroicons/vue/24/outline'
 import { EmotionWheel, NeedsWheel, ChatInterface } from '../components/lib'
 import ScenarioCard from '../components/ScenarioCard.vue'
 import { useAI, useMockAI } from '../composables/useAI'
 import { trackEvent } from '../utils/analytics'
 import scenariosData from '../data/scenarios.json'
+import { categoryGradients, categoryLabels } from '../lib/colors'
 
 // AI service - use mock in development if no API configured
 const useMock = import.meta.env.DEV && !import.meta.env.VITE_API_URL
@@ -490,6 +665,34 @@ const filteredScenarios = computed(() => {
     return categoryMatch && difficultyMatch
   })
 })
+
+// Category-filtered scenarios for Netflix-style carousels
+const selfScenarios = computed(() => scenarios.value.filter(s => s.category === 'self'))
+const workplaceScenarios = computed(() => scenarios.value.filter(s => s.category === 'workplace'))
+const familyScenarios = computed(() => scenarios.value.filter(s => s.category === 'family'))
+const romanticScenarios = computed(() => scenarios.value.filter(s => s.category === 'romantic'))
+const friendshipScenarios = computed(() => scenarios.value.filter(s => s.category === 'friendship'))
+const beginnerScenarios = computed(() => scenarios.value.filter(s => s.difficulty === 'beginner'))
+
+// Featured scenario for hero section
+const featuredScenario = computed(() => {
+  // Pick the first beginner scenario or first self-compassion scenario
+  return scenarios.value.find(s => s.difficulty === 'beginner' && s.category === 'self') ||
+         scenarios.value.find(s => s.difficulty === 'beginner') ||
+         scenarios.value[0]
+})
+
+// Scenario detail modal state
+const showScenarioDetail = ref(false)
+
+// Helper functions for scenario display
+function getScenarioGradient(category) {
+  return categoryGradients[category] || categoryGradients.self
+}
+
+function getCategoryLabel(category) {
+  return categoryLabels[category] || 'Practice'
+}
 
 // AI session state
 const sessionActive = ref(false)
@@ -591,12 +794,13 @@ async function startScenarioSession(scenario) {
   }
 }
 
-// Select a scenario (toggle details)
+// Select a scenario (show detail modal)
 function selectScenario(scenario) {
-  if (selectedScenario.value?.id === scenario.id) {
-    selectedScenario.value = null
+  if (selectedScenario.value?.id === scenario.id && showScenarioDetail.value) {
+    showScenarioDetail.value = false
   } else {
     selectedScenario.value = scenario
+    showScenarioDetail.value = true
   }
 }
 </script>

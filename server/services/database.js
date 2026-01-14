@@ -11,9 +11,41 @@ import { mkdirSync, existsSync } from 'fs'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// Database file path - use DATABASE_PATH env var for production (Render persistent disk)
-// Falls back to local data directory for development
-const DB_PATH = process.env.DATABASE_PATH || join(__dirname, '../../data/cindyzody.db')
+// Database file path
+// Priority: DATABASE_PATH env var (if writable) > Render project dir > local data dir
+function getDatabasePath() {
+  const renderProjectPath = '/opt/render/project/src/data/cindyzody.db'
+  const localPath = join(__dirname, '../../data/cindyzody.db')
+
+  // If explicitly set, try to use it
+  if (process.env.DATABASE_PATH) {
+    const dbDir = dirname(process.env.DATABASE_PATH)
+
+    // Check if directory exists or can be created
+    if (existsSync(dbDir)) {
+      return process.env.DATABASE_PATH
+    }
+
+    try {
+      mkdirSync(dbDir, { recursive: true })
+      return process.env.DATABASE_PATH
+    } catch (err) {
+      console.warn(`[Database] Cannot use DATABASE_PATH (${dbDir}): ${err.message}`)
+      console.warn('[Database] Falling back to project directory')
+      // Fall through to use project directory
+    }
+  }
+
+  // On Render without persistent disk, use project directory
+  if (process.env.RENDER) {
+    return renderProjectPath
+  }
+
+  // Local development
+  return localPath
+}
+
+const DB_PATH = getDatabasePath()
 const DB_DIR = dirname(DB_PATH)
 
 // Ensure data directory exists
