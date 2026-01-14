@@ -223,6 +223,134 @@ router.post('/chat', async (req, res) => {
   }
 })
 
+/**
+ * Get session summary
+ * GET /api/ai/session/:id/summary
+ */
+router.get('/session/:id/summary', async (req, res) => {
+  try {
+    const { id } = req.params
+    const { messages = [] } = req.query
+
+    // Parse messages if passed as query param
+    let conversationHistory = []
+    if (typeof messages === 'string') {
+      try {
+        conversationHistory = JSON.parse(messages)
+      } catch {
+        conversationHistory = []
+      }
+    }
+
+    // If no messages provided, return a basic summary structure
+    if (conversationHistory.length === 0) {
+      return res.json({
+        sessionId: id,
+        summary: {
+          observation: null,
+          feelings: [],
+          needs: [],
+          request: null,
+          keyInsights: [],
+          practiceNotes: 'Session in progress or no messages recorded.'
+        },
+        generatedAt: new Date().toISOString()
+      })
+    }
+
+    // Get API key
+    const apiKey = process.env.ANTHROPIC_API_KEY
+    if (!apiKey) {
+      // Return extracted data without AI summary
+      return res.json({
+        sessionId: id,
+        summary: extractOFNRFromMessages(conversationHistory),
+        generatedAt: new Date().toISOString()
+      })
+    }
+
+    // Use Claude to generate a proper summary
+    const summaryPrompt = `Analyze this NVC practice conversation and extract the OFNR components.
+
+CONVERSATION:
+${conversationHistory.map(m => `${m.role}: ${m.content}`).join('\n')}
+
+Respond in this exact JSON format:
+{
+  "observation": "The specific situation or trigger (or null if not identified)",
+  "feelings": ["list", "of", "feelings", "identified"],
+  "needs": ["list", "of", "needs", "identified"],
+  "request": "Any request formulated (or null if not yet)",
+  "keyInsights": ["key insight 1", "key insight 2"],
+  "practiceNotes": "Brief note on what went well and areas for continued practice"
+}`
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: summaryPrompt }]
+      })
+    })
+
+    if (!response.ok) {
+      // Fallback to basic extraction
+      return res.json({
+        sessionId: id,
+        summary: extractOFNRFromMessages(conversationHistory),
+        generatedAt: new Date().toISOString()
+      })
+    }
+
+    const data = await response.json()
+    const responseText = data.content[0].text
+
+    // Parse the JSON response
+    let summary
+    try {
+      // Extract JSON from response (might have markdown code blocks)
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/)
+      summary = jsonMatch ? JSON.parse(jsonMatch[0]) : extractOFNRFromMessages(conversationHistory)
+    } catch {
+      summary = extractOFNRFromMessages(conversationHistory)
+    }
+
+    res.json({
+      sessionId: id,
+      summary,
+      generatedAt: new Date().toISOString()
+    })
+  } catch (error) {
+    console.error('Session summary error:', error)
+    res.status(500).json({ error: 'Failed to generate summary' })
+  }
+})
+
+/**
+ * Extract OFNR components from messages without AI
+ */
+function extractOFNRFromMessages(messages) {
+  const allText = messages.map(m => m.content).join(' ').toLowerCase()
+
+  const feelings = extractSuggestions(allText).feelings || []
+  const needs = extractSuggestions(allText).needs || []
+
+  return {
+    observation: null,
+    feelings,
+    needs,
+    request: null,
+    keyInsights: [],
+    practiceNotes: 'Summary generated from conversation keywords.'
+  }
+}
+
 // Helper functions
 function detectCrisis(text) {
   const lowerText = text.toLowerCase()
