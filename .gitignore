@@ -15,3 +15,10 @@ ios/App/Pods
 ios/App/*.xcworkspace/xcuserdata
 ios/App/DerivedData
 *.xcuserstate
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
