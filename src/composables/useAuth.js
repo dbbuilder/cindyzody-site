@@ -1,10 +1,11 @@
 /**
  * Authentication Composable using Clerk
  * Handles user authentication state and methods
+ * Works for both web and Capacitor iOS app
  */
 
 import { ref, computed, onMounted, watch } from 'vue'
-import { initClerk, getClerk } from '../lib/clerk'
+import { initClerk, getClerk, openSignIn as clerkSignIn, openSignUp as clerkSignUp, signOut as clerkSignOut, isNativeApp } from '../lib/clerk'
 
 // Shared state across components
 const user = ref(null)
@@ -75,7 +76,7 @@ export function useAuth() {
   })
 
   /**
-   * Open Clerk sign-in modal
+   * Open sign-in (works for both web modal and native browser)
    */
   async function signIn() {
     const clerk = getClerk()
@@ -85,17 +86,14 @@ export function useAuth() {
     }
 
     try {
-      await clerk.openSignIn({
-        afterSignInUrl: window.location.href,
-        afterSignUpUrl: window.location.href
-      })
+      await clerkSignIn()
     } catch (err) {
       error.value = err.message
     }
   }
 
   /**
-   * Open Clerk sign-up modal
+   * Open sign-up (works for both web modal and native browser)
    */
   async function signUp() {
     const clerk = getClerk()
@@ -105,17 +103,14 @@ export function useAuth() {
     }
 
     try {
-      await clerk.openSignUp({
-        afterSignInUrl: window.location.href,
-        afterSignUpUrl: window.location.href
-      })
+      await clerkSignUp()
     } catch (err) {
       error.value = err.message
     }
   }
 
   /**
-   * Sign out
+   * Sign out (works for both web and native)
    */
   async function signOut() {
     const clerk = getClerk()
@@ -123,7 +118,7 @@ export function useAuth() {
 
     loading.value = true
     try {
-      await clerk.signOut()
+      await clerkSignOut()
       user.value = null
     } catch (err) {
       error.value = err.message
@@ -168,6 +163,7 @@ export function useAuth() {
     error,
     isLoaded,
     isAuthenticated,
+    isNative: isNativeApp(),
     displayName,
     email,
     userId,

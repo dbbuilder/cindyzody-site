@@ -7,12 +7,16 @@ const config: CapacitorConfig = {
   server: {
     // For development, allow loading from localhost
     androidScheme: 'https',
-    iosScheme: 'capacitor'
+    iosScheme: 'https',
+    // Production URL for API calls and auth redirects
+    hostname: 'app.cindyzody.com'
   },
   ios: {
     contentInset: 'automatic',
     backgroundColor: '#ffffff',
-    preferredContentMode: 'mobile'
+    preferredContentMode: 'mobile',
+    // URL scheme for deep linking (Clerk OAuth redirects)
+    scheme: 'feelingsneeds'
   },
   plugins: {
     SplashScreen: {
