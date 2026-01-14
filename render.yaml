@@ -6,10 +6,17 @@ services:
     name: cindyzody-site
     runtime: node
     region: oregon
-    plan: free
+    plan: starter  # Required for persistent disk
     buildCommand: npm ci && npm run build
     startCommand: npm run start
     healthCheckPath: /api/health
+
+    # Persistent disk for SQLite database
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1  # $0.25/month
+
     envVars:
       - key: NODE_ENV
         value: production
@@ -21,3 +28,16 @@ services:
         value: cindy@cindyzody.com
       - key: CORS_ORIGIN
         sync: false  # Set to your domain, e.g., https://cindyzody.com
+      # Clerk Authentication
+      - key: VITE_CLERK_PUBLISHABLE_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: CLERK_SECRET_KEY
+        sync: false  # Set manually in Render dashboard
+      # Database configuration
+      - key: DATABASE_PATH
+        value: /var/data/cindyzody.db
+      # Feature flags
+      - key: USE_POSTGRES
+        value: "false"  # Set to "true" when ready to migrate to PostgreSQL
+      - key: DATABASE_URL
+        sync: false  # PostgreSQL connection string (when USE_POSTGRES=true)

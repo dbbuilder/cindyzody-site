@@ -11,14 +11,17 @@ import { mkdirSync, existsSync } from 'fs'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// Database file path
-const DB_DIR = join(__dirname, '../../data')
-const DB_PATH = join(DB_DIR, 'cindyzody.db')
+// Database file path - use DATABASE_PATH env var for production (Render persistent disk)
+// Falls back to local data directory for development
+const DB_PATH = process.env.DATABASE_PATH || join(__dirname, '../../data/cindyzody.db')
+const DB_DIR = dirname(DB_PATH)
 
 // Ensure data directory exists
 if (!existsSync(DB_DIR)) {
   mkdirSync(DB_DIR, { recursive: true })
 }
+
+console.log(`[Database] Using SQLite at: ${DB_PATH}`)
 
 // Initialize database connection
 const db = new Database(DB_PATH)
