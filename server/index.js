@@ -14,6 +14,8 @@ import { dirname, join } from 'path'
 import contactRouter from './routes/contact.js'
 import scheduleRouter from './routes/schedule.js'
 import aiRouter from './routes/ai.js'
+import sessionsRouter from './routes/sessions.js'
+import progressRouter from './routes/progress.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -60,6 +62,8 @@ const aiLimiter = rateLimit({
 app.use('/api/contact', contactLimiter, contactRouter)
 app.use('/api/schedule', scheduleLimiter, scheduleRouter)
 app.use('/api/ai', aiLimiter, aiRouter)
+app.use('/api/sessions', sessionsRouter)
+app.use('/api/progress', progressRouter)
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

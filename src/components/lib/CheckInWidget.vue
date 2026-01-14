@@ -1,14 +1,27 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import {
   CheckCircleIcon,
   ArrowRightIcon,
-  SparklesIcon
+  SparklesIcon,
+  FireIcon
 } from '@heroicons/vue/24/solid'
 import {
   HeartIcon,
   StarIcon
 } from '@heroicons/vue/24/outline'
+import { useProgress } from '../../composables/useProgress'
+
+// Use progress composable for persistence
+const {
+  progress,
+  hasCheckedInToday,
+  streakInfo,
+  saveCheckIn: saveCheckInToBackend,
+  loadProgress,
+  loadCheckIns,
+  isLoading: progressLoading
+} = useProgress()
 
 const props = defineProps({
   // Pre-selected values
@@ -94,14 +107,29 @@ async function submitCheckIn() {
     timestamp: new Date().toISOString()
   }
 
-  // Simulate submission delay
-  await new Promise(resolve => setTimeout(resolve, 500))
+  try {
+    // Save to backend
+    await saveCheckInToBackend({
+      feelings: selectedQuickFeelings.value,
+      notes: note.value.trim() || null
+    })
 
-  isComplete.value = true
-  isSubmitting.value = false
-
-  emit('complete', checkInData)
+    isComplete.value = true
+    emit('complete', checkInData)
+  } catch (err) {
+    console.error('Check-in failed:', err)
+    // Still mark complete locally
+    isComplete.value = true
+  } finally {
+    isSubmitting.value = false
+  }
 }
+
+// Load progress on mount
+onMounted(async () => {
+  await loadProgress()
+  await loadCheckIns(1)
+})
 
 // Go deeper with AI
 function goDeeper() {
@@ -126,12 +154,23 @@ defineExpose({ reset })
 <template>
   <div class="check-in-widget bg-white rounded-xl border shadow-sm overflow-hidden">
     <!-- Header -->
-    <div class="px-4 py-3 bg-gradient-to-r from-brand-50 to-sage-50 border-b">
-      <h3 class="font-semibold text-sm flex items-center gap-2">
-        <HeartIcon class="w-4 h-4 text-brand-600" />
-        Daily Check-In
-      </h3>
-      <p class="text-xs text-slate-500 mt-0.5">How are you feeling right now?</p>
+    <div class="px-4 py-3 bg-gradient-to-r from-brand-500 to-brand-600 text-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-semibold text-sm flex items-center gap-2">
+            <HeartIcon class="w-4 h-4" />
+            Daily Check-In
+          </h3>
+          <p class="text-xs text-brand-100 mt-0.5">How are you feeling right now?</p>
+        </div>
+        <div v-if="streakInfo.current > 0" class="text-right">
+          <div class="flex items-center gap-1">
+            <FireIcon class="w-4 h-4 text-yellow-300" />
+            <span class="font-bold">{{ streakInfo.current }}</span>
+          </div>
+          <p class="text-xs text-brand-100">day streak</p>
+        </div>
+      </div>
     </div>
 
     <!-- Content -->
