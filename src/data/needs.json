@@ -1,0 +1,465 @@
+{
+  "categories": [
+    {
+      "id": "connection",
+      "label": "Connection",
+      "description": "Needs related to relationships and belonging",
+      "color": "rose",
+      "icon": "heart"
+    },
+    {
+      "id": "physical",
+      "label": "Physical Well-being",
+      "description": "Needs related to body and survival",
+      "color": "green",
+      "icon": "sun"
+    },
+    {
+      "id": "honesty",
+      "label": "Honesty",
+      "description": "Needs related to truth and authenticity",
+      "color": "blue",
+      "icon": "shield"
+    },
+    {
+      "id": "play",
+      "label": "Play",
+      "description": "Needs related to joy and recreation",
+      "color": "yellow",
+      "icon": "sparkles"
+    },
+    {
+      "id": "peace",
+      "label": "Peace",
+      "description": "Needs related to harmony and ease",
+      "color": "purple",
+      "icon": "moon"
+    },
+    {
+      "id": "autonomy",
+      "label": "Autonomy",
+      "description": "Needs related to freedom and choice",
+      "color": "orange",
+      "icon": "arrow-path"
+    },
+    {
+      "id": "meaning",
+      "label": "Meaning",
+      "description": "Needs related to purpose and contribution",
+      "color": "indigo",
+      "icon": "star"
+    }
+  ],
+  "needs": [
+    {
+      "id": "acceptance",
+      "label": "Acceptance",
+      "category": "connection",
+      "description": "To be received as we are, without conditions",
+      "examples": ["Being welcomed into a group without having to prove yourself", "A friend who doesn't try to change you"],
+      "reflectionQuestions": ["Where in my life do I feel most accepted?", "How can I offer more acceptance to others?"],
+      "relatedFeelingsMet": ["peaceful", "content", "grateful", "connected"],
+      "relatedFeelingsUnmet": ["lonely", "sad", "hurt", "anxious"]
+    },
+    {
+      "id": "affection",
+      "label": "Affection",
+      "category": "connection",
+      "description": "To give and receive expressions of care and warmth",
+      "examples": ["A warm hug", "Words of endearment", "Small gestures of care"],
+      "reflectionQuestions": ["How do I most like to give affection?", "How do I most like to receive affection?"],
+      "relatedFeelingsMet": ["loving", "connected", "joyful", "content"],
+      "relatedFeelingsUnmet": ["lonely", "sad", "disconnected"]
+    },
+    {
+      "id": "appreciation",
+      "label": "Appreciation",
+      "category": "connection",
+      "description": "To be valued and recognized for who we are and what we contribute",
+      "examples": ["A sincere thank you", "Recognition of your efforts", "Someone noticing what you do"],
+      "reflectionQuestions": ["What do I wish others appreciated about me?", "Who could I appreciate more?"],
+      "relatedFeelingsMet": ["grateful", "proud", "content", "joyful"],
+      "relatedFeelingsUnmet": ["resentful", "hurt", "sad"]
+    },
+    {
+      "id": "belonging",
+      "label": "Belonging",
+      "category": "connection",
+      "description": "To feel part of a community or group",
+      "examples": ["Being included in activities", "Having a role in a group", "Feeling at home somewhere"],
+      "reflectionQuestions": ["Where do I feel I truly belong?", "What communities nourish me?"],
+      "relatedFeelingsMet": ["connected", "content", "peaceful", "joyful"],
+      "relatedFeelingsUnmet": ["lonely", "sad", "disconnected", "anxious"]
+    },
+    {
+      "id": "closeness",
+      "label": "Closeness",
+      "category": "connection",
+      "description": "To have intimate connection with others",
+      "examples": ["Deep conversations", "Physical proximity", "Shared vulnerability"],
+      "reflectionQuestions": ["With whom do I feel closest?", "What creates closeness for me?"],
+      "relatedFeelingsMet": ["connected", "loving", "content", "peaceful"],
+      "relatedFeelingsUnmet": ["lonely", "disconnected", "sad"]
+    },
+    {
+      "id": "communication",
+      "label": "Communication",
+      "category": "connection",
+      "description": "To share and receive information, thoughts, and feelings",
+      "examples": ["Open dialogue", "Clear expression", "Being truly heard"],
+      "reflectionQuestions": ["What makes communication feel satisfying to me?", "Where could I communicate more clearly?"],
+      "relatedFeelingsMet": ["connected", "peaceful", "relieved"],
+      "relatedFeelingsUnmet": ["frustrated", "lonely", "confused"]
+    },
+    {
+      "id": "companionship",
+      "label": "Companionship",
+      "category": "connection",
+      "description": "To have others present with us",
+      "examples": ["Having someone to do activities with", "Not being alone in experiences"],
+      "reflectionQuestions": ["Who are my companions in life?", "What activities do I enjoy doing with others?"],
+      "relatedFeelingsMet": ["content", "connected", "joyful"],
+      "relatedFeelingsUnmet": ["lonely", "sad", "disconnected"]
+    },
+    {
+      "id": "consideration",
+      "label": "Consideration",
+      "category": "connection",
+      "description": "To have our needs, feelings, and situations taken into account",
+      "examples": ["Someone checking before making plans", "Thoughtful responses to requests"],
+      "reflectionQuestions": ["When do I feel most considered?", "How can I show more consideration?"],
+      "relatedFeelingsMet": ["grateful", "peaceful", "connected"],
+      "relatedFeelingsUnmet": ["hurt", "resentful", "frustrated"]
+    },
+    {
+      "id": "empathy",
+      "label": "Empathy",
+      "category": "connection",
+      "description": "To be understood at a deep, emotional level",
+      "examples": ["Someone truly getting how you feel", "Feeling seen without judgment"],
+      "reflectionQuestions": ["From whom do I receive empathy?", "How well do I offer empathy to others?"],
+      "relatedFeelingsMet": ["connected", "relieved", "peaceful", "grateful"],
+      "relatedFeelingsUnmet": ["lonely", "hurt", "disconnected"]
+    },
+    {
+      "id": "inclusion",
+      "label": "Inclusion",
+      "category": "connection",
+      "description": "To be invited and welcomed to participate",
+      "examples": ["Being invited to events", "Having a voice in decisions", "Being part of the team"],
+      "reflectionQuestions": ["Where do I feel most included?", "Who might I include more?"],
+      "relatedFeelingsMet": ["connected", "joyful", "grateful"],
+      "relatedFeelingsUnmet": ["lonely", "hurt", "sad"]
+    },
+    {
+      "id": "intimacy",
+      "label": "Intimacy",
+      "category": "connection",
+      "description": "Deep closeness and vulnerability with another",
+      "examples": ["Sharing secrets", "Physical closeness", "Being fully known"],
+      "reflectionQuestions": ["What does intimacy mean to me?", "How comfortable am I with vulnerability?"],
+      "relatedFeelingsMet": ["loving", "connected", "peaceful", "content"],
+      "relatedFeelingsUnmet": ["lonely", "sad", "disconnected"]
+    },
+    {
+      "id": "love",
+      "label": "Love",
+      "category": "connection",
+      "description": "To give and receive deep care and affection",
+      "examples": ["Unconditional support", "Deep caring", "Cherishing and being cherished"],
+      "reflectionQuestions": ["How do I experience love?", "How do I express love?"],
+      "relatedFeelingsMet": ["loving", "joyful", "grateful", "peaceful"],
+      "relatedFeelingsUnmet": ["sad", "lonely", "hurt"]
+    },
+    {
+      "id": "respect",
+      "label": "Respect",
+      "category": "connection",
+      "description": "To be treated with dignity and regard",
+      "examples": ["Being spoken to kindly", "Having boundaries honored", "Being taken seriously"],
+      "reflectionQuestions": ["What does respect look like to me?", "How do I show respect?"],
+      "relatedFeelingsMet": ["confident", "peaceful", "content"],
+      "relatedFeelingsUnmet": ["hurt", "angry", "resentful"]
+    },
+    {
+      "id": "safety",
+      "label": "Safety",
+      "category": "physical",
+      "description": "To feel secure and free from harm",
+      "examples": ["Physical safety", "Emotional safety", "Financial security"],
+      "reflectionQuestions": ["Where do I feel safest?", "What helps me feel more secure?"],
+      "relatedFeelingsMet": ["peaceful", "relieved", "content"],
+      "relatedFeelingsUnmet": ["scared", "anxious", "worried"]
+    },
+    {
+      "id": "sustenance",
+      "label": "Sustenance",
+      "category": "physical",
+      "description": "To have adequate food and water",
+      "examples": ["Nutritious meals", "Clean water", "Regular eating"],
+      "reflectionQuestions": ["How well am I nourishing my body?", "What foods help me thrive?"],
+      "relatedFeelingsMet": ["content", "energized", "peaceful"],
+      "relatedFeelingsUnmet": ["anxious", "irritated", "exhausted"]
+    },
+    {
+      "id": "rest",
+      "label": "Rest",
+      "category": "physical",
+      "description": "To have adequate sleep and relaxation",
+      "examples": ["Good sleep", "Downtime", "Breaks from activity"],
+      "reflectionQuestions": ["Am I getting enough rest?", "What helps me truly relax?"],
+      "relatedFeelingsMet": ["refreshed", "peaceful", "content"],
+      "relatedFeelingsUnmet": ["exhausted", "overwhelmed", "irritated"]
+    },
+    {
+      "id": "shelter",
+      "label": "Shelter",
+      "category": "physical",
+      "description": "To have protection from elements and a place to live",
+      "examples": ["A home", "Warmth", "Privacy"],
+      "reflectionQuestions": ["How does my living space support me?", "What would make my home more nurturing?"],
+      "relatedFeelingsMet": ["peaceful", "content", "grateful"],
+      "relatedFeelingsUnmet": ["anxious", "scared", "overwhelmed"]
+    },
+    {
+      "id": "touch",
+      "label": "Touch",
+      "category": "physical",
+      "description": "To have physical contact with others",
+      "examples": ["Hugs", "Handshakes", "Physical affection"],
+      "reflectionQuestions": ["How important is physical touch to me?", "How do I get my touch needs met?"],
+      "relatedFeelingsMet": ["connected", "peaceful", "loving"],
+      "relatedFeelingsUnmet": ["lonely", "disconnected", "sad"]
+    },
+    {
+      "id": "movement",
+      "label": "Movement",
+      "category": "physical",
+      "description": "To move our bodies and exercise",
+      "examples": ["Exercise", "Walking", "Dancing", "Stretching"],
+      "reflectionQuestions": ["What kind of movement brings me joy?", "How does my body feel when I move?"],
+      "relatedFeelingsMet": ["energized", "refreshed", "joyful"],
+      "relatedFeelingsUnmet": ["restless", "exhausted", "irritated"]
+    },
+    {
+      "id": "authenticity",
+      "label": "Authenticity",
+      "category": "honesty",
+      "description": "To be true to ourselves",
+      "examples": ["Speaking your truth", "Living according to your values", "Being genuine"],
+      "reflectionQuestions": ["Where am I most authentic?", "What parts of myself do I hide?"],
+      "relatedFeelingsMet": ["peaceful", "confident", "content"],
+      "relatedFeelingsUnmet": ["disconnected", "anxious", "sad"]
+    },
+    {
+      "id": "integrity",
+      "label": "Integrity",
+      "category": "honesty",
+      "description": "To act in alignment with our values",
+      "examples": ["Keeping promises", "Walking your talk", "Making ethical choices"],
+      "reflectionQuestions": ["Am I living in alignment with my values?", "Where might I be out of integrity?"],
+      "relatedFeelingsMet": ["proud", "peaceful", "confident"],
+      "relatedFeelingsUnmet": ["guilty", "ashamed", "anxious"]
+    },
+    {
+      "id": "presence",
+      "label": "Presence",
+      "category": "honesty",
+      "description": "To be fully present and attentive",
+      "examples": ["Undivided attention", "Being in the moment", "Deep listening"],
+      "reflectionQuestions": ["How present am I in my daily life?", "What pulls me out of presence?"],
+      "relatedFeelingsMet": ["peaceful", "connected", "content"],
+      "relatedFeelingsUnmet": ["disconnected", "anxious", "restless"]
+    },
+    {
+      "id": "joy",
+      "label": "Joy",
+      "category": "play",
+      "description": "To experience happiness and delight",
+      "examples": ["Laughter", "Fun activities", "Moments of delight"],
+      "reflectionQuestions": ["What brings me joy?", "How often do I allow myself to feel joy?"],
+      "relatedFeelingsMet": ["joyful", "playful", "content"],
+      "relatedFeelingsUnmet": ["sad", "disconnected", "restless"]
+    },
+    {
+      "id": "humor",
+      "label": "Humor",
+      "category": "play",
+      "description": "To laugh and experience lightness",
+      "examples": ["Jokes", "Playful banter", "Finding the funny side"],
+      "reflectionQuestions": ["What makes me laugh?", "How much humor is in my daily life?"],
+      "relatedFeelingsMet": ["joyful", "playful", "connected"],
+      "relatedFeelingsUnmet": ["sad", "disconnected"]
+    },
+    {
+      "id": "play_need",
+      "label": "Play",
+      "category": "play",
+      "description": "To engage in activities for their own sake",
+      "examples": ["Games", "Sports", "Creative play", "Goofing around"],
+      "reflectionQuestions": ["What does play look like for me?", "Am I getting enough play in my life?"],
+      "relatedFeelingsMet": ["playful", "joyful", "refreshed"],
+      "relatedFeelingsUnmet": ["restless", "sad", "exhausted"]
+    },
+    {
+      "id": "beauty",
+      "label": "Beauty",
+      "category": "peace",
+      "description": "To experience and appreciate aesthetic pleasure",
+      "examples": ["Art", "Nature", "Music", "Design"],
+      "reflectionQuestions": ["What beauty nourishes me?", "How can I bring more beauty into my life?"],
+      "relatedFeelingsMet": ["peaceful", "inspired", "content"],
+      "relatedFeelingsUnmet": ["sad", "disconnected"]
+    },
+    {
+      "id": "ease",
+      "label": "Ease",
+      "category": "peace",
+      "description": "To have things flow without struggle",
+      "examples": ["Simple processes", "Low stress", "Things working smoothly"],
+      "reflectionQuestions": ["Where is there ease in my life?", "What creates unnecessary struggle?"],
+      "relatedFeelingsMet": ["peaceful", "content", "relieved"],
+      "relatedFeelingsUnmet": ["frustrated", "overwhelmed", "exhausted"]
+    },
+    {
+      "id": "harmony",
+      "label": "Harmony",
+      "category": "peace",
+      "description": "To have balance and peaceful coexistence",
+      "examples": ["Balanced relationships", "Agreement", "Things working together"],
+      "reflectionQuestions": ["Where is there harmony in my life?", "What disrupts my sense of harmony?"],
+      "relatedFeelingsMet": ["peaceful", "content", "connected"],
+      "relatedFeelingsUnmet": ["anxious", "sad", "frustrated"]
+    },
+    {
+      "id": "order",
+      "label": "Order",
+      "category": "peace",
+      "description": "To have structure and organization",
+      "examples": ["Clean space", "Clear plans", "Organized systems"],
+      "reflectionQuestions": ["How important is order to me?", "What level of order do I need?"],
+      "relatedFeelingsMet": ["peaceful", "content", "confident"],
+      "relatedFeelingsUnmet": ["overwhelmed", "anxious", "confused"]
+    },
+    {
+      "id": "space",
+      "label": "Space",
+      "category": "peace",
+      "description": "To have room, physical and emotional",
+      "examples": ["Personal space", "Time alone", "Room to breathe"],
+      "reflectionQuestions": ["Am I getting enough space?", "How do I create space for myself?"],
+      "relatedFeelingsMet": ["peaceful", "relieved", "content"],
+      "relatedFeelingsUnmet": ["overwhelmed", "irritated", "anxious"]
+    },
+    {
+      "id": "autonomy_need",
+      "label": "Autonomy",
+      "category": "autonomy",
+      "description": "To have freedom to choose and act",
+      "examples": ["Making your own decisions", "Setting your own schedule", "Living by your values"],
+      "reflectionQuestions": ["Where do I have autonomy?", "Where do I feel constrained?"],
+      "relatedFeelingsMet": ["confident", "peaceful", "content"],
+      "relatedFeelingsUnmet": ["frustrated", "resentful", "angry"]
+    },
+    {
+      "id": "choice",
+      "label": "Choice",
+      "category": "autonomy",
+      "description": "To have options and the power to select among them",
+      "examples": ["Having alternatives", "Being able to say no", "Picking your path"],
+      "reflectionQuestions": ["Do I feel I have choices in my life?", "Where could I create more choice?"],
+      "relatedFeelingsMet": ["confident", "peaceful", "hopeful"],
+      "relatedFeelingsUnmet": ["frustrated", "overwhelmed", "resentful"]
+    },
+    {
+      "id": "freedom",
+      "label": "Freedom",
+      "category": "autonomy",
+      "description": "To be unrestricted in action and thought",
+      "examples": ["Freedom of expression", "Freedom of movement", "Freedom to be yourself"],
+      "reflectionQuestions": ["Where do I feel most free?", "What limits my sense of freedom?"],
+      "relatedFeelingsMet": ["joyful", "peaceful", "excited"],
+      "relatedFeelingsUnmet": ["frustrated", "resentful", "sad"]
+    },
+    {
+      "id": "independence",
+      "label": "Independence",
+      "category": "autonomy",
+      "description": "To be self-reliant and not dependent on others",
+      "examples": ["Taking care of yourself", "Making your own way", "Self-sufficiency"],
+      "reflectionQuestions": ["How independent do I want to be?", "Where do I need more support?"],
+      "relatedFeelingsMet": ["confident", "proud", "peaceful"],
+      "relatedFeelingsUnmet": ["frustrated", "anxious", "overwhelmed"]
+    },
+    {
+      "id": "contribution",
+      "label": "Contribution",
+      "category": "meaning",
+      "description": "To give and make a difference",
+      "examples": ["Helping others", "Adding value", "Making an impact"],
+      "reflectionQuestions": ["How am I contributing to others?", "What contribution feels most meaningful?"],
+      "relatedFeelingsMet": ["proud", "joyful", "content"],
+      "relatedFeelingsUnmet": ["sad", "disconnected", "restless"]
+    },
+    {
+      "id": "creativity",
+      "label": "Creativity",
+      "category": "meaning",
+      "description": "To express ourselves and bring new things into being",
+      "examples": ["Making art", "Problem solving", "New ideas", "Building things"],
+      "reflectionQuestions": ["How do I express my creativity?", "What would I like to create?"],
+      "relatedFeelingsMet": ["inspired", "joyful", "excited"],
+      "relatedFeelingsUnmet": ["restless", "frustrated", "sad"]
+    },
+    {
+      "id": "growth",
+      "label": "Growth",
+      "category": "meaning",
+      "description": "To develop, learn, and improve",
+      "examples": ["Learning new skills", "Personal development", "Evolving as a person"],
+      "reflectionQuestions": ["How am I growing?", "What areas would I like to develop?"],
+      "relatedFeelingsMet": ["excited", "hopeful", "proud"],
+      "relatedFeelingsUnmet": ["frustrated", "restless", "sad"]
+    },
+    {
+      "id": "understanding",
+      "label": "Understanding",
+      "category": "meaning",
+      "description": "To comprehend and make sense of things",
+      "examples": ["Learning how things work", "Getting clarity", "Making connections"],
+      "reflectionQuestions": ["What do I want to understand better?", "How do I best learn?"],
+      "relatedFeelingsMet": ["peaceful", "curious", "confident"],
+      "relatedFeelingsUnmet": ["confused", "frustrated", "anxious"]
+    },
+    {
+      "id": "purpose",
+      "label": "Purpose",
+      "category": "meaning",
+      "description": "To have direction and meaning in life",
+      "examples": ["Meaningful work", "A sense of mission", "Knowing why you're here"],
+      "reflectionQuestions": ["What gives my life purpose?", "What would make my life more meaningful?"],
+      "relatedFeelingsMet": ["inspired", "content", "peaceful"],
+      "relatedFeelingsUnmet": ["confused", "sad", "restless"]
+    },
+    {
+      "id": "competence",
+      "label": "Competence",
+      "category": "meaning",
+      "description": "To feel capable and effective",
+      "examples": ["Being good at something", "Mastery", "Skillfulness"],
+      "reflectionQuestions": ["Where do I feel most competent?", "What skills would I like to develop?"],
+      "relatedFeelingsMet": ["confident", "proud", "content"],
+      "relatedFeelingsUnmet": ["frustrated", "embarrassed", "anxious"]
+    },
+    {
+      "id": "challenge",
+      "label": "Challenge",
+      "category": "meaning",
+      "description": "To be stretched and tested",
+      "examples": ["Difficult goals", "Growth opportunities", "Pushing limits"],
+      "reflectionQuestions": ["Am I being challenged enough?", "What challenges would help me grow?"],
+      "relatedFeelingsMet": ["excited", "inspired", "proud"],
+      "relatedFeelingsUnmet": ["restless", "frustrated"]
+    }
+  ]
+}

@@ -1,0 +1,281 @@
+{
+  "categories": [
+    {
+      "id": "workplace",
+      "label": "Workplace",
+      "description": "Professional relationships and work conflicts",
+      "icon": "briefcase",
+      "color": "blue"
+    },
+    {
+      "id": "family",
+      "label": "Family",
+      "description": "Family dynamics and parent-child relationships",
+      "icon": "home",
+      "color": "rose"
+    },
+    {
+      "id": "romantic",
+      "label": "Romantic",
+      "description": "Intimate partner relationships",
+      "icon": "heart",
+      "color": "pink"
+    },
+    {
+      "id": "friendship",
+      "label": "Friendship",
+      "description": "Platonic relationships and social connections",
+      "icon": "users",
+      "color": "purple"
+    },
+    {
+      "id": "self",
+      "label": "Self",
+      "description": "Inner dialogue and self-compassion",
+      "icon": "sparkles",
+      "color": "amber"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "deadline-conflict",
+      "title": "Missed Deadline Tension",
+      "category": "workplace",
+      "difficulty": "beginner",
+      "description": "A colleague missed a deadline that affects your work. You're frustrated but want to address it constructively.",
+      "context": "Your colleague was supposed to deliver a report you need by Friday. It's now Monday and you still haven't received it. This has happened before.",
+      "suggestedFeelings": ["frustrated", "anxious", "disappointed"],
+      "suggestedNeeds": ["reliability", "consideration", "ease"],
+      "practiceGoals": [
+        "Express your feelings without blame",
+        "Identify the underlying needs",
+        "Make a clear, doable request"
+      ],
+      "sampleOpening": "Hey, I wanted to talk about the report that was due Friday..."
+    },
+    {
+      "id": "feedback-received",
+      "title": "Receiving Critical Feedback",
+      "category": "workplace",
+      "difficulty": "intermediate",
+      "description": "Your manager gave you feedback that felt harsh. Practice processing it with self-empathy.",
+      "context": "In your performance review, your manager said your communication style can come across as abrupt. You feel hurt and defensive.",
+      "suggestedFeelings": ["hurt", "embarrassed", "defensive"],
+      "suggestedNeeds": ["acceptance", "appreciation", "competence"],
+      "practiceGoals": [
+        "Give yourself empathy first",
+        "Separate observation from evaluation",
+        "Find the valid request underneath the criticism"
+      ],
+      "sampleOpening": "I just got out of my review and I'm feeling pretty shaken..."
+    },
+    {
+      "id": "workload-overwhelm",
+      "title": "Overwhelming Workload",
+      "category": "workplace",
+      "difficulty": "beginner",
+      "description": "You're taking on too much and need to set boundaries with your team.",
+      "context": "Your plate is overflowing with projects and a colleague just asked you to take on another task. You want to say no but feel guilty.",
+      "suggestedFeelings": ["overwhelmed", "anxious", "guilty"],
+      "suggestedNeeds": ["ease", "balance", "support"],
+      "practiceGoals": [
+        "Acknowledge your limits without judgment",
+        "Express your needs clearly",
+        "Make a request that works for everyone"
+      ],
+      "sampleOpening": "I appreciate you thinking of me for this project, but..."
+    },
+    {
+      "id": "parent-teenager",
+      "title": "Curfew Conversation",
+      "category": "family",
+      "difficulty": "intermediate",
+      "description": "Your teenager wants a later curfew. Practice empathetic dialogue while honoring your own needs.",
+      "context": "Your 16-year-old wants to stay out until midnight on weekends. You're worried about safety but also want to respect their growing independence.",
+      "suggestedFeelings": ["worried", "torn", "protective"],
+      "suggestedNeeds": ["safety", "trust", "connection"],
+      "practiceGoals": [
+        "Acknowledge your teen's needs",
+        "Express your concerns without lecturing",
+        "Find a solution that honors both perspectives"
+      ],
+      "sampleOpening": "I hear that you want more freedom on weekends..."
+    },
+    {
+      "id": "sibling-money",
+      "title": "Money Borrowed, Not Returned",
+      "category": "family",
+      "difficulty": "intermediate",
+      "description": "A sibling borrowed money months ago and hasn't mentioned repaying it. You want to address it without damaging the relationship.",
+      "context": "You lent your sister $500 six months ago when she was in a tough spot. She hasn't brought it up since and seems to have forgotten.",
+      "suggestedFeelings": ["uncomfortable", "resentful", "hesitant"],
+      "suggestedNeeds": ["fairness", "trust", "respect"],
+      "practiceGoals": [
+        "Bring up the topic without accusation",
+        "Stay connected while being honest",
+        "Make a specific request"
+      ],
+      "sampleOpening": "I've been meaning to talk to you about something that's been on my mind..."
+    },
+    {
+      "id": "aging-parent",
+      "title": "Aging Parent Care",
+      "category": "family",
+      "difficulty": "advanced",
+      "description": "You're concerned about an aging parent's ability to live independently. Practice bringing up a difficult topic.",
+      "context": "Your 80-year-old father had a minor fall last week. You're worried about his safety living alone but know he values his independence fiercely.",
+      "suggestedFeelings": ["worried", "scared", "torn"],
+      "suggestedNeeds": ["safety", "care", "connection"],
+      "practiceGoals": [
+        "Lead with empathy for their experience",
+        "Share your concerns from a place of care",
+        "Explore options together"
+      ],
+      "sampleOpening": "Dad, I've been thinking about you a lot since last week..."
+    },
+    {
+      "id": "partner-household",
+      "title": "Uneven Household Work",
+      "category": "romantic",
+      "difficulty": "beginner",
+      "description": "You feel like you're doing more than your fair share of housework. Address it without triggering defensiveness.",
+      "context": "You've been doing most of the cooking and cleaning for weeks. Your partner doesn't seem to notice, and you're getting resentful.",
+      "suggestedFeelings": ["resentful", "tired", "unappreciated"],
+      "suggestedNeeds": ["fairness", "partnership", "appreciation"],
+      "practiceGoals": [
+        "Describe the situation objectively",
+        "Share your experience without blame",
+        "Collaborate on a solution"
+      ],
+      "sampleOpening": "I'd like to talk about how we're dividing things at home..."
+    },
+    {
+      "id": "partner-quality-time",
+      "title": "Disconnection in Relationship",
+      "category": "romantic",
+      "difficulty": "intermediate",
+      "description": "You've been feeling distant from your partner lately and want to reconnect.",
+      "context": "Between work and life stress, you and your partner have been like ships passing in the night. You miss the closeness you used to have.",
+      "suggestedFeelings": ["lonely", "disconnected", "wistful"],
+      "suggestedNeeds": ["intimacy", "connection", "companionship"],
+      "practiceGoals": [
+        "Express vulnerability without demand",
+        "Invite rather than criticize",
+        "Propose specific ways to reconnect"
+      ],
+      "sampleOpening": "I've been missing you lately, even though we live together..."
+    },
+    {
+      "id": "partner-major-decision",
+      "title": "Disagreement on Big Decision",
+      "category": "romantic",
+      "difficulty": "advanced",
+      "description": "You and your partner disagree on a major life decision. Practice staying connected through conflict.",
+      "context": "Your partner wants to move to a new city for a job opportunity. You're happy where you are and don't want to leave your community.",
+      "suggestedFeelings": ["scared", "torn", "anxious"],
+      "suggestedNeeds": ["stability", "belonging", "consideration"],
+      "practiceGoals": [
+        "Truly hear your partner's perspective",
+        "Share your own needs without ultimatums",
+        "Explore creative solutions"
+      ],
+      "sampleOpening": "I want to really understand what this opportunity means to you..."
+    },
+    {
+      "id": "friend-cancel",
+      "title": "Friend Who Always Cancels",
+      "category": "friendship",
+      "difficulty": "beginner",
+      "description": "A friend frequently cancels plans last minute. Express how this affects you.",
+      "context": "For the third time this month, your friend cancelled plans the day of. You're starting to question if they value the friendship.",
+      "suggestedFeelings": ["disappointed", "hurt", "confused"],
+      "suggestedNeeds": ["reliability", "consideration", "connection"],
+      "practiceGoals": [
+        "Share impact without attacking character",
+        "Stay curious about their situation",
+        "Make a request that could work for both"
+      ],
+      "sampleOpening": "I was really looking forward to seeing you yesterday..."
+    },
+    {
+      "id": "friend-boundary",
+      "title": "Setting a Boundary",
+      "category": "friendship",
+      "difficulty": "intermediate",
+      "description": "A friend keeps venting to you and it's becoming draining. Practice setting a compassionate boundary.",
+      "context": "Your friend calls you almost daily to complain about the same issues but doesn't take any action. You want to support them but you're exhausted.",
+      "suggestedFeelings": ["exhausted", "frustrated", "guilty"],
+      "suggestedNeeds": ["balance", "reciprocity", "ease"],
+      "practiceGoals": [
+        "Acknowledge care for your friend",
+        "Be honest about your own limits",
+        "Propose a different way to connect"
+      ],
+      "sampleOpening": "I care about you and what you're going through, and I also need to share something..."
+    },
+    {
+      "id": "self-criticism",
+      "title": "Inner Critic Spiral",
+      "category": "self",
+      "difficulty": "beginner",
+      "description": "Practice self-empathy when your inner critic is loud.",
+      "context": "You made a mistake at work and your inner voice is harsh: 'You're so stupid. You always mess things up.'",
+      "suggestedFeelings": ["ashamed", "scared", "hurt"],
+      "suggestedNeeds": ["acceptance", "competence", "self-compassion"],
+      "practiceGoals": [
+        "Translate self-judgment into feelings",
+        "Identify the needs behind the criticism",
+        "Offer yourself compassion"
+      ],
+      "sampleOpening": "I can't stop beating myself up about what happened today..."
+    },
+    {
+      "id": "self-procrastination",
+      "title": "Procrastination Pattern",
+      "category": "self",
+      "difficulty": "intermediate",
+      "description": "Explore the needs behind procrastination with self-compassion.",
+      "context": "You've been putting off an important project for weeks. You feel bad about it but can't seem to get started.",
+      "suggestedFeelings": ["anxious", "guilty", "overwhelmed"],
+      "suggestedNeeds": ["competence", "ease", "clarity"],
+      "practiceGoals": [
+        "Understand the protective function",
+        "Connect to underlying needs",
+        "Find strategies that honor those needs"
+      ],
+      "sampleOpening": "I keep telling myself I'll start tomorrow, but tomorrow never comes..."
+    },
+    {
+      "id": "self-big-decision",
+      "title": "Stuck on a Decision",
+      "category": "self",
+      "difficulty": "intermediate",
+      "description": "Practice connecting to your needs when facing a difficult choice.",
+      "context": "You're torn between two good options and can't decide. Both have pros and cons, and you feel paralyzed.",
+      "suggestedFeelings": ["confused", "anxious", "torn"],
+      "suggestedNeeds": ["clarity", "trust", "autonomy"],
+      "practiceGoals": [
+        "Identify all the needs at play",
+        "Honor the wisdom in your indecision",
+        "Find what would help you move forward"
+      ],
+      "sampleOpening": "I've been going back and forth on this decision for weeks..."
+    },
+    {
+      "id": "meeting-interrupt",
+      "title": "Being Interrupted in Meetings",
+      "category": "workplace",
+      "difficulty": "beginner",
+      "description": "A colleague frequently interrupts you in meetings. Address it professionally.",
+      "context": "In team meetings, one colleague consistently talks over you or finishes your sentences. It's affecting your ability to contribute.",
+      "suggestedFeelings": ["frustrated", "dismissed", "annoyed"],
+      "suggestedNeeds": ["respect", "to be heard", "contribution"],
+      "practiceGoals": [
+        "Describe the specific behavior",
+        "Share the impact without accusations",
+        "Request a specific change"
+      ],
+      "sampleOpening": "I've noticed something happening in our meetings that I'd like to discuss..."
+    }
+  ]
+}

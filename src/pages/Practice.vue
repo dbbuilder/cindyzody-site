@@ -138,8 +138,101 @@
         </div>
       </div>
 
+      <!-- Scenarios Tab -->
+      <div v-if="activeTab === 'scenarios'" class="animate-fade-in">
+        <div class="mb-8">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-2xl font-bold">Practice Scenarios</h2>
+              <p class="text-slate-600 mt-1">
+                Choose a real-world scenario to practice with guided NVC support
+              </p>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="flex flex-wrap gap-3 mb-6">
+            <!-- Category filter -->
+            <div class="relative">
+              <select
+                v-model="selectedCategory"
+                class="appearance-none pl-4 pr-10 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              >
+                <option value="all">All Categories</option>
+                <option v-for="cat in scenarioCategories" :key="cat.id" :value="cat.id">
+                  {{ cat.label }}
+                </option>
+              </select>
+              <FunnelIcon class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            <!-- Difficulty filter -->
+            <div class="relative">
+              <select
+                v-model="selectedDifficulty"
+                class="appearance-none pl-4 pr-10 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              >
+                <option value="all">All Levels</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+              <FunnelIcon class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            <!-- Results count -->
+            <span class="text-sm text-slate-500 py-2">
+              {{ filteredScenarios.length }} scenarios
+            </span>
+          </div>
+
+          <!-- Scenario grid -->
+          <div class="grid md:grid-cols-2 gap-4">
+            <ScenarioCard
+              v-for="scenario in filteredScenarios"
+              :key="scenario.id"
+              :scenario="scenario"
+              :selected="selectedScenario?.id === scenario.id"
+              @select="selectScenario"
+              @start="startScenarioSession"
+            />
+          </div>
+
+          <!-- Empty state -->
+          <div v-if="filteredScenarios.length === 0" class="text-center py-12">
+            <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <BookOpenIcon class="w-6 h-6 text-slate-400" />
+            </div>
+            <p class="text-slate-600">No scenarios match your filters.</p>
+            <button
+              @click="selectedCategory = 'all'; selectedDifficulty = 'all'"
+              class="mt-2 text-brand-600 hover:text-brand-700 text-sm font-medium"
+            >
+              Clear filters
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- AI Practice Tab -->
       <div v-if="activeTab === 'practice'" class="animate-fade-in">
+        <!-- Scenario context -->
+        <div v-if="selectedScenario" class="bg-blue-50 rounded-xl p-4 mb-6 border border-blue-100">
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-sm font-medium text-blue-700 mb-1">Practicing Scenario</p>
+              <h3 class="font-semibold text-blue-900">{{ selectedScenario.title }}</h3>
+              <p class="text-sm text-blue-700 mt-1">{{ selectedScenario.description }}</p>
+            </div>
+            <button
+              @click="selectedScenario = null"
+              class="text-blue-500 hover:text-blue-700 text-sm"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+
         <!-- Context from selections -->
         <div v-if="selectedFeelings.length > 0 || selectedNeeds.length > 0" class="bg-slate-50 rounded-xl p-4 mb-6 border">
           <p class="text-sm text-slate-600 mb-2">Your current exploration:</p>
@@ -355,11 +448,15 @@ import {
   SparklesIcon,
   CheckCircleIcon,
   ChartBarIcon,
-  ClockIcon
+  ClockIcon,
+  BookOpenIcon,
+  FunnelIcon
 } from '@heroicons/vue/24/outline'
 import { EmotionWheel, NeedsWheel, ChatInterface } from '../components/lib'
+import ScenarioCard from '../components/ScenarioCard.vue'
 import { useAI, useMockAI } from '../composables/useAI'
 import { trackEvent } from '../utils/analytics'
+import scenariosData from '../data/scenarios.json'
 
 // AI service - use mock in development if no API configured
 const useMock = import.meta.env.DEV && !import.meta.env.VITE_API_URL
@@ -369,6 +466,7 @@ const ai = useMock ? useMockAI() : useAI()
 const tabs = [
   { id: 'feelings', label: 'Feelings', icon: HeartIcon },
   { id: 'needs', label: 'Needs', icon: StarIcon },
+  { id: 'scenarios', label: 'Scenarios', icon: BookOpenIcon },
   { id: 'practice', label: 'AI Practice', icon: SparklesIcon }
 ]
 const activeTab = ref('feelings')
@@ -376,6 +474,22 @@ const activeTab = ref('feelings')
 // Selection state
 const selectedFeelings = ref([])
 const selectedNeeds = ref([])
+
+// Scenario state
+const scenarios = ref(scenariosData.scenarios)
+const scenarioCategories = ref(scenariosData.categories)
+const selectedCategory = ref('all')
+const selectedDifficulty = ref('all')
+const selectedScenario = ref(null)
+
+// Filtered scenarios
+const filteredScenarios = computed(() => {
+  return scenarios.value.filter(s => {
+    const categoryMatch = selectedCategory.value === 'all' || s.category === selectedCategory.value
+    const difficultyMatch = selectedDifficulty.value === 'all' || s.difficulty === selectedDifficulty.value
+    return categoryMatch && difficultyMatch
+  })
+})
 
 // AI session state
 const sessionActive = ref(false)
@@ -435,6 +549,54 @@ function handleNeedSuggestion(need) {
   const needData = { id: need, label: need, category: 'connection' }
   if (!selectedNeeds.value.find(n => n.label.toLowerCase() === need.toLowerCase())) {
     selectedNeeds.value.push(needData)
+  }
+}
+
+// Start session from scenario
+async function startScenarioSession(scenario) {
+  selectedScenario.value = scenario
+
+  // Pre-populate feelings and needs from scenario
+  selectedFeelings.value = (scenario.suggestedFeelings || []).map(f => ({
+    id: f,
+    label: f.charAt(0).toUpperCase() + f.slice(1),
+    category: 'needs_unmet'
+  }))
+  selectedNeeds.value = (scenario.suggestedNeeds || []).map(n => ({
+    id: n,
+    label: n.charAt(0).toUpperCase() + n.slice(1),
+    category: 'connection'
+  }))
+
+  trackEvent('nvc_session_start', {
+    source: 'scenario',
+    scenario_id: scenario.id,
+    scenario_category: scenario.category,
+    difficulty: scenario.difficulty,
+    mode: useMock ? 'mock' : 'live'
+  })
+
+  try {
+    await ai.createSession({
+      type: 'scenario',
+      scenarioId: scenario.id,
+      feelings: selectedFeelings.value,
+      needs: selectedNeeds.value,
+      scenario: scenario
+    })
+    sessionActive.value = true
+    activeTab.value = 'practice'
+  } catch (err) {
+    console.error('Failed to start scenario session:', err)
+  }
+}
+
+// Select a scenario (toggle details)
+function selectScenario(scenario) {
+  if (selectedScenario.value?.id === scenario.id) {
+    selectedScenario.value = null
+  } else {
+    selectedScenario.value = scenario
   }
 }
 </script>

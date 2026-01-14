@@ -1,0 +1,612 @@
+{
+  "categories": {
+    "needs_met": {
+      "label": "When Needs Are Met",
+      "description": "Feelings we experience when our needs are being fulfilled"
+    },
+    "needs_unmet": {
+      "label": "When Needs Are Unmet",
+      "description": "Feelings we experience when our needs are not being fulfilled"
+    }
+  },
+  "feelings": [
+    {
+      "id": "peaceful",
+      "label": "Peaceful",
+      "category": "needs_met",
+      "intensity": "medium",
+      "bodySensations": ["relaxed muscles", "slow breathing", "warm chest"],
+      "relatedNeeds": ["harmony", "ease", "rest"],
+      "synonyms": ["calm", "serene", "tranquil", "centered"],
+      "description": "A sense of inner stillness and harmony"
+    },
+    {
+      "id": "joyful",
+      "label": "Joyful",
+      "category": "needs_met",
+      "intensity": "high",
+      "bodySensations": ["lightness", "energy", "smiling", "warmth"],
+      "relatedNeeds": ["celebration", "play", "connection"],
+      "synonyms": ["happy", "delighted", "elated", "glad"],
+      "description": "Deep happiness and delight"
+    },
+    {
+      "id": "grateful",
+      "label": "Grateful",
+      "category": "needs_met",
+      "intensity": "medium",
+      "bodySensations": ["warm heart", "openness", "soft eyes"],
+      "relatedNeeds": ["appreciation", "connection", "abundance"],
+      "synonyms": ["thankful", "appreciative", "touched"],
+      "description": "Recognition and appreciation for what we have received"
+    },
+    {
+      "id": "hopeful",
+      "label": "Hopeful",
+      "category": "needs_met",
+      "intensity": "medium",
+      "bodySensations": ["lifted chest", "forward energy", "brightened eyes"],
+      "relatedNeeds": ["meaning", "trust", "possibility"],
+      "synonyms": ["optimistic", "expectant", "encouraged"],
+      "description": "Anticipation that needs can be met"
+    },
+    {
+      "id": "confident",
+      "label": "Confident",
+      "category": "needs_met",
+      "intensity": "medium",
+      "bodySensations": ["grounded", "steady breath", "upright posture"],
+      "relatedNeeds": ["competence", "self-trust", "autonomy"],
+      "synonyms": ["assured", "self-assured", "secure"],
+      "description": "Trust in one's own abilities and judgment"
+    },
+    {
+      "id": "excited",
+      "label": "Excited",
+      "category": "needs_met",
+      "intensity": "high",
+      "bodySensations": ["buzzing energy", "rapid heartbeat", "alertness"],
+      "relatedNeeds": ["stimulation", "adventure", "growth"],
+      "synonyms": ["enthusiastic", "eager", "thrilled", "energized"],
+      "description": "Heightened anticipation and engagement"
+    },
+    {
+      "id": "inspired",
+      "label": "Inspired",
+      "category": "needs_met",
+      "intensity": "high",
+      "bodySensations": ["expanded chest", "clarity", "motivation"],
+      "relatedNeeds": ["meaning", "creativity", "growth"],
+      "synonyms": ["moved", "motivated", "uplifted"],
+      "description": "Feeling called to create or act on something meaningful"
+    },
+    {
+      "id": "loving",
+      "label": "Loving",
+      "category": "needs_met",
+      "intensity": "high",
+      "bodySensations": ["warm heart", "soft face", "openness"],
+      "relatedNeeds": ["connection", "intimacy", "care"],
+      "synonyms": ["affectionate", "tender", "warm"],
+      "description": "Deep care and affection for others"
+    },
+    {
+      "id": "content",
+      "label": "Content",
+      "category": "needs_met",
+      "intensity": "low",
+      "bodySensations": ["relaxed", "settled", "easy breathing"],
+      "relatedNeeds": ["ease", "acceptance", "sufficiency"],
+      "synonyms": ["satisfied", "fulfilled", "at ease"],
+      "description": "A quiet sense of well-being and sufficiency"
+    },
+    {
+      "id": "calm",
+      "label": "Calm",
+      "category": "needs_met",
+      "intensity": "low",
+      "bodySensations": ["steady breath", "soft muscles", "quiet mind"],
+      "relatedNeeds": ["peace", "safety", "ease"],
+      "synonyms": ["tranquil", "relaxed", "unruffled"],
+      "description": "A gentle sense of ease and steadiness"
+    },
+    {
+      "id": "comfortable",
+      "label": "Comfortable",
+      "category": "needs_met",
+      "intensity": "low",
+      "bodySensations": ["at ease", "relaxed posture", "warmth"],
+      "relatedNeeds": ["safety", "ease", "acceptance"],
+      "synonyms": ["cozy", "at home", "snug"],
+      "description": "Feeling safe and at ease in your situation"
+    },
+    {
+      "id": "pleased",
+      "label": "Pleased",
+      "category": "needs_met",
+      "intensity": "low",
+      "bodySensations": ["soft smile", "lightness", "warmth"],
+      "relatedNeeds": ["appreciation", "enjoyment", "satisfaction"],
+      "synonyms": ["glad", "happy", "delighted"],
+      "description": "A gentle satisfaction with how things are"
+    },
+    {
+      "id": "warm",
+      "label": "Warm",
+      "category": "needs_met",
+      "intensity": "low",
+      "bodySensations": ["warmth in chest", "soft eyes", "openness"],
+      "relatedNeeds": ["connection", "love", "care"],
+      "synonyms": ["tender", "soft", "friendly"],
+      "description": "A gentle feeling of affection and openness"
+    },
+    {
+      "id": "mellow",
+      "label": "Mellow",
+      "category": "needs_met",
+      "intensity": "low",
+      "bodySensations": ["loose muscles", "slow breath", "ease"],
+      "relatedNeeds": ["rest", "ease", "peace"],
+      "synonyms": ["relaxed", "laid-back", "easygoing"],
+      "description": "A soft, unhurried sense of ease"
+    },
+    {
+      "id": "touched",
+      "label": "Touched",
+      "category": "needs_met",
+      "intensity": "low",
+      "bodySensations": ["warmth", "slight swelling in heart", "soft eyes"],
+      "relatedNeeds": ["connection", "appreciation", "care"],
+      "synonyms": ["moved", "stirred"],
+      "description": "Gently moved by kindness or beauty"
+    },
+    {
+      "id": "relieved",
+      "label": "Relieved",
+      "category": "needs_met",
+      "intensity": "medium",
+      "bodySensations": ["tension release", "sighing", "loosening"],
+      "relatedNeeds": ["safety", "ease", "resolution"],
+      "synonyms": ["eased", "unburdened"],
+      "description": "Release of tension or worry"
+    },
+    {
+      "id": "curious",
+      "label": "Curious",
+      "category": "needs_met",
+      "intensity": "medium",
+      "bodySensations": ["alert", "leaning forward", "wide eyes"],
+      "relatedNeeds": ["understanding", "learning", "stimulation"],
+      "synonyms": ["interested", "intrigued", "fascinated"],
+      "description": "Engaged interest in learning or discovering"
+    },
+    {
+      "id": "playful",
+      "label": "Playful",
+      "category": "needs_met",
+      "intensity": "medium",
+      "bodySensations": ["lightness", "energy", "spontaneity"],
+      "relatedNeeds": ["play", "joy", "freedom"],
+      "synonyms": ["fun", "lighthearted", "silly"],
+      "description": "Light-hearted engagement and spontaneity"
+    },
+    {
+      "id": "connected",
+      "label": "Connected",
+      "category": "needs_met",
+      "intensity": "medium",
+      "bodySensations": ["warmth", "openness", "presence"],
+      "relatedNeeds": ["belonging", "intimacy", "understanding"],
+      "synonyms": ["close", "bonded", "in touch"],
+      "description": "Sense of meaningful relationship with others"
+    },
+    {
+      "id": "proud",
+      "label": "Proud",
+      "category": "needs_met",
+      "intensity": "medium",
+      "bodySensations": ["expanded chest", "lifted chin", "warmth"],
+      "relatedNeeds": ["contribution", "competence", "recognition"],
+      "synonyms": ["accomplished", "fulfilled"],
+      "description": "Satisfaction in achievement or contribution"
+    },
+    {
+      "id": "refreshed",
+      "label": "Refreshed",
+      "category": "needs_met",
+      "intensity": "medium",
+      "bodySensations": ["energy", "clarity", "lightness"],
+      "relatedNeeds": ["rest", "renewal", "vitality"],
+      "synonyms": ["renewed", "restored", "rejuvenated"],
+      "description": "Renewed energy after rest or change"
+    },
+    {
+      "id": "angry",
+      "label": "Angry",
+      "category": "needs_unmet",
+      "intensity": "high",
+      "bodySensations": ["heat", "tension", "clenched jaw", "tight chest"],
+      "relatedNeeds": ["respect", "fairness", "autonomy", "consideration"],
+      "synonyms": ["furious", "enraged", "mad", "irate"],
+      "description": "Strong response to perceived violation of needs"
+    },
+    {
+      "id": "frustrated",
+      "label": "Frustrated",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["tension", "agitation", "blocked energy"],
+      "relatedNeeds": ["ease", "progress", "effectiveness"],
+      "synonyms": ["exasperated", "annoyed", "irritated"],
+      "description": "Blocked from meeting needs despite effort"
+    },
+    {
+      "id": "anxious",
+      "label": "Anxious",
+      "category": "needs_unmet",
+      "intensity": "high",
+      "bodySensations": ["racing heart", "shallow breath", "stomach tension"],
+      "relatedNeeds": ["safety", "predictability", "reassurance"],
+      "synonyms": ["worried", "nervous", "uneasy", "apprehensive"],
+      "description": "Fearful anticipation about future needs"
+    },
+    {
+      "id": "sad",
+      "label": "Sad",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["heaviness", "tears", "low energy", "tight throat"],
+      "relatedNeeds": ["connection", "love", "understanding", "comfort"],
+      "synonyms": ["sorrowful", "unhappy", "blue", "down"],
+      "description": "Response to loss or unmet needs for connection"
+    },
+    {
+      "id": "lonely",
+      "label": "Lonely",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["emptiness", "aching", "cold"],
+      "relatedNeeds": ["connection", "belonging", "intimacy", "companionship"],
+      "synonyms": ["isolated", "alone", "disconnected"],
+      "description": "Longing for connection and belonging"
+    },
+    {
+      "id": "hurt",
+      "label": "Hurt",
+      "category": "needs_unmet",
+      "intensity": "high",
+      "bodySensations": ["chest pain", "tears", "contraction"],
+      "relatedNeeds": ["care", "consideration", "respect", "understanding"],
+      "synonyms": ["wounded", "pained", "injured"],
+      "description": "Emotional pain from unmet needs in relationship"
+    },
+    {
+      "id": "overwhelmed",
+      "label": "Overwhelmed",
+      "category": "needs_unmet",
+      "intensity": "high",
+      "bodySensations": ["pressure", "scattered mind", "exhaustion"],
+      "relatedNeeds": ["ease", "support", "rest", "order"],
+      "synonyms": ["overloaded", "swamped", "flooded"],
+      "description": "More demands than capacity to meet them"
+    },
+    {
+      "id": "disappointed",
+      "label": "Disappointed",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["sinking", "deflation", "heaviness"],
+      "relatedNeeds": ["trust", "hope", "reliability"],
+      "synonyms": ["let down", "discouraged"],
+      "description": "Expectations for needs being met not realized"
+    },
+    {
+      "id": "scared",
+      "label": "Scared",
+      "category": "needs_unmet",
+      "intensity": "high",
+      "bodySensations": ["frozen", "racing heart", "trembling", "alert"],
+      "relatedNeeds": ["safety", "protection", "reassurance"],
+      "synonyms": ["afraid", "frightened", "terrified", "fearful"],
+      "description": "Response to perceived threat to safety"
+    },
+    {
+      "id": "confused",
+      "label": "Confused",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["foggy head", "tension", "uncertainty"],
+      "relatedNeeds": ["clarity", "understanding", "order"],
+      "synonyms": ["puzzled", "perplexed", "bewildered"],
+      "description": "Lack of clarity about situation or direction"
+    },
+    {
+      "id": "exhausted",
+      "label": "Exhausted",
+      "category": "needs_unmet",
+      "intensity": "high",
+      "bodySensations": ["heavy limbs", "drooping", "no energy"],
+      "relatedNeeds": ["rest", "ease", "support", "renewal"],
+      "synonyms": ["depleted", "drained", "worn out"],
+      "description": "Severe depletion of energy and resources"
+    },
+    {
+      "id": "embarrassed",
+      "label": "Embarrassed",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["flushed face", "heat", "desire to hide"],
+      "relatedNeeds": ["acceptance", "belonging", "respect"],
+      "synonyms": ["ashamed", "self-conscious", "mortified"],
+      "description": "Discomfort about being seen unfavorably"
+    },
+    {
+      "id": "resentful",
+      "label": "Resentful",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["tightness", "bitterness", "hardness"],
+      "relatedNeeds": ["fairness", "consideration", "respect", "acknowledgment"],
+      "synonyms": ["bitter", "indignant"],
+      "description": "Lingering anger about past unmet needs"
+    },
+    {
+      "id": "hopeless",
+      "label": "Hopeless",
+      "category": "needs_unmet",
+      "intensity": "high",
+      "bodySensations": ["heaviness", "emptiness", "collapse"],
+      "relatedNeeds": ["hope", "meaning", "support", "possibility"],
+      "synonyms": ["despairing", "defeated"],
+      "description": "Loss of belief that needs can be met"
+    },
+    {
+      "id": "jealous",
+      "label": "Jealous",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["tightness", "heat", "agitation"],
+      "relatedNeeds": ["security", "connection", "inclusion", "reassurance"],
+      "synonyms": ["envious"],
+      "description": "Fear of losing connection or importance"
+    },
+    {
+      "id": "guilty",
+      "label": "Guilty",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["heaviness", "stomach tension", "contraction"],
+      "relatedNeeds": ["integrity", "contribution", "reconciliation"],
+      "synonyms": ["remorseful", "regretful"],
+      "description": "Recognition that our actions didn't align with our values"
+    },
+    {
+      "id": "restless",
+      "label": "Restless",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["fidgety", "unable to settle", "agitated"],
+      "relatedNeeds": ["stimulation", "movement", "purpose"],
+      "synonyms": ["antsy", "agitated", "unsettled"],
+      "description": "Difficulty being still, need for movement or change"
+    },
+    {
+      "id": "disconnected",
+      "label": "Disconnected",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["numbness", "distance", "fog"],
+      "relatedNeeds": ["connection", "belonging", "presence"],
+      "synonyms": ["detached", "numb", "distant"],
+      "description": "Lacking sense of connection to self or others"
+    },
+    {
+      "id": "irritated",
+      "label": "Irritated",
+      "category": "needs_unmet",
+      "intensity": "low",
+      "bodySensations": ["slight tension", "impatience"],
+      "relatedNeeds": ["consideration", "ease", "respect"],
+      "synonyms": ["annoyed", "bothered", "peeved"],
+      "description": "Mild frustration with circumstances or others"
+    },
+    {
+      "id": "uneasy",
+      "label": "Uneasy",
+      "category": "needs_unmet",
+      "intensity": "low",
+      "bodySensations": ["subtle tension", "slight discomfort", "awareness"],
+      "relatedNeeds": ["safety", "clarity", "reassurance"],
+      "synonyms": ["unsettled", "uncomfortable", "edgy"],
+      "description": "A gentle sense that something isn't quite right"
+    },
+    {
+      "id": "impatient",
+      "label": "Impatient",
+      "category": "needs_unmet",
+      "intensity": "low",
+      "bodySensations": ["restlessness", "urgency", "fidgeting"],
+      "relatedNeeds": ["progress", "efficiency", "ease"],
+      "synonyms": ["eager", "antsy", "hasty"],
+      "description": "Wanting things to move faster"
+    },
+    {
+      "id": "bored",
+      "label": "Bored",
+      "category": "needs_unmet",
+      "intensity": "low",
+      "bodySensations": ["heaviness", "lack of energy", "wandering attention"],
+      "relatedNeeds": ["stimulation", "engagement", "purpose"],
+      "synonyms": ["uninterested", "disengaged", "listless"],
+      "description": "Lacking engagement or interest"
+    },
+    {
+      "id": "uncomfortable",
+      "label": "Uncomfortable",
+      "category": "needs_unmet",
+      "intensity": "low",
+      "bodySensations": ["unease", "wanting to shift", "tension"],
+      "relatedNeeds": ["ease", "safety", "comfort"],
+      "synonyms": ["ill at ease", "awkward"],
+      "description": "A mild sense of not feeling at ease"
+    },
+    {
+      "id": "wistful",
+      "label": "Wistful",
+      "category": "needs_unmet",
+      "intensity": "low",
+      "bodySensations": ["soft ache", "longing", "gentle sadness"],
+      "relatedNeeds": ["connection", "meaning", "belonging"],
+      "synonyms": ["yearning", "nostalgic", "pensive"],
+      "description": "Gentle longing for something missing"
+    },
+    {
+      "id": "hesitant",
+      "label": "Hesitant",
+      "category": "needs_unmet",
+      "intensity": "low",
+      "bodySensations": ["holding back", "uncertainty", "slight tension"],
+      "relatedNeeds": ["safety", "clarity", "confidence"],
+      "synonyms": ["uncertain", "cautious", "reluctant"],
+      "description": "Holding back due to uncertainty"
+    },
+    {
+      "id": "worried",
+      "label": "Worried",
+      "category": "needs_unmet",
+      "intensity": "medium",
+      "bodySensations": ["tension", "preoccupation", "restlessness"],
+      "relatedNeeds": ["safety", "reassurance", "trust"],
+      "synonyms": ["concerned", "troubled", "apprehensive"],
+      "description": "Preoccupation with potential negative outcomes"
+    }
+  ],
+  "fauxFeelings": [
+    {
+      "id": "abandoned",
+      "label": "Abandoned",
+      "interpretation": "I think others have left me or don't care",
+      "realFeelings": ["lonely", "scared", "hurt", "sad"],
+      "relatedNeeds": ["connection", "belonging", "care", "security"]
+    },
+    {
+      "id": "attacked",
+      "label": "Attacked",
+      "interpretation": "I think someone is being aggressive toward me",
+      "realFeelings": ["scared", "angry", "hurt"],
+      "relatedNeeds": ["safety", "respect", "consideration"]
+    },
+    {
+      "id": "betrayed",
+      "label": "Betrayed",
+      "interpretation": "I think someone broke my trust",
+      "realFeelings": ["hurt", "angry", "sad", "shocked"],
+      "relatedNeeds": ["trust", "honesty", "reliability", "respect"]
+    },
+    {
+      "id": "blamed",
+      "label": "Blamed",
+      "interpretation": "I think others are holding me responsible unfairly",
+      "realFeelings": ["hurt", "angry", "scared", "defensive"],
+      "relatedNeeds": ["fairness", "understanding", "acceptance"]
+    },
+    {
+      "id": "bullied",
+      "label": "Bullied",
+      "interpretation": "I think someone is intimidating or harassing me",
+      "realFeelings": ["scared", "hurt", "angry", "powerless"],
+      "relatedNeeds": ["safety", "respect", "autonomy"]
+    },
+    {
+      "id": "cheated",
+      "label": "Cheated",
+      "interpretation": "I think someone was dishonest or unfair to me",
+      "realFeelings": ["angry", "hurt", "sad"],
+      "relatedNeeds": ["fairness", "honesty", "respect"]
+    },
+    {
+      "id": "criticized",
+      "label": "Criticized",
+      "interpretation": "I think others are judging me negatively",
+      "realFeelings": ["hurt", "embarrassed", "sad", "defensive"],
+      "relatedNeeds": ["acceptance", "appreciation", "understanding"]
+    },
+    {
+      "id": "dismissed",
+      "label": "Dismissed",
+      "interpretation": "I think others don't value what I say or feel",
+      "realFeelings": ["hurt", "frustrated", "sad", "angry"],
+      "relatedNeeds": ["respect", "consideration", "to be heard"]
+    },
+    {
+      "id": "ignored",
+      "label": "Ignored",
+      "interpretation": "I think others are not paying attention to me",
+      "realFeelings": ["lonely", "hurt", "sad", "frustrated"],
+      "relatedNeeds": ["connection", "acknowledgment", "belonging"]
+    },
+    {
+      "id": "manipulated",
+      "label": "Manipulated",
+      "interpretation": "I think someone is trying to control me dishonestly",
+      "realFeelings": ["angry", "confused", "scared"],
+      "relatedNeeds": ["autonomy", "honesty", "respect"]
+    },
+    {
+      "id": "misunderstood",
+      "label": "Misunderstood",
+      "interpretation": "I think others don't get what I mean",
+      "realFeelings": ["frustrated", "lonely", "sad"],
+      "relatedNeeds": ["understanding", "to be seen", "connection"]
+    },
+    {
+      "id": "neglected",
+      "label": "Neglected",
+      "interpretation": "I think others aren't caring for me",
+      "realFeelings": ["sad", "lonely", "hurt"],
+      "relatedNeeds": ["care", "attention", "consideration"]
+    },
+    {
+      "id": "pressured",
+      "label": "Pressured",
+      "interpretation": "I think others are pushing me to do something",
+      "realFeelings": ["anxious", "overwhelmed", "frustrated"],
+      "relatedNeeds": ["autonomy", "choice", "ease"]
+    },
+    {
+      "id": "rejected",
+      "label": "Rejected",
+      "interpretation": "I think others don't want me",
+      "realFeelings": ["hurt", "sad", "lonely", "scared"],
+      "relatedNeeds": ["belonging", "acceptance", "connection"]
+    },
+    {
+      "id": "taken_for_granted",
+      "label": "Taken for granted",
+      "interpretation": "I think others don't appreciate my contributions",
+      "realFeelings": ["hurt", "resentful", "sad"],
+      "relatedNeeds": ["appreciation", "acknowledgment", "consideration"]
+    },
+    {
+      "id": "unappreciated",
+      "label": "Unappreciated",
+      "interpretation": "I think others don't value me or my efforts",
+      "realFeelings": ["sad", "hurt", "frustrated"],
+      "relatedNeeds": ["appreciation", "recognition", "acknowledgment"]
+    },
+    {
+      "id": "unsupported",
+      "label": "Unsupported",
+      "interpretation": "I think others aren't helping me",
+      "realFeelings": ["lonely", "overwhelmed", "scared", "sad"],
+      "relatedNeeds": ["support", "help", "partnership"]
+    },
+    {
+      "id": "used",
+      "label": "Used",
+      "interpretation": "I think others only want something from me",
+      "realFeelings": ["hurt", "angry", "sad"],
+      "relatedNeeds": ["respect", "care", "mutuality"]
+    }
+  ]
+}
