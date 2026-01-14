@@ -1,62 +1,47 @@
 /**
- * Authentication Composable
+ * Authentication Composable using Clerk
  * Handles user authentication state and methods
  */
 
-import { ref, computed, onMounted } from 'vue'
-import { supabase } from '../lib/supabase'
+import { ref, computed, onMounted, watch } from 'vue'
+import { initClerk, getClerk } from '../lib/clerk'
 
 // Shared state across components
 const user = ref(null)
-const profile = ref(null)
+const isLoaded = ref(false)
 const loading = ref(true)
 const error = ref(null)
 
-// Initialize auth state listener
+// Initialize auth state
 let authInitialized = false
 
-function initAuth() {
-  if (authInitialized || !supabase) return
+async function initAuth() {
+  if (authInitialized) return
   authInitialized = true
 
-  // Get initial session
-  supabase.auth.getSession().then(({ data: { session } }) => {
-    user.value = session?.user ?? null
-    if (session?.user) {
-      fetchProfile(session.user.id)
-    }
-    loading.value = false
-  })
-
-  // Listen for auth changes
-  supabase.auth.onAuthStateChange(async (event, session) => {
-    user.value = session?.user ?? null
-
-    if (event === 'SIGNED_IN' && session?.user) {
-      await fetchProfile(session.user.id)
-    } else if (event === 'SIGNED_OUT') {
-      profile.value = null
-    }
-  })
-}
-
-async function fetchProfile(userId) {
-  if (!supabase) return
-
   try {
-    const { data, error: fetchError } = await supabase
-      .from('user_profiles')
-      .select('*')
-      .eq('id', userId)
-      .single()
+    const clerk = await initClerk()
 
-    if (fetchError && fetchError.code !== 'PGRST116') {
-      console.error('Error fetching profile:', fetchError)
+    if (!clerk) {
+      loading.value = false
+      isLoaded.value = true
+      return
     }
 
-    profile.value = data
+    // Set initial user state
+    user.value = clerk.user
+    loading.value = false
+    isLoaded.value = true
+
+    // Listen for user changes
+    clerk.addListener(({ user: clerkUser }) => {
+      user.value = clerkUser
+    })
   } catch (err) {
-    console.error('Profile fetch error:', err)
+    console.error('Auth initialization error:', err)
+    error.value = err.message
+    loading.value = false
+    isLoaded.value = true
   }
 }
 
@@ -68,108 +53,64 @@ export function useAuth() {
 
   const isAuthenticated = computed(() => !!user.value)
   const isLoading = computed(() => loading.value)
+
   const displayName = computed(() => {
-    return profile.value?.display_name ||
-           user.value?.user_metadata?.full_name ||
-           user.value?.email?.split('@')[0] ||
-           'Guest'
+    if (!user.value) return 'Guest'
+    return user.value.fullName ||
+           user.value.firstName ||
+           user.value.emailAddresses?.[0]?.emailAddress?.split('@')[0] ||
+           'User'
+  })
+
+  const email = computed(() => {
+    return user.value?.primaryEmailAddress?.emailAddress || null
+  })
+
+  const userId = computed(() => {
+    return user.value?.id || null
+  })
+
+  const avatarUrl = computed(() => {
+    return user.value?.imageUrl || null
   })
 
   /**
-   * Sign up with email and password
+   * Open Clerk sign-in modal
    */
-  async function signUp({ email, password, name }) {
-    if (!supabase) {
+  async function signIn() {
+    const clerk = getClerk()
+    if (!clerk) {
       error.value = 'Authentication not configured'
-      return { error: error.value }
+      return
     }
 
-    loading.value = true
-    error.value = null
-
     try {
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: name
-          }
-        }
+      await clerk.openSignIn({
+        afterSignInUrl: window.location.href,
+        afterSignUpUrl: window.location.href
       })
-
-      if (signUpError) throw signUpError
-
-      // Create user profile
-      if (data.user) {
-        await supabase.from('user_profiles').upsert({
-          id: data.user.id,
-          display_name: name,
-          created_at: new Date().toISOString()
-        })
-      }
-
-      return { data, error: null }
     } catch (err) {
       error.value = err.message
-      return { data: null, error: err.message }
-    } finally {
-      loading.value = false
     }
   }
 
   /**
-   * Sign in with email and password
+   * Open Clerk sign-up modal
    */
-  async function signIn({ email, password }) {
-    if (!supabase) {
+  async function signUp() {
+    const clerk = getClerk()
+    if (!clerk) {
       error.value = 'Authentication not configured'
-      return { error: error.value }
-    }
-
-    loading.value = true
-    error.value = null
-
-    try {
-      const { data, error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      })
-
-      if (signInError) throw signInError
-
-      return { data, error: null }
-    } catch (err) {
-      error.value = err.message
-      return { data: null, error: err.message }
-    } finally {
-      loading.value = false
-    }
-  }
-
-  /**
-   * Sign in with OAuth provider
-   */
-  async function signInWithProvider(provider) {
-    if (!supabase) {
-      error.value = 'Authentication not configured'
-      return { error: error.value }
+      return
     }
 
     try {
-      const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`
-        }
+      await clerk.openSignUp({
+        afterSignInUrl: window.location.href,
+        afterSignUpUrl: window.location.href
       })
-
-      if (oauthError) throw oauthError
-
-      return { data, error: null }
     } catch (err) {
       error.value = err.message
-      return { data: null, error: err.message }
     }
   }
 
@@ -177,13 +118,13 @@ export function useAuth() {
    * Sign out
    */
   async function signOut() {
-    if (!supabase) return
+    const clerk = getClerk()
+    if (!clerk) return
 
     loading.value = true
     try {
-      await supabase.auth.signOut()
+      await clerk.signOut()
       user.value = null
-      profile.value = null
     } catch (err) {
       error.value = err.message
     } finally {
@@ -192,98 +133,52 @@ export function useAuth() {
   }
 
   /**
-   * Send password reset email
+   * Open user profile modal
    */
-  async function resetPassword(email) {
-    if (!supabase) {
-      error.value = 'Authentication not configured'
-      return { error: error.value }
-    }
+  async function openUserProfile() {
+    const clerk = getClerk()
+    if (!clerk) return
 
     try {
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`
-      })
-
-      if (resetError) throw resetError
-
-      return { error: null }
+      await clerk.openUserProfile()
     } catch (err) {
       error.value = err.message
-      return { error: err.message }
     }
   }
 
   /**
-   * Update password
+   * Get session token for API calls
    */
-  async function updatePassword(newPassword) {
-    if (!supabase) {
-      error.value = 'Authentication not configured'
-      return { error: error.value }
-    }
+  async function getToken() {
+    const clerk = getClerk()
+    if (!clerk?.session) return null
 
     try {
-      const { error: updateError } = await supabase.auth.updateUser({
-        password: newPassword
-      })
-
-      if (updateError) throw updateError
-
-      return { error: null }
+      return await clerk.session.getToken()
     } catch (err) {
-      error.value = err.message
-      return { error: err.message }
-    }
-  }
-
-  /**
-   * Update user profile
-   */
-  async function updateProfile(updates) {
-    if (!supabase || !user.value) {
-      error.value = 'Not authenticated'
-      return { error: error.value }
-    }
-
-    try {
-      const { data, error: updateError } = await supabase
-        .from('user_profiles')
-        .upsert({
-          id: user.value.id,
-          ...updates,
-          updated_at: new Date().toISOString()
-        })
-        .select()
-        .single()
-
-      if (updateError) throw updateError
-
-      profile.value = data
-      return { data, error: null }
-    } catch (err) {
-      error.value = err.message
-      return { data: null, error: err.message }
+      console.error('Error getting token:', err)
+      return null
     }
   }
 
   return {
     // State
     user,
-    profile,
     loading: isLoading,
     error,
+    isLoaded,
     isAuthenticated,
     displayName,
+    email,
+    userId,
+    avatarUrl,
 
     // Methods
-    signUp,
     signIn,
-    signInWithProvider,
+    signUp,
     signOut,
-    resetPassword,
-    updatePassword,
-    updateProfile
+    openUserProfile,
+    getToken
   }
 }
 
@@ -293,8 +188,18 @@ export function useAuth() {
  */
 export function useGuestMode() {
   const GUEST_KEY = 'feelings_needs_guest'
+  const GUEST_ID_KEY = 'feelings_needs_guest_id'
 
   const guestData = ref(null)
+
+  function getGuestId() {
+    let guestId = localStorage.getItem(GUEST_ID_KEY)
+    if (!guestId) {
+      guestId = 'guest_' + Date.now().toString(36) + Math.random().toString(36).substr(2)
+      localStorage.setItem(GUEST_ID_KEY, guestId)
+    }
+    return guestId
+  }
 
   function loadGuestData() {
     try {
@@ -318,14 +223,14 @@ export function useGuestMode() {
 
   function addSession(session) {
     guestData.value.sessions.unshift(session)
-    guestData.value.sessions = guestData.value.sessions.slice(0, 50) // Keep last 50
+    guestData.value.sessions = guestData.value.sessions.slice(0, 50)
     guestData.value.progress.totalSessions++
     saveGuestData()
   }
 
   function addCheckIn(checkIn) {
     guestData.value.checkIns.unshift(checkIn)
-    guestData.value.checkIns = guestData.value.checkIns.slice(0, 30) // Keep last 30 days
+    guestData.value.checkIns = guestData.value.checkIns.slice(0, 30)
     updateStreak()
     saveGuestData()
   }
@@ -346,6 +251,7 @@ export function useGuestMode() {
 
   function clearGuestData() {
     localStorage.removeItem(GUEST_KEY)
+    localStorage.removeItem(GUEST_ID_KEY)
     guestData.value = null
   }
 
@@ -353,10 +259,12 @@ export function useGuestMode() {
   loadGuestData()
 
   return {
+    guestId: getGuestId(),
     guestData,
     addSession,
     addCheckIn,
-    clearGuestData
+    clearGuestData,
+    getGuestId
   }
 }
 

@@ -12,9 +12,10 @@
     "preview": "npm run build && npm run start"
   },
   "dependencies": {
+    "@clerk/clerk-js": "^5.119.1",
+    "@clerk/vue": "^1.17.7",
     "@headlessui/vue": "^1.7.22",
     "@heroicons/vue": "^2.1.5",
-    "@supabase/supabase-js": "^2.90.1",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
     "better-sqlite3": "^12.6.0",

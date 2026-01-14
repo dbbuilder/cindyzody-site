@@ -6,7 +6,13 @@
     <!-- Authenticated user -->
     <Menu v-else-if="isAuthenticated" as="div" class="relative">
       <MenuButton class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors">
-        <div class="w-7 h-7 bg-brand-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+        <img
+          v-if="avatarUrl"
+          :src="avatarUrl"
+          :alt="displayName"
+          class="w-7 h-7 rounded-full object-cover"
+        />
+        <div v-else class="w-7 h-7 bg-brand-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
           {{ initials }}
         </div>
         <span class="text-sm font-medium text-slate-700 hidden sm:block">{{ displayName }}</span>
@@ -24,7 +30,7 @@
         <MenuItems class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-slate-100 rounded-xl bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-50">
           <div class="px-4 py-3">
             <p class="text-sm font-medium text-slate-900">{{ displayName }}</p>
-            <p class="text-xs text-slate-500 truncate">{{ user?.email }}</p>
+            <p class="text-xs text-slate-500 truncate">{{ email }}</p>
           </div>
 
           <div class="py-1">
@@ -61,13 +67,13 @@
 
           <div class="py-1">
             <MenuItem v-slot="{ active }">
-              <RouterLink
-                to="/settings"
-                :class="[active ? 'bg-slate-50' : '', 'flex items-center gap-3 px-4 py-2 text-sm text-slate-700']"
+              <button
+                @click="openUserProfile"
+                :class="[active ? 'bg-slate-50' : '', 'flex w-full items-center gap-3 px-4 py-2 text-sm text-slate-700']"
               >
                 <Cog6ToothIcon class="w-4 h-4 text-slate-400" />
-                Settings
-              </RouterLink>
+                Account Settings
+              </button>
             </MenuItem>
 
             <MenuItem v-slot="{ active }">
@@ -87,7 +93,7 @@
     <!-- Guest user -->
     <button
       v-else
-      @click="$emit('openAuth')"
+      @click="handleSignIn"
       class="flex items-center gap-2 px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors text-sm font-medium"
     >
       <UserIcon class="w-4 h-4" />
@@ -110,19 +116,21 @@ import {
 } from '@heroicons/vue/24/outline'
 import { useAuth } from '../../composables/useAuth'
 
-defineEmits(['openAuth'])
-
-const { user, isAuthenticated, displayName, loading, signOut } = useAuth()
+const { user, isAuthenticated, displayName, email, avatarUrl, loading, signIn, signOut, openUserProfile } = useAuth()
 
 const initials = computed(() => {
   const name = displayName.value
-  if (!name) return '?'
+  if (!name || name === 'Guest') return '?'
   const parts = name.split(' ')
   if (parts.length >= 2) {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
   }
   return name.slice(0, 2).toUpperCase()
 })
+
+function handleSignIn() {
+  signIn()
+}
 
 async function handleSignOut() {
   await signOut()

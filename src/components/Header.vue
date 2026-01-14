@@ -16,12 +16,12 @@
           <RouterLink class="hover:text-brand-600" to="/groups">Groups</RouterLink>
           <RouterLink class="hover:text-brand-600" to="/resources">Resources</RouterLink>
           <RouterLink class="hover:text-brand-600" to="/about">About</RouterLink>
-          <UserMenu @openAuth="showAuthModal = true" />
+          <UserMenu />
         </nav>
 
         <!-- Mobile menu button -->
         <div class="flex items-center gap-3 md:hidden">
-          <UserMenu @openAuth="showAuthModal = true" />
+          <UserMenu />
           <button class="inline-flex items-center p-2" @click="open = !open" aria-label="Menu">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -46,30 +46,13 @@
       </div>
     </div>
   </header>
-
-  <!-- Auth Modal -->
-  <AuthModal
-    :isOpen="showAuthModal"
-    @close="showAuthModal = false"
-    @authenticated="handleAuthenticated"
-    @guest="handleGuest"
-  />
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { trackEvent } from '../utils/analytics'
 import ScheduleButton from './ScheduleButton.vue'
-import { UserMenu, AuthModal } from './auth'
+import { UserMenu } from './auth'
 
 const open = ref(false)
-const showAuthModal = ref(false)
-
-function handleAuthenticated() {
-  trackEvent('auth_success', { method: 'email' })
-}
-
-function handleGuest() {
-  trackEvent('auth_guest')
-}
 </script>
