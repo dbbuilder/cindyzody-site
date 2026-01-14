@@ -70,7 +70,8 @@ export async function initClerk() {
       setupDeepLinkHandler()
     }
 
-    console.log(`[Clerk] Initialized (${isNative ? 'native' : 'web'} mode)`)
+    console.log(`[Clerk] Initialized (${isNative ? 'native' : 'web'} mode)`, clerkInstance)
+    console.log('[Clerk] User:', clerkInstance.user)
     return clerkInstance
   } catch (error) {
     console.error('[Clerk] Initialization error:', error)
@@ -126,26 +127,33 @@ export async function openSignIn(options = {}) {
     return
   }
 
-  const redirectUrl = getRedirectUrl()
+  console.log('[Clerk] openSignIn called, isNative:', isNative)
 
   if (isNative) {
     // Native: Open sign-in in external browser
+    const redirectUrl = getRedirectUrl()
     const signInUrl = clerk.buildSignInUrl({
       redirectUrl,
       ...options
     })
+    console.log('[Clerk] Opening native browser:', signInUrl)
 
     await Browser.open({
       url: signInUrl,
       presentationStyle: 'popover'
     })
   } else {
-    // Web: Use Clerk's modal
-    await clerk.openSignIn({
-      afterSignInUrl: redirectUrl,
-      afterSignUpUrl: redirectUrl,
-      ...options
-    })
+    // Web: Use Clerk's modal directly
+    console.log('[Clerk] Opening web modal')
+    try {
+      // Use new redirect props (fallbackRedirectUrl replaces deprecated afterSignInUrl)
+      await clerk.openSignIn({
+        fallbackRedirectUrl: window.location.href,
+        ...options
+      })
+    } catch (err) {
+      console.error('[Clerk] openSignIn error:', err)
+    }
   }
 }
 
@@ -159,14 +167,16 @@ export async function openSignUp(options = {}) {
     return
   }
 
-  const redirectUrl = getRedirectUrl()
+  console.log('[Clerk] openSignUp called, isNative:', isNative)
 
   if (isNative) {
     // Native: Open sign-up in external browser
+    const redirectUrl = getRedirectUrl()
     const signUpUrl = clerk.buildSignUpUrl({
       redirectUrl,
       ...options
     })
+    console.log('[Clerk] Opening native browser for sign-up')
 
     await Browser.open({
       url: signUpUrl,
@@ -174,11 +184,15 @@ export async function openSignUp(options = {}) {
     })
   } else {
     // Web: Use Clerk's modal
-    await clerk.openSignUp({
-      afterSignInUrl: redirectUrl,
-      afterSignUpUrl: redirectUrl,
-      ...options
-    })
+    console.log('[Clerk] Opening web sign-up modal')
+    try {
+      await clerk.openSignUp({
+        fallbackRedirectUrl: window.location.href,
+        ...options
+      })
+    } catch (err) {
+      console.error('[Clerk] openSignUp error:', err)
+    }
   }
 }
 
