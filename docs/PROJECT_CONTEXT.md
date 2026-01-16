@@ -451,7 +451,21 @@ services:
 
 ---
 
-## Recent Updates (January 2025)
+## Recent Updates (January 2026)
+
+### Latest Commit (dcc362c)
+**Add GOFNR practice flow, splash animation, and comprehensive site updates**
+
+- Splash screen: Full FEELINGS/NEEDS words with scrambled letter animation
+- Rotating NVC benefits in center overlap (12 benefits, 800ms rotation)
+- AI chat: Added conversation history for better multi-turn context
+- GOFNR framework: Goals, Observation, Feelings, Needs, Request tabs
+- New sub-pages: approach/, groups/, practice/, services/ directories
+- PDF generation script with Puppeteer (31 pages + combined PDF)
+- ScrambledText reusable component for letter animations
+- Added pdfs/ to .gitignore
+
+### Feature Details
 
 1. **GOFNR Flow Enhancement**
    - Added Observations step between Goals and Feelings
