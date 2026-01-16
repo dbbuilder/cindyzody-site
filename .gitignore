@@ -22,3 +22,6 @@ ios/App/DerivedData
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Generated PDFs
+pdfs/

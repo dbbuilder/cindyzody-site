@@ -17,14 +17,14 @@
               <div class="w-24 h-32 bg-gradient-to-b from-red-500 to-red-600 rounded mx-auto mb-3 flex items-center justify-center shadow-lg">
                 <img 
                   src="https://images-na.ssl-images-amazon.com/images/P/189200528X.01.L.jpg" 
-                  alt="Nonviolent Communication book cover"
+                  alt="Non-Violent Communication book cover"
                   class="w-full h-full object-cover rounded"
                   loading="lazy"
                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
                 />
                 <span class="text-white font-bold text-xs hidden">NVC</span>
               </div>
-              <h3 class="font-semibold text-lg">Nonviolent Communication</h3>
+              <h3 class="font-semibold text-lg">Non-Violent Communication</h3>
               <p class="text-sm text-slate-600">by Marshall Rosenberg</p>
               <div class="flex items-center justify-center mt-2">
                 <div class="flex text-yellow-400">
@@ -223,7 +223,7 @@
               <h3 class="font-semibold">NVC Academy</h3>
             </div>
             <p class="text-sm text-slate-700 mb-4">
-              Online courses and practice groups for learning Nonviolent Communication.
+              Online courses and practice groups for learning Non-Violent Communication.
             </p>
             <a 
               href="https://nvctraining.com/" 

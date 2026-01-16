@@ -21,6 +21,9 @@ export { default as SessionSummary } from './SessionSummary.vue'
 export { default as CheckInWidget } from './CheckInWidget.vue'
 export { default as StreakDisplay } from './StreakDisplay.vue'
 
+// Animation components
+export { default as ScrambledText } from './ScrambledText.vue'
+
 // Data exports for convenience
 export { default as feelingsData } from '../../data/feelings.json'
 export { default as needsData } from '../../data/needs.json'

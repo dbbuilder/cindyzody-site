@@ -21,11 +21,12 @@ let clerkInstance = null
 
 /**
  * Get the appropriate redirect URL based on platform
+ * For native apps, we use the web callback URL which will then redirect to the app scheme
  */
 function getRedirectUrl() {
   if (isNative) {
-    // Deep link back to app after OAuth
-    return `${APP_SCHEME}://auth/callback`
+    // Use web URL as intermediary - it will redirect to the app scheme
+    return `${WEB_URL}/auth/callback`
   }
   // Web: redirect to current page
   return window.location.href
@@ -60,8 +61,7 @@ export async function initClerk() {
       allowedRedirectOrigins: [
         'http://localhost:5173',
         'https://www.cindyzody.com',
-        'https://cindyzody-site.onrender.com',
-        'feelingsneeds://auth/callback'
+        'https://cindyzody-site.onrender.com'
       ]
     })
 
@@ -131,11 +131,17 @@ export async function openSignIn(options = {}) {
 
   if (isNative) {
     // Native: Open sign-in in external browser
+    // Build the sign-in URL using Clerk's accounts.dev domain
     const redirectUrl = getRedirectUrl()
-    const signInUrl = clerk.buildSignInUrl({
-      redirectUrl,
-      ...options
-    })
+    const instance = extractClerkInstance(clerkPublishableKey)
+
+    if (!instance) {
+      console.error('[Clerk] Cannot determine Clerk instance')
+      return
+    }
+
+    // Clerk hosted sign-in URL: https://{instance}.accounts.dev/sign-in
+    const signInUrl = `https://${instance}.accounts.dev/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`
     console.log('[Clerk] Opening native browser:', signInUrl)
 
     await Browser.open({
@@ -158,6 +164,31 @@ export async function openSignIn(options = {}) {
 }
 
 /**
+ * Extract the Clerk instance identifier from publishable key
+ * The key encodes the instance name which maps to accounts.dev domain
+ */
+function extractClerkInstance(key) {
+  if (!key) return null
+  try {
+    // pk_test_xxx or pk_live_xxx - the xxx is base64 encoded
+    const encoded = key.split('_')[2]
+    if (!encoded) return null
+    const decoded = atob(encoded.replace(/-/g, '+').replace(/_/g, '/'))
+    // Remove trailing $ and .clerk.accounts.dev if present
+    let instance = decoded.endsWith('$') ? decoded.slice(0, -1) : decoded
+    // The decoded value is like "precious-lamprey-79.clerk.accounts.dev"
+    // We need just "precious-lamprey-79"
+    if (instance.includes('.clerk.accounts.dev')) {
+      instance = instance.replace('.clerk.accounts.dev', '')
+    }
+    return instance
+  } catch (e) {
+    console.error('[Clerk] Failed to extract instance:', e)
+    return null
+  }
+}
+
+/**
  * Open sign-up flow (handles both web and native)
  */
 export async function openSignUp(options = {}) {
@@ -172,11 +203,16 @@ export async function openSignUp(options = {}) {
   if (isNative) {
     // Native: Open sign-up in external browser
     const redirectUrl = getRedirectUrl()
-    const signUpUrl = clerk.buildSignUpUrl({
-      redirectUrl,
-      ...options
-    })
-    console.log('[Clerk] Opening native browser for sign-up')
+    const instance = extractClerkInstance(clerkPublishableKey)
+
+    if (!instance) {
+      console.error('[Clerk] Cannot determine Clerk instance')
+      return
+    }
+
+    // Clerk hosted sign-up URL: https://{instance}.accounts.dev/sign-up
+    const signUpUrl = `https://${instance}.accounts.dev/sign-up?redirect_url=${encodeURIComponent(redirectUrl)}`
+    console.log('[Clerk] Opening native browser for sign-up:', signUpUrl)
 
     await Browser.open({
       url: signUpUrl,

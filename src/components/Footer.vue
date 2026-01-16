@@ -12,12 +12,11 @@
           <h3 class="font-semibold">Contact</h3>
           <p class="mt-2 text-sm">
             <a class="hover:text-brand-600" href="tel:+12069925992">(206) 992-5992</a><br />
-            <a class="hover:text-brand-600" href="tel:+14254861103">(425) 486-1103</a><br />
             <a class="hover:text-brand-600" href="mailto:cindyzody@gmail.com">cindyzody@gmail.com</a>
           </p>
         </div>
         <div>
-          <h3 class="font-semibold">Pages</h3>
+          <h3 class="font-semibold">Explore</h3>
           <ul class="mt-2 space-y-1 text-sm">
             <li><RouterLink to="/services">Services</RouterLink></li>
             <li><RouterLink to="/approach">Approach</RouterLink></li>

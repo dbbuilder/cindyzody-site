@@ -76,6 +76,12 @@ export function useAI() {
     messages.value.push(userMessage)
 
     try {
+      // Build conversation history for context (exclude the message we just added)
+      const history = messages.value.slice(0, -1).map(m => ({
+        role: m.role,
+        content: m.content
+      }))
+
       const response = await fetch(`${apiBase.value}/ai/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -85,6 +91,7 @@ export function useAI() {
           context: {
             selectedFeelings: context.feelings || [],
             selectedNeeds: context.needs || [],
+            history, // Include conversation history
             ...context
           }
         })
@@ -340,7 +347,7 @@ export function useMockAI() {
 
     currentSessionId.value = `mock-${Date.now()}`
 
-    let greeting = "Hello! I'm here to help you practice Nonviolent Communication. "
+    let greeting = "Hello! I'm here to help you practice Non-Violent Communication. "
     if (feelings.length > 0) {
       greeting += `I see you're exploring feelings of ${feelings.map(f => f.label || f).join(', ')}. `
     }

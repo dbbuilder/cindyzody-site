@@ -1,10 +1,13 @@
 <template>
   <!-- Modern Hero Section -->
   <section class="relative overflow-hidden bg-white">
-    <!-- Nature Background -->
+    <!-- Nature Background with Dynamic Gradient -->
     <div class="absolute inset-0">
       <!-- Background Image with Nature Photo -->
-      <div class="absolute inset-0 bg-gradient-to-br from-brand-50 via-sage-50 to-earth-50">
+      <div
+        class="absolute inset-0 bg-gradient-to-br transition-all duration-700 ease-in-out"
+        :class="currentHeadline.bgGradient"
+      >
         <!-- Nature background image -->
         <img src="/images/nature-background.jpg" alt="" class="w-full h-full object-cover opacity-20" />
       </div>
@@ -50,16 +53,31 @@
                   New: AI-Powered Practice Available
                 </div>
 
-                <!-- Main Heading -->
+                <!-- Rotating Main Heading -->
                 <h1 class="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
-                  <span class="block">Compassionate</span>
-                  <span class="block text-brand-600">Communication</span>
-                  <span class="block">& Healing</span>
+                  <div
+                    class="transition-all duration-300 ease-in-out"
+                    :class="{ 'opacity-0 translate-y-2': isTransitioning, 'opacity-100 translate-y-0': !isTransitioning }"
+                  >
+                    <span class="block">{{ currentHeadline.lines[0] }}</span>
+                    <span class="block" :class="currentHeadline.color">{{ currentHeadline.lines[1] }}</span>
+                    <span class="block">{{ currentHeadline.lines[2] }}</span>
+                  </div>
                 </h1>
+                <!-- Headline indicator dots -->
+                <div class="flex gap-1.5 mt-3">
+                  <button
+                    v-for="(headline, index) in headlines"
+                    :key="index"
+                    @click="currentIndex = index; isTransitioning = false"
+                    class="w-2 h-2 rounded-full transition-all duration-300"
+                    :class="index === currentIndex ? 'bg-brand-600 w-6' : 'bg-slate-300 hover:bg-slate-400'"
+                    :aria-label="`View headline ${index + 1}`"
+                  /></div>
 
                 <!-- Description -->
                 <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                  Transform your relationships through Nonviolent Communication (NVC) and Internal Family Systems (IFS).
+                  Transform your relationships through Non-Violent Communication (NVC) and Internal Family Systems (IFS).
                   Expert facilitation for individuals, couples, families, and organizations.
                 </p>
 
@@ -120,7 +138,7 @@
                       </div>
                       <div class="min-w-0">
                         <p class="text-sm font-medium text-gray-900 leading-tight">M.Ed. Curriculum & Instruction</p>
-                        <p class="text-sm text-gray-500 leading-tight mt-0.5">Certified NVC/IFS Facilitator</p>
+                        <p class="text-sm text-gray-500 leading-tight mt-0.5">NVC & IFS Practitioner</p>
                       </div>
                     </div>
 
@@ -257,7 +275,7 @@
             </div>
           </div>
 
-          <!-- Organizations -->
+          <!-- Businesses & Organizations -->
           <div class="group relative bg-white rounded-2xl border border-sage-200 p-8 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
             <div class="absolute -top-4 left-8">
               <div class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-earth-600 text-white">
@@ -266,7 +284,7 @@
                 </svg>
               </div>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mt-4">Organizations</h3>
+            <h3 class="text-xl font-semibold text-gray-900 mt-4">Businesses & Organizations</h3>
             <p class="mt-3 text-gray-600">
               Workshops and coaching for compassionate cultures, conflict resolution, and collaborative teams that thrive.
             </p>
@@ -399,5 +417,82 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import ScheduleAppointment from '../components/ScheduleAppointment.vue'
+
+// Rotating headlines spanning individual to business contexts
+const headlines = [
+  {
+    lines: ['Compassionate', 'Communication', '& Healing'],
+    color: 'text-brand-600',
+    bgGradient: 'from-brand-50 via-sage-50 to-earth-50'
+  },
+  {
+    lines: ['Personal Growth', 'Through', 'Connection'],
+    color: 'text-sage-600',
+    bgGradient: 'from-sage-50 via-brand-50 to-earth-50'
+  },
+  {
+    lines: ['Inner Peace', '& Self', 'Discovery'],
+    color: 'text-violet-600',
+    bgGradient: 'from-violet-50 via-brand-50 to-sage-50'
+  },
+  {
+    lines: ['Deeper', 'Relationship', 'Understanding'],
+    color: 'text-rose-600',
+    bgGradient: 'from-rose-50 via-earth-50 to-brand-50'
+  },
+  {
+    lines: ['Transforming', 'Conflict Into', 'Connection'],
+    color: 'text-amber-600',
+    bgGradient: 'from-amber-50 via-earth-50 to-sage-50'
+  },
+  {
+    lines: ['Family', 'Harmony &', 'Healing'],
+    color: 'text-teal-600',
+    bgGradient: 'from-teal-50 via-sage-50 to-brand-50'
+  },
+  {
+    lines: ['Collaborative', 'Workplace', 'Cultures'],
+    color: 'text-cyan-700',
+    bgGradient: 'from-cyan-50 via-slate-50 to-brand-50'
+  },
+  {
+    lines: ['Leadership', 'Through', 'Empathy'],
+    color: 'text-indigo-600',
+    bgGradient: 'from-indigo-50 via-brand-50 to-sage-50'
+  },
+  {
+    lines: ['Teams That', 'Truly', 'Connect'],
+    color: 'text-emerald-600',
+    bgGradient: 'from-emerald-50 via-sage-50 to-earth-50'
+  }
+]
+
+// Randomize starting position on each visit
+const currentIndex = ref(Math.floor(Math.random() * headlines.length))
+const isTransitioning = ref(false)
+let rotationInterval = null
+
+const currentHeadline = computed(() => headlines[currentIndex.value])
+
+function rotateHeadline() {
+  isTransitioning.value = true
+  setTimeout(() => {
+    currentIndex.value = (currentIndex.value + 1) % headlines.length
+    setTimeout(() => {
+      isTransitioning.value = false
+    }, 50)
+  }, 300)
+}
+
+onMounted(() => {
+  rotationInterval = setInterval(rotateHeadline, 4000)
+})
+
+onUnmounted(() => {
+  if (rotationInterval) {
+    clearInterval(rotationInterval)
+  }
+})
 </script>

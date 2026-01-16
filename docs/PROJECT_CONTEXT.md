@@ -2,17 +2,22 @@
 
 ## Project Overview
 
-A web application for Cindy Zody's NVC (Nonviolent Communication) coaching practice. The platform provides interactive tools for exploring feelings and needs, with AI-powered practice sessions.
+A web application for **Cindy Zody's** NVC (Nonviolent Communication) coaching practice. The platform provides interactive tools for exploring feelings and needs, with AI-powered practice sessions and a guided GOFNR framework.
 
-**Live URL**: TBD (Render deployment)
+**Live URL**: https://www.cindyzody.com
 **Dev Server**: http://localhost:21001 (Vite) + http://localhost:21000 (Express API)
+
+---
 
 ## Tech Stack
 
 - **Frontend**: Vue 3 (Composition API), Vite, Tailwind CSS
 - **Backend**: Express.js (unified with frontend on Render)
-- **AI**: Claude API for NVC practice sessions
+- **Database**: SQLite (local session storage)
+- **AI**: Claude API (claude-sonnet-4) for NVC practice sessions
 - **Hosting**: Render (migrated from Vercel)
+
+---
 
 ## Architecture
 
@@ -20,206 +25,362 @@ A web application for Cindy Zody's NVC (Nonviolent Communication) coaching pract
 cindyzody-site/
 ├── src/
 │   ├── components/
-│   │   └── lib/                    # Reusable NVC component library
-│   │       ├── EmotionWheel.vue    # Interactive feelings wheel (NEW)
-│   │       ├── NeedsWheel.vue      # Interactive needs wheel (NEW)
-│   │       ├── FeelingPicker.vue   # Original feelings picker
-│   │       ├── NeedBrowser.vue     # Original needs browser
-│   │       ├── FeelingCard.vue     # Individual feeling card
-│   │       ├── NeedCard.vue        # Individual need card
-│   │       ├── ChatInterface.vue   # AI chat component
-│   │       ├── SessionSummary.vue  # Practice session summary
-│   │       ├── CheckInWidget.vue   # Daily check-in
-│   │       └── StreakDisplay.vue   # Practice streak tracker
+│   │   ├── lib/                    # Reusable NVC component library
+│   │   │   ├── EmotionWheel.vue    # Interactive feelings wheel
+│   │   │   ├── NeedsWheel.vue      # Interactive needs wheel
+│   │   │   ├── ChatInterface.vue   # AI chat component
+│   │   │   ├── ScrambledText.vue   # Letter animation component
+│   │   │   ├── SessionSummary.vue  # Practice session summary
+│   │   │   ├── CheckInWidget.vue   # Daily check-in
+│   │   │   ├── StreakDisplay.vue   # Practice streak tracker
+│   │   │   └── index.js            # Library exports
+│   │   ├── Header.vue              # Site navigation
+│   │   ├── Footer.vue              # Site footer
+│   │   ├── SplashScreen.vue        # Animated intro (F/N circles)
+│   │   ├── CustomScheduler.vue     # Appointment booking
+│   │   └── ScenarioCard.vue        # Practice scenario card
+│   │
 │   ├── pages/
 │   │   ├── Home.vue                # Landing page with hero
 │   │   ├── About.vue               # About Cindy
-│   │   ├── Practice.vue            # Main practice page (wheels + AI)
-│   │   ├── Resources.vue           # NVC resources
-│   │   └── Contact.vue             # Contact form
+│   │   ├── Practice.vue            # Main GOFNR practice page
+│   │   ├── practice/               # GOFNR step sub-pages
+│   │   │   ├── Goals.vue
+│   │   │   ├── Observation.vue
+│   │   │   ├── Feelings.vue
+│   │   │   ├── Needs.vue
+│   │   │   ├── Request.vue
+│   │   │   └── Scenarios.vue       # Example scenarios
+│   │   ├── services/               # Service offering pages
+│   │   │   ├── Individual.vue
+│   │   │   ├── Couples.vue
+│   │   │   ├── GroupsWorkshops.vue
+│   │   │   └── Workplace.vue
+│   │   ├── approach/               # Methodology pages
+│   │   │   ├── EmotionalIntelligence.vue
+│   │   │   ├── NVC.vue
+│   │   │   ├── IFS.vue
+│   │   │   ├── Mindfulness.vue
+│   │   │   ├── AttitudinalHealing.vue
+│   │   │   ├── ConflictResolution.vue
+│   │   │   └── Outcomes.vue
+│   │   ├── groups/                 # Group workshop pages
+│   │   │   ├── NVCFoundations.vue
+│   │   │   ├── MindfulCommunication.vue
+│   │   │   └── RepairAfterConflict.vue
+│   │   ├── History.vue             # Practice history
+│   │   ├── Progress.vue            # Progress tracking
+│   │   ├── Services.vue            # Services overview
+│   │   ├── Approach.vue            # Approach overview
+│   │   ├── Groups.vue              # Groups overview
+│   │   ├── Resources.vue           # Learning resources
+│   │   ├── Contact.vue             # Contact form
+│   │   └── Privacy.vue             # Privacy policy
+│   │
 │   ├── composables/
-│   │   └── useAI.js                # AI service composable
+│   │   └── useAI.js                # AI service (real + mock)
+│   │
 │   ├── data/
 │   │   ├── feelings.json           # 35 feelings (met/unmet, 3 intensities)
-│   │   └── needs.json              # 43 needs (7 categories)
+│   │   ├── needs.json              # 43 needs (7 categories)
+│   │   └── scenarios.json          # Practice scenarios
+│   │
+│   ├── router/
+│   │   └── index.js                # Vue Router configuration
+│   │
 │   └── utils/
-│       └── analytics.js            # Event tracking
+│       └── analytics.js            # GA4, Meta, LinkedIn tracking
+│
 ├── server/
 │   ├── index.js                    # Express server entry
 │   └── routes/
-│       ├── ai.js                   # AI chat/session endpoints
-│       ├── contact.js              # Contact form endpoint
-│       └── schedule.js             # Scheduling endpoint
+│       └── ai.js                   # AI chat/session endpoints
+│
+├── scripts/
+│   └── generate-pdfs.js            # Puppeteer PDF generation
+│
+├── docs/                           # Documentation
+├── pdfs/                           # Generated PDFs (gitignored)
+├── data/                           # SQLite database
 ├── render.yaml                     # Render deployment config
 └── tailwind.config.cjs             # Tailwind with NVC design tokens
 ```
 
-## Data Models
+---
 
-### Feelings (`src/data/feelings.json`)
+## GOFNR Framework
 
-```json
-{
-  "categories": {
-    "needs_met": { "label": "When Needs Are Met" },
-    "needs_unmet": { "label": "When Needs Are Unmet" }
-  },
-  "feelings": [
-    {
-      "id": "angry",
-      "label": "Angry",
-      "category": "needs_unmet",
-      "intensity": "high",           // high, medium, low
-      "bodySensations": ["heat", "tension", "clenched jaw"],
-      "relatedNeeds": ["respect", "fairness", "autonomy"],
-      "synonyms": ["furious", "enraged", "mad"],
-      "description": "Strong response to perceived violation of needs"
-    }
-  ],
-  "fauxFeelings": [
-    {
-      "id": "abandoned",
-      "label": "Abandoned",
-      "interpretation": "I think others have left me",
-      "realFeelings": ["lonely", "scared", "hurt", "sad"]
-    }
-  ]
-}
-```
+The site implements a guided practice flow:
 
-### Needs (`src/data/needs.json`)
+| Step | Letter | Description |
+|------|--------|-------------|
+| **Goals** | G | Set intentions for the conversation |
+| **Observations** | O | Describe what happened without judgment |
+| **Feelings** | F | Identify emotional responses (using EmotionWheel) |
+| **Needs** | N | Connect feelings to universal human needs (using NeedsWheel) |
+| **Request** | R | Craft clear, specific, doable requests |
 
-```json
-{
-  "categories": [
-    { "id": "connection", "label": "Connection", "color": "rose" },
-    { "id": "physical", "label": "Physical Well-being", "color": "green" },
-    { "id": "honesty", "label": "Honesty", "color": "blue" },
-    { "id": "play", "label": "Play", "color": "yellow" },
-    { "id": "peace", "label": "Peace", "color": "purple" },
-    { "id": "autonomy", "label": "Autonomy", "color": "orange" },
-    { "id": "meaning", "label": "Meaning", "color": "indigo" }
-  ],
-  "needs": [
-    {
-      "id": "acceptance",
-      "label": "Acceptance",
-      "category": "connection",
-      "description": "To be received as we are, without conditions",
-      "examples": ["Being welcomed without proving yourself"],
-      "reflectionQuestions": ["Where do I feel most accepted?"],
-      "relatedFeelingsMet": ["peaceful", "content", "grateful"],
-      "relatedFeelingsUnmet": ["lonely", "sad", "hurt"]
-    }
-  ]
-}
-```
+**Main Implementation**: `src/pages/Practice.vue`
+- Tab-based navigation with highlighted first letters (G, O, F, N, R)
+- Breadcrumb navigation between steps
+- AI Plan generation for goals
+- PDF export of GOFNR roadmap
+
+---
+
+## Splash Screen Animation
+
+**File**: `src/components/SplashScreen.vue`
+
+### Animation Sequence (3.5 seconds)
+1. **0-200ms**: Letters appear scrambled/scattered
+2. **200-1000ms**: Letters animate into place spelling "FEELINGS" and "NEEDS"
+3. **1000ms+**: Circles merge together
+4. **Center circle**: Rotating NVC benefits appear
+
+### Rotating Benefits
+- Deeper Connection
+- True Understanding
+- Peaceful Resolution
+- Authentic Expression
+- Compassionate Listening
+- Emotional Clarity
+- Stronger Relationships
+- Inner Peace
+- Mutual Respect
+- Heartfelt Communication
+- Empathy & Growth
+- Healing Conversations
+
+Benefits rotate every 800ms with fade up/down transitions.
+
+**Note**: Only shows once per session (uses sessionStorage).
+**To test**: Run `sessionStorage.removeItem('splash_shown')` in console, then refresh.
+
+---
+
+## Routes (31 total)
+
+### Main Pages
+| Route | Component |
+|-------|-----------|
+| `/` | Home.vue |
+| `/about` | About.vue |
+| `/services` | Services.vue |
+| `/approach` | Approach.vue |
+| `/practice` | Practice.vue |
+| `/groups` | Groups.vue |
+| `/resources` | Resources.vue |
+| `/contact` | Contact.vue |
+| `/privacy` | Privacy.vue |
+
+### Practice Sub-pages (GOFNR)
+| Route | Component |
+|-------|-----------|
+| `/practice/goals` | Goals.vue |
+| `/practice/observation` | Observation.vue |
+| `/practice/feelings` | Feelings.vue |
+| `/practice/needs` | Needs.vue |
+| `/practice/request` | Request.vue |
+| `/practice/scenarios` | Scenarios.vue |
+| `/history` | History.vue |
+| `/progress` | Progress.vue |
+
+### Service Sub-pages
+| Route | Component |
+|-------|-----------|
+| `/services/individual` | Individual.vue |
+| `/services/couples` | Couples.vue |
+| `/services/groups` | GroupsWorkshops.vue |
+| `/services/workplace` | Workplace.vue |
+
+### Approach Sub-pages
+| Route | Component |
+|-------|-----------|
+| `/approach/emotional-intelligence` | EmotionalIntelligence.vue |
+| `/approach/nvc` | NVC.vue |
+| `/approach/ifs` | IFS.vue |
+| `/approach/mindfulness` | Mindfulness.vue |
+| `/approach/attitudinal-healing` | AttitudinalHealing.vue |
+| `/approach/conflict-resolution` | ConflictResolution.vue |
+| `/approach/outcomes` | Outcomes.vue |
+
+### Group Sub-pages
+| Route | Component |
+|-------|-----------|
+| `/groups/nvc-foundations` | NVCFoundations.vue |
+| `/groups/mindful-communication` | MindfulCommunication.vue |
+| `/groups/repair-after-conflict` | RepairAfterConflict.vue |
+
+---
 
 ## Key Components
 
-### EmotionWheel (NEW)
+### EmotionWheel
+Interactive feelings explorer:
+- Two categories: "Needs Met" (emerald) and "Needs Unmet" (indigo)
+- Three intensity levels per category (high, medium, low)
+- Visual ring-based SVG layout
+- Multi-select up to 5 feelings
+- Hover tooltips with body sensations
+- Related needs mapping
 
-Interactive wheel for exploring feelings with progressive disclosure:
-
-1. **Overview Mode**: Shows 3 concentric rings by intensity (Subtle, Moderate, Strong)
-2. **Expanded Mode**: Click a ring to see all feelings at that intensity
-3. **Features**:
-   - YOU at center
-   - Met/Unmet toggle with animated color transition
-   - Hover tooltips with body sensations
-   - Multi-select up to 5 feelings
-   - Staggered entrance animations
-
-### NeedsWheel (NEW)
-
-Interactive wheel for exploring needs by category:
-
-1. **Overview Mode**: Shows 7 category nodes (Connection, Physical, Honesty, Play, Peace, Autonomy, Meaning)
-2. **Expanded Mode**: Click a category to see all needs in it
-3. **Features**:
-   - Category icons and colors
-   - Count badges showing needs per category
-   - Hover tooltips with examples and reflection questions
-   - Multi-select up to 5 needs
+### NeedsWheel
+Universal human needs explorer with 7 categories:
+- Connection (pink)
+- Autonomy (green)
+- Meaning (blue)
+- Well-being (yellow)
+- Honesty (purple)
+- Peace (orange)
+- Play (indigo)
 
 ### ChatInterface
-
 AI-powered NVC practice chat:
+- Real-time messaging with Claude AI
+- Conversation history for context
+- Feeling/need suggestions from responses
+- Follow-up prompts
+- Crisis detection with safety resources
+- Session persistence to localStorage
 
-- OFNR framework guidance (Observation, Feeling, Need, Request)
-- Crisis detection and appropriate responses
-- Context-aware based on selected feelings/needs
-- Session history and summaries
+### ScrambledText
+Reusable letter animation component:
+- Letters start at random positions with random rotations
+- Animate smoothly into place
+- Configurable delay, duration, stagger
+- Highlight first letter option
+
+---
+
+## AI System
+
+### Frontend Composable
+**File**: `src/composables/useAI.js`
+
+- `useAI()` - Real API integration
+- `useMockAI()` - Development/demo fallback
+
+**Features**:
+- Session management
+- Conversation history passed to backend
+- localStorage persistence (max 10 sessions)
+- Crisis detection handling
+
+### Backend Routes
+**File**: `server/routes/ai.js`
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/ai/session` | Create new session |
+| POST | `/api/ai/chat` | Send message (with history) |
+| GET | `/api/ai/session/:id/summary` | Get OFNR extraction |
+
+**Model**: `claude-sonnet-4-20250514`
+
+**System Prompt** includes:
+- NVC facilitator role
+- OFNR framework guidance
+- Feeling vs faux-feeling distinction
+- Crisis detection keywords
+- Response format guidelines
+
+---
+
+## Data Models
+
+### Feeling
+```json
+{
+  "id": "frustrated",
+  "label": "Frustrated",
+  "category": "needs_unmet",
+  "intensity": "medium",
+  "bodySensations": ["tension", "heat"],
+  "relatedNeeds": ["effectiveness", "progress"],
+  "description": "Blocked from achieving goals"
+}
+```
+
+### Need
+```json
+{
+  "id": "connection",
+  "label": "Connection",
+  "category": "connection",
+  "description": "To feel close to others...",
+  "examples": ["Being truly heard"],
+  "reflectionQuestions": ["Where do I feel most connected?"]
+}
+```
+
+### Scenario
+```json
+{
+  "id": "workplace-feedback",
+  "title": "Receiving Difficult Feedback",
+  "description": "Your manager gives critical feedback...",
+  "category": "workplace",
+  "difficulty": "beginner",
+  "suggestedFeelings": ["hurt", "anxious", "frustrated"],
+  "suggestedNeeds": ["respect", "competence", "understanding"],
+  "practiceGoals": ["Identify observation vs evaluation"]
+}
+```
+
+---
 
 ## Design System
 
-### Colors (Tailwind tokens)
-
+### Colors (Tailwind)
 ```javascript
-// Brand (nature green)
-brand: { 50: '#f0fdf4', 500: '#22c55e', 700: '#15803d' }
+brand: { 50-900 }           // Nature green for CTAs
+earth: { 50-900 }           // Golden/warm secondary
+sage: { 50-900 }            // Forest green neutrals
 
-// Feelings
 feeling: {
-  met: { light: '#ecfdf5', DEFAULT: '#10b981' },    // Emerald
-  unmet: { light: '#f0f9ff', DEFAULT: '#6366f1' }   // Indigo
+  met: '#10b981',           // Emerald
+  unmet: '#6366f1'          // Indigo
 }
 
-// Need categories
 need: {
-  connection: '#ec4899',  // Pink
-  physical: '#22c55e',    // Green
-  honesty: '#3b82f6',     // Blue
-  play: '#eab308',        // Yellow
-  peace: '#a855f7',       // Purple
-  autonomy: '#f97316',    // Orange
-  meaning: '#6366f1'      // Indigo
-}
-
-// Intensity
-intensity: {
-  high: '#ef4444',        // Red
-  medium: '#f59e0b',      // Amber
-  low: '#3b82f6'          // Blue
+  connection: '#ec4899',    // Pink
+  physical: '#22c55e',      // Green
+  honesty: '#3b82f6',       // Blue
+  play: '#eab308',          // Yellow
+  peace: '#a855f7',         // Purple
+  autonomy: '#f97316',      // Orange
+  meaning: '#6366f1'        // Indigo
 }
 ```
 
-### Animations
+---
 
-- **Breathing rings**: Subtle scale pulsing on wheel backgrounds
-- **Staggered entrance**: Nodes animate in sequentially with spring physics
-- **Hover scale**: 1.15x scale on hover
-- **Selection glow**: Pulsing glow effect on selected items
-- **View transitions**: Fade + scale between overview/expanded modes
+## PDF Generation
 
-## API Endpoints
+**Script**: `scripts/generate-pdfs.js`
 
-### POST /api/ai/session
-Create new practice session
+Uses Puppeteer to:
+1. Generate individual PDFs for all 31 routes
+2. Verify each PDF (size, structure, page count)
+3. Combine into `cindyzody-complete-site.pdf` with title page
 
-```json
-{
-  "type": "self-empathy",
-  "feelings": [{ "id": "frustrated", "label": "Frustrated" }],
-  "needs": [{ "id": "respect", "label": "Respect" }]
-}
+**Commands**:
+```bash
+# Full generation
+node scripts/generate-pdfs.js --base-url http://localhost:PORT
+
+# Verify and combine only
+node scripts/generate-pdfs.js --verify-only
 ```
 
-### POST /api/ai/chat
-Send message in active session
+**Output**: `pdfs/` directory
+- 31 individual page PDFs
+- 1 combined PDF (121 pages, ~24MB)
 
-```json
-{
-  "sessionId": "uuid",
-  "message": "I had a conflict with my colleague..."
-}
-```
+**Note**: `home.pdf` excluded from combined PDF due to intro animations.
 
-### POST /api/contact
-Submit contact form
-
-### POST /api/schedule
-Request coaching session
+---
 
 ## Development
 
@@ -230,16 +391,46 @@ npm install
 # Run dev server (Express + Vite concurrent)
 npm run dev
 
+# Frontend only
+npm run dev:client
+
+# Backend only
+npm run dev:server
+
 # Build for production
 npm run build
 
-# Start production server
-npm start
+# Preview production
+npm run preview
 ```
 
 ### Ports
 - **21000**: Express API server
-- **21001**: Vite dev server (proxies /api to 21000)
+- **21001+**: Vite dev server (auto-increments if busy)
+
+---
+
+## Environment Variables
+
+```bash
+# Site
+VITE_SITE_NAME="Cindy Zody — Communications Practitioner"
+VITE_SITE_URL="https://www.cindyzody.com"
+
+# Analytics
+VITE_GA_ID=""                    # Google Analytics 4
+VITE_META_PIXEL_ID=""            # Meta/Facebook Pixel
+VITE_LINKEDIN_PARTNER_ID=""      # LinkedIn Insight
+
+# API
+VITE_API_URL=""                  # Backend API URL
+
+# Backend
+ANTHROPIC_API_KEY=""             # Required for AI chat
+PORT=21000                       # Server port
+```
+
+---
 
 ## Deployment (Render)
 
@@ -258,29 +449,43 @@ services:
         sync: false
 ```
 
-## NVC Framework Reference
+---
 
-### OFNR Process
-1. **Observation**: What happened (without judgment)
-2. **Feeling**: What you're feeling
-3. **Need**: The underlying need
-4. **Request**: A specific, actionable request
+## Recent Updates (January 2025)
 
-### Feeling vs Faux-Feeling
-- **Real feelings**: Internal states (angry, sad, joyful)
-- **Faux feelings**: Thoughts disguised as feelings (abandoned, attacked, betrayed)
-  - These imply what someone did TO you
-  - The app helps translate faux feelings to real feelings
+1. **GOFNR Flow Enhancement**
+   - Added Observations step between Goals and Feelings
+   - Added Request step after Needs
+   - Breadcrumb navigation showing previous step
+   - First letters highlighted in green (G, O, F, N, R)
 
-## Future Considerations
+2. **Splash Screen Animation**
+   - Full "FEELINGS" and "NEEDS" words (not just F/N)
+   - Scrambled letters animate into place
+   - Rotating NVC benefits in center overlap
+   - Extended duration (3.5 seconds)
 
-### Strategic Partnerships Researched
-- **King Center Nonviolence365**: Legitimate potential partnership for Kingian Nonviolence integration
-- **Dr. Aaron Gibson**: Research inconclusive on NVC practice connection
+3. **AI Improvements**
+   - Conversation history passed to backend
+   - Better context for coherent multi-turn conversations
 
-### Potential Enhancements
-- Guided meditation integration
-- Progress tracking over time
-- Community/group practice features
-- Mobile app (React Native)
-- Integration with scheduling tools (Calendly, etc.)
+4. **PDF Generation**
+   - Automated Puppeteer script for all pages
+   - Verification loop checking file size and structure
+   - Combined PDF with custom title page
+   - Home page excluded (animation issues)
+
+5. **Example Scenarios**
+   - Standalone Scenarios page (`/practice/scenarios`)
+   - Dropdown in Goals to start from examples
+   - Categories: Self, Workplace, Family, Romantic, Friendship
+
+---
+
+## Contact
+
+**Cindy Zody**
+Communications Practitioner
+- Email: cindyzody@gmail.com
+- Phone: (206) 992-5992
+- Website: https://www.cindyzody.com

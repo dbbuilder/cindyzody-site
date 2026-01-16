@@ -628,7 +628,7 @@ Feelings & Needs is your daily companion for practicing Nonviolent Communication
 • Build your emotional vocabulary over time
 • Track your practice streak and progress
 
-Developed in partnership with Cindy Zody, a certified NVC practitioner, Feelings & Needs brings the principles of compassionate communication to your pocket.
+Developed in partnership with Cindy Zody, an experienced NVC & IFS practitioner, Feelings & Needs brings the principles of compassionate communication to your pocket.
 
 Features:
 - Comprehensive feelings and needs inventories
