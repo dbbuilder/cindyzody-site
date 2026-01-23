@@ -86,14 +86,35 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
 
-// Serve static files in production
+// Serve static files in production with cache control
 if (process.env.NODE_ENV === 'production') {
   const distPath = join(__dirname, '../dist')
-  app.use(express.static(distPath))
 
-  // SPA fallback - serve index.html for all non-API routes
+  // Static assets with content hashes - cache for 1 year
+  app.use('/assets', express.static(join(distPath, 'assets'), {
+    maxAge: '1y',
+    immutable: true
+  }))
+
+  // Other static files (favicon, etc.) - cache for 1 day
+  app.use(express.static(distPath, {
+    maxAge: '1d',
+    setHeaders: (res, path) => {
+      // Never cache index.html to ensure fresh content
+      if (path.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
+        res.setHeader('Pragma', 'no-cache')
+        res.setHeader('Expires', '0')
+      }
+    }
+  }))
+
+  // SPA fallback - serve index.html for all non-API routes (no cache)
   app.get('*', (req, res) => {
     if (!req.path.startsWith('/api')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
+      res.setHeader('Pragma', 'no-cache')
+      res.setHeader('Expires', '0')
       res.sendFile(join(distPath, 'index.html'))
     }
   })
