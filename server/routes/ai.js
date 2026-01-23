@@ -1,11 +1,14 @@
 /**
  * AI Chat API routes for NVC practice
+ * Protected with optional Clerk authentication (applied in server/index.js)
  */
 
 import { Router } from 'express'
 import { randomUUID } from 'crypto'
+import logger from '../utils/logger.js'
 
 const router = Router()
+const aiLogger = logger.child({ module: 'ai' })
 
 // NVC System Prompt
 const NVC_SYSTEM_PROMPT = `You are a compassionate NVC (Nonviolent Communication) facilitator helping someone practice the OFNR framework: Observation, Feeling, Need, Request.
@@ -134,7 +137,7 @@ router.post('/session', async (req, res) => {
       createdAt: new Date().toISOString()
     })
   } catch (error) {
-    console.error('Session API error:', error)
+    aiLogger.error('Session API error', { error: error.message })
     res.status(500).json({ error: 'Internal server error' })
   }
 })
@@ -151,6 +154,10 @@ router.post('/chat', async (req, res) => {
       return res.status(400).json({ error: 'Message is required' })
     }
 
+    // Log request with auth status (for monitoring/debugging)
+    const userId = req.user?.id || 'anonymous'
+    aiLogger.debug('Chat request', { userId, sessionId, authenticated: req.isAuthenticated })
+
     // Check for crisis content
     if (detectCrisis(message)) {
       return res.json({
@@ -163,7 +170,7 @@ router.post('/chat', async (req, res) => {
     // Get API key from environment
     const apiKey = process.env.ANTHROPIC_API_KEY
     if (!apiKey) {
-      console.error('ANTHROPIC_API_KEY not configured')
+      aiLogger.error('ANTHROPIC_API_KEY not configured')
       return res.status(500).json({ error: 'AI service not configured' })
     }
 
@@ -202,7 +209,7 @@ router.post('/chat', async (req, res) => {
 
     if (!response.ok) {
       const errorData = await response.text()
-      console.error('Claude API error:', errorData)
+      aiLogger.error('Claude API error', { status: response.status, error: errorData })
       return res.status(500).json({ error: 'AI service error' })
     }
 
@@ -218,7 +225,7 @@ router.post('/chat', async (req, res) => {
       crisisDetected: false
     })
   } catch (error) {
-    console.error('Chat API error:', error)
+    aiLogger.error('Chat API error', { error: error.message, stack: error.stack })
     res.status(500).json({ error: 'Internal server error' })
   }
 })
@@ -327,7 +334,7 @@ Respond in this exact JSON format:
       generatedAt: new Date().toISOString()
     })
   } catch (error) {
-    console.error('Session summary error:', error)
+    aiLogger.error('Session summary error', { error: error.message })
     res.status(500).json({ error: 'Failed to generate summary' })
   }
 })

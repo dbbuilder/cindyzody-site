@@ -8,8 +8,10 @@ import {
   saveCheckIn,
   getCheckIns
 } from '../services/database.js'
+import logger from '../utils/logger.js'
 
 const router = Router()
+const progressLogger = logger.child({ module: 'progress' })
 
 /**
  * Get user progress
@@ -27,7 +29,7 @@ router.get('/', async (req, res) => {
 
     res.json({ progress })
   } catch (error) {
-    console.error('Get progress error:', error)
+    progressLogger.error('Get progress error', { error: error.message })
     res.status(500).json({ error: 'Failed to get progress' })
   }
 })
@@ -70,7 +72,7 @@ router.post('/check-in', async (req, res) => {
       progress
     })
   } catch (error) {
-    console.error('Save check-in error:', error)
+    progressLogger.error('Save check-in error', { error: error.message })
     res.status(500).json({ error: 'Failed to save check-in' })
   }
 })
@@ -96,7 +98,7 @@ router.get('/check-ins', async (req, res) => {
 
     res.json({ checkIns })
   } catch (error) {
-    console.error('Get check-ins error:', error)
+    progressLogger.error('Get check-ins error', { error: error.message })
     res.status(500).json({ error: 'Failed to get check-ins' })
   }
 })
@@ -164,7 +166,7 @@ router.get('/insights', async (req, res) => {
 
     res.json({ insights })
   } catch (error) {
-    console.error('Get insights error:', error)
+    progressLogger.error('Get insights error', { error: error.message })
     res.status(500).json({ error: 'Failed to get insights' })
   }
 })

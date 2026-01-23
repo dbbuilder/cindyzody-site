@@ -3,7 +3,9 @@
     <SplashScreen />
     <Header />
     <main class="flex-1">
-      <RouterView />
+      <ErrorBoundary>
+        <RouterView />
+      </ErrorBoundary>
     </main>
     <Footer />
     <CookieConsent />
@@ -16,4 +18,5 @@ import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import CookieConsent from './components/CookieConsent.vue'
 import SplashScreen from './components/SplashScreen.vue'
+import ErrorBoundary from './components/ErrorBoundary.vue'
 </script>

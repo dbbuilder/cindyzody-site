@@ -5,8 +5,10 @@
 import { Router } from 'express'
 import { sendContactNotification, sendContactConfirmation } from '../services/email.js'
 import { saveContact } from '../services/database.js'
+import logger from '../utils/logger.js'
 
 const router = Router()
+const contactLogger = logger.child({ module: 'contact' })
 
 // Email validation regex
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -31,38 +33,32 @@ router.post('/', async (req, res) => {
     const name = [firstName, lastName].filter(Boolean).join(' ') || 'Anonymous'
 
     // Log the inquiry
-    console.log('New contact form submission:', {
-      name,
-      email,
-      phone,
-      messageLength: message.length,
-      timestamp: new Date().toISOString()
-    })
+    contactLogger.info('New contact form submission', { name, email, phone, messageLength: message.length })
 
     // Save to database
     try {
       const { id } = saveContact({ name, email, phone, message })
-      console.log('Contact saved to database, id:', id)
+      contactLogger.debug('Contact saved to database', { id })
     } catch (dbError) {
-      console.error('Failed to save contact to database:', dbError)
+      contactLogger.error('Failed to save contact to database', { error: dbError.message })
       // Continue - don't fail the request if DB save fails
     }
 
     // Send notification email to Cindy
     try {
       await sendContactNotification({ name, email, phone, message })
-      console.log('Contact notification email sent to Cindy')
+      contactLogger.debug('Contact notification email sent')
     } catch (emailError) {
-      console.error('Failed to send notification email:', emailError)
+      contactLogger.error('Failed to send notification email', { error: emailError.message })
       // Continue - don't fail the request if email fails
     }
 
     // Send confirmation email to submitter
     try {
       await sendContactConfirmation({ name, email })
-      console.log('Confirmation email sent to:', email)
+      contactLogger.debug('Confirmation email sent', { email })
     } catch (emailError) {
-      console.error('Failed to send confirmation email:', emailError)
+      contactLogger.error('Failed to send confirmation email', { error: emailError.message })
       // Continue - don't fail the request if email fails
     }
 
@@ -71,7 +67,7 @@ router.post('/', async (req, res) => {
       message: 'Thank you for your inquiry. We will respond shortly.'
     })
   } catch (error) {
-    console.error('Contact form error:', error)
+    contactLogger.error('Contact form error', { error: error.message })
     res.status(500).json({ error: 'Internal server error' })
   }
 })

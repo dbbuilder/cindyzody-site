@@ -11,8 +11,10 @@ import {
   deleteSession,
   updateProgressOnSession
 } from '../services/database.js'
+import logger from '../utils/logger.js'
 
 const router = Router()
+const sessionsLogger = logger.child({ module: 'sessions' })
 
 /**
  * Create a new session
@@ -46,7 +48,7 @@ router.post('/', async (req, res) => {
       createdAt: new Date().toISOString()
     })
   } catch (error) {
-    console.error('Create session error:', error)
+    sessionsLogger.error('Create session error', { error: error.message })
     res.status(500).json({ error: 'Failed to create session' })
   }
 })
@@ -72,7 +74,7 @@ router.get('/', async (req, res) => {
 
     res.json({ sessions })
   } catch (error) {
-    console.error('Get sessions error:', error)
+    sessionsLogger.error('Get sessions error', { error: error.message })
     res.status(500).json({ error: 'Failed to get sessions' })
   }
 })
@@ -93,7 +95,7 @@ router.get('/:id', async (req, res) => {
 
     res.json({ session })
   } catch (error) {
-    console.error('Get session error:', error)
+    sessionsLogger.error('Get session error', { error: error.message })
     res.status(500).json({ error: 'Failed to get session' })
   }
 })
@@ -134,7 +136,7 @@ router.put('/:id', async (req, res) => {
 
     res.json({ message: 'Session updated' })
   } catch (error) {
-    console.error('Update session error:', error)
+    sessionsLogger.error('Update session error', { error: error.message })
     res.status(500).json({ error: 'Failed to update session' })
   }
 })
@@ -156,7 +158,7 @@ router.delete('/:id', async (req, res) => {
 
     res.json({ message: 'Session deleted' })
   } catch (error) {
-    console.error('Delete session error:', error)
+    sessionsLogger.error('Delete session error', { error: error.message })
     res.status(500).json({ error: 'Failed to delete session' })
   }
 })

@@ -5,8 +5,10 @@
 import { Router } from 'express'
 import { sendAppointmentNotification, sendAppointmentConfirmation } from '../services/email.js'
 import { saveAppointment } from '../services/database.js'
+import logger from '../utils/logger.js'
 
 const router = Router()
+const scheduleLogger = logger.child({ module: 'schedule' })
 
 // Email validation regex
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -57,7 +59,12 @@ router.post('/', async (req, res) => {
     }
 
     // Log the appointment
-    console.log('New appointment scheduled:', JSON.stringify(appointmentData, null, 2))
+    scheduleLogger.info('New appointment scheduled', {
+      id: appointmentData.id,
+      service: appointmentData.service.name,
+      date: formattedDate,
+      clientEmail: appointmentData.client.email
+    })
 
     // Save to database
     try {
@@ -69,9 +76,9 @@ router.post('/', async (req, res) => {
         client: appointmentData.client,
         status: 'pending'
       })
-      console.log('Appointment saved to database, id:', appointmentData.id)
+      scheduleLogger.debug('Appointment saved to database', { id: appointmentData.id })
     } catch (dbError) {
-      console.error('Failed to save appointment to database:', dbError)
+      scheduleLogger.error('Failed to save appointment to database', { error: dbError.message })
       // Continue - don't fail the request if DB save fails
     }
 
@@ -83,9 +90,9 @@ router.post('/', async (req, res) => {
         time: formattedTime,
         client: appointmentData.client
       })
-      console.log('Appointment notification email sent to Cindy')
+      scheduleLogger.debug('Appointment notification email sent')
     } catch (emailError) {
-      console.error('Failed to send appointment notification:', emailError)
+      scheduleLogger.error('Failed to send appointment notification', { error: emailError.message })
     }
 
     // Send confirmation email to client
@@ -96,9 +103,9 @@ router.post('/', async (req, res) => {
         time: formattedTime,
         client: appointmentData.client
       })
-      console.log('Appointment confirmation sent to:', appointmentData.client.email)
+      scheduleLogger.debug('Appointment confirmation sent', { email: appointmentData.client.email })
     } catch (emailError) {
-      console.error('Failed to send appointment confirmation:', emailError)
+      scheduleLogger.error('Failed to send appointment confirmation', { error: emailError.message })
     }
 
     res.json({
@@ -112,7 +119,7 @@ router.post('/', async (req, res) => {
       }
     })
   } catch (error) {
-    console.error('Scheduling error:', error)
+    scheduleLogger.error('Scheduling error', { error: error.message })
     res.status(500).json({
       error: 'Failed to schedule appointment',
       message: 'Please try again or contact us directly'

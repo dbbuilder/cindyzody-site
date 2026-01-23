@@ -7,6 +7,9 @@ import Database from 'better-sqlite3'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { mkdirSync, existsSync } from 'fs'
+import logger from '../utils/logger.js'
+
+const dbLogger = logger.child({ module: 'database' })
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -30,8 +33,7 @@ function getDatabasePath() {
       mkdirSync(dbDir, { recursive: true })
       return process.env.DATABASE_PATH
     } catch (err) {
-      console.warn(`[Database] Cannot use DATABASE_PATH (${dbDir}): ${err.message}`)
-      console.warn('[Database] Falling back to project directory')
+      dbLogger.warn('Cannot use DATABASE_PATH, falling back to project directory', { path: dbDir, error: err.message })
       // Fall through to use project directory
     }
   }
@@ -53,7 +55,7 @@ if (!existsSync(DB_DIR)) {
   mkdirSync(DB_DIR, { recursive: true })
 }
 
-console.log(`[Database] Using SQLite at: ${DB_PATH}`)
+dbLogger.info('Using SQLite database', { path: DB_PATH })
 
 // Initialize database connection
 const db = new Database(DB_PATH)

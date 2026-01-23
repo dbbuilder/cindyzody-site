@@ -9,6 +9,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import logger from './utils/logger.js'
 
 // Import route handlers
 import contactRouter from './routes/contact.js'
@@ -16,6 +17,7 @@ import scheduleRouter from './routes/schedule.js'
 import aiRouter from './routes/ai.js'
 import sessionsRouter from './routes/sessions.js'
 import progressRouter from './routes/progress.js'
+import { optionalAuth } from './middleware/auth.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -50,10 +52,19 @@ const scheduleLimiter = rateLimit({
   legacyHeaders: false
 })
 
+// AI rate limiter with tiered limits based on authentication
+// Authenticated users: 30/min, Anonymous users: 10/min
 const aiLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 20, // 20 AI messages per minute
-  message: { error: 'Too many requests. Please slow down.' },
+  max: (req) => {
+    // After auth middleware runs, check if user is authenticated
+    return req.isAuthenticated ? 30 : 10
+  },
+  keyGenerator: (req) => {
+    // Use user ID for authenticated users, IP for anonymous
+    return req.user?.id || req.ip
+  },
+  message: { error: 'Too many requests. Please slow down or sign in for higher limits.' },
   standardHeaders: true,
   legacyHeaders: false
 })
@@ -61,7 +72,8 @@ const aiLimiter = rateLimit({
 // API Routes with rate limiting
 app.use('/api/contact', contactLimiter, contactRouter)
 app.use('/api/schedule', scheduleLimiter, scheduleRouter)
-app.use('/api/ai', aiLimiter, aiRouter)
+// AI routes: auth middleware runs first for tiered rate limiting
+app.use('/api/ai', optionalAuth, aiLimiter, aiRouter)
 app.use('/api/sessions', sessionsRouter)
 app.use('/api/progress', progressRouter)
 
@@ -85,7 +97,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Server error:', err)
+  logger.error('Server error', { error: err.message, stack: err.stack })
   res.status(500).json({
     error: 'Internal server error',
     message: process.env.NODE_ENV === 'development' ? err.message : undefined
@@ -93,8 +105,7 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`)
+  logger.info('Server started', { port: PORT, env: process.env.NODE_ENV || 'development' })
 })
 
 export default app

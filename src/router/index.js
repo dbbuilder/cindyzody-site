@@ -1,43 +1,51 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Home from '../pages/Home.vue'
-import About from '../pages/About.vue'
-import Services from '../pages/Services.vue'
-import Approach from '../pages/Approach.vue'
-import EmotionalIntelligence from '../pages/approach/EmotionalIntelligence.vue'
-import NVC from '../pages/approach/NVC.vue'
-import IFS from '../pages/approach/IFS.vue'
-import Mindfulness from '../pages/approach/Mindfulness.vue'
-import AttitudinalHealing from '../pages/approach/AttitudinalHealing.vue'
-import ConflictResolution from '../pages/approach/ConflictResolution.vue'
-import Outcomes from '../pages/approach/Outcomes.vue'
-import Practice from '../pages/Practice.vue'
-import History from '../pages/History.vue'
-import Progress from '../pages/Progress.vue'
-import Groups from '../pages/Groups.vue'
-import Resources from '../pages/Resources.vue'
-import Contact from '../pages/Contact.vue'
-import Privacy from '../pages/Privacy.vue'
-import AuthCallback from '../pages/AuthCallback.vue'
+/**
+ * Lazy-loaded route components for code splitting
+ * Each page is loaded only when navigated to
+ */
+
+// Main pages
+const Home = () => import('../pages/Home.vue')
+const About = () => import('../pages/About.vue')
+const Services = () => import('../pages/Services.vue')
+const Approach = () => import('../pages/Approach.vue')
+const Practice = () => import('../pages/Practice.vue')
+const History = () => import('../pages/History.vue')
+const Progress = () => import('../pages/Progress.vue')
+const Groups = () => import('../pages/Groups.vue')
+const Resources = () => import('../pages/Resources.vue')
+const Contact = () => import('../pages/Contact.vue')
+const Privacy = () => import('../pages/Privacy.vue')
+const AuthCallback = () => import('../pages/AuthCallback.vue')
+
+// Approach sub-pages
+const EmotionalIntelligence = () => import('../pages/approach/EmotionalIntelligence.vue')
+const NVC = () => import('../pages/approach/NVC.vue')
+const IFS = () => import('../pages/approach/IFS.vue')
+const Mindfulness = () => import('../pages/approach/Mindfulness.vue')
+const AttitudinalHealing = () => import('../pages/approach/AttitudinalHealing.vue')
+const ConflictResolution = () => import('../pages/approach/ConflictResolution.vue')
+const Outcomes = () => import('../pages/approach/Outcomes.vue')
 
 // Services sub-pages
-import ServicesIndividual from '../pages/services/Individual.vue'
-import ServicesCouples from '../pages/services/Couples.vue'
-import ServicesGroups from '../pages/services/GroupsWorkshops.vue'
-import ServicesWorkplace from '../pages/services/Workplace.vue'
+const ServicesIndividual = () => import('../pages/services/Individual.vue')
+const ServicesCouples = () => import('../pages/services/Couples.vue')
+const ServicesGroups = () => import('../pages/services/GroupsWorkshops.vue')
+const ServicesWorkplace = () => import('../pages/services/Workplace.vue')
 
 // Groups sub-pages
-import GroupsNVCFoundations from '../pages/groups/NVCFoundations.vue'
-import GroupsMindfulCommunication from '../pages/groups/MindfulCommunication.vue'
-import GroupsRepairAfterConflict from '../pages/groups/RepairAfterConflict.vue'
+const GroupsNVCFoundations = () => import('../pages/groups/NVCFoundations.vue')
+const GroupsMindfulCommunication = () => import('../pages/groups/MindfulCommunication.vue')
+const GroupsRepairAfterConflict = () => import('../pages/groups/RepairAfterConflict.vue')
 
 // Practice GOFNR step pages
-import PracticeGoals from '../pages/practice/Goals.vue'
-import PracticeObservation from '../pages/practice/Observation.vue'
-import PracticeFeelings from '../pages/practice/Feelings.vue'
-import PracticeNeeds from '../pages/practice/Needs.vue'
-import PracticeRequest from '../pages/practice/Request.vue'
-import PracticeScenarios from '../pages/practice/Scenarios.vue'
+const PracticeGoals = () => import('../pages/practice/Goals.vue')
+const PracticeObservation = () => import('../pages/practice/Observation.vue')
+const PracticeFeelings = () => import('../pages/practice/Feelings.vue')
+const PracticeNeeds = () => import('../pages/practice/Needs.vue')
+const PracticeRequest = () => import('../pages/practice/Request.vue')
+const PracticeScenarios = () => import('../pages/practice/Scenarios.vue')
 
 const routes = [
   { path: '/', component: Home },
