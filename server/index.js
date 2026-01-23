@@ -6,10 +6,12 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import rateLimit from 'express-rate-limit'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import logger from './utils/logger.js'
+import { RATE_LIMITS, SERVER, HTTP_STATUS } from './config/constants.js'
 
 // Import route handlers
 import contactRouter from './routes/contact.js'
@@ -18,15 +20,16 @@ import aiRouter from './routes/ai.js'
 import sessionsRouter from './routes/sessions.js'
 import progressRouter from './routes/progress.js'
 import { optionalAuth } from './middleware/auth.js'
+import { csrfProtection, csrfTokenHandler } from './middleware/csrf.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 const app = express()
-const PORT = process.env.PORT || 21000
+const PORT = process.env.PORT || SERVER.DEFAULT_PORT
 
 // Trust proxy for rate limiting behind reverse proxy (Render)
-app.set('trust proxy', 1)
+app.set('trust proxy', SERVER.TRUST_PROXY)
 
 // Middleware
 app.use(cors({
@@ -34,48 +37,49 @@ app.use(cors({
   credentials: true
 }))
 app.use(express.json())
+app.use(cookieParser())
 
-// Rate limiting configurations
+// CSRF token endpoint (must be before CSRF protection middleware)
+app.get('/api/csrf-token', csrfTokenHandler)
+
+// Rate limiting configurations using centralized constants
 const contactLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 requests per window
-  message: { error: 'Too many contact form submissions. Please try again later.' },
+  windowMs: RATE_LIMITS.CONTACT.WINDOW_MS,
+  max: RATE_LIMITS.CONTACT.MAX_REQUESTS,
+  message: { error: RATE_LIMITS.CONTACT.MESSAGE },
   standardHeaders: true,
   legacyHeaders: false
 })
 
 const scheduleLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10, // 10 appointment requests per hour
-  message: { error: 'Too many appointment requests. Please try again later.' },
+  windowMs: RATE_LIMITS.SCHEDULE.WINDOW_MS,
+  max: RATE_LIMITS.SCHEDULE.MAX_REQUESTS,
+  message: { error: RATE_LIMITS.SCHEDULE.MESSAGE },
   standardHeaders: true,
   legacyHeaders: false
 })
 
 // AI rate limiter with tiered limits based on authentication
-// Authenticated users: 30/min, Anonymous users: 10/min
 const aiLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
+  windowMs: RATE_LIMITS.AI.WINDOW_MS,
   max: (req) => {
-    // After auth middleware runs, check if user is authenticated
-    return req.isAuthenticated ? 30 : 10
+    return req.isAuthenticated ? RATE_LIMITS.AI.MAX_AUTHENTICATED : RATE_LIMITS.AI.MAX_ANONYMOUS
   },
   keyGenerator: (req) => {
-    // Use user ID for authenticated users, IP for anonymous
     return req.user?.id || req.ip
   },
-  message: { error: 'Too many requests. Please slow down or sign in for higher limits.' },
+  message: { error: RATE_LIMITS.AI.MESSAGE },
   standardHeaders: true,
   legacyHeaders: false
 })
 
-// API Routes with rate limiting
-app.use('/api/contact', contactLimiter, contactRouter)
-app.use('/api/schedule', scheduleLimiter, scheduleRouter)
+// API Routes with rate limiting and CSRF protection
+app.use('/api/contact', csrfProtection, contactLimiter, contactRouter)
+app.use('/api/schedule', csrfProtection, scheduleLimiter, scheduleRouter)
 // AI routes: auth middleware runs first for tiered rate limiting
-app.use('/api/ai', optionalAuth, aiLimiter, aiRouter)
-app.use('/api/sessions', sessionsRouter)
-app.use('/api/progress', progressRouter)
+app.use('/api/ai', csrfProtection, optionalAuth, aiLimiter, aiRouter)
+app.use('/api/sessions', csrfProtection, sessionsRouter)
+app.use('/api/progress', csrfProtection, progressRouter)
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -98,7 +102,7 @@ if (process.env.NODE_ENV === 'production') {
 // Error handling middleware
 app.use((err, req, res, next) => {
   logger.error('Server error', { error: err.message, stack: err.stack })
-  res.status(500).json({
+  res.status(HTTP_STATUS.INTERNAL_ERROR).json({
     error: 'Internal server error',
     message: process.env.NODE_ENV === 'development' ? err.message : undefined
   })

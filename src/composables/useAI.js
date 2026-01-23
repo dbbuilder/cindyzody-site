@@ -1,4 +1,6 @@
 import { ref, computed, watch } from 'vue'
+import { csrfFetch } from './useCsrf'
+import { secureStorage } from '../utils/secureStorage'
 
 /**
  * AI Service Composable for NVC Practice
@@ -26,7 +28,7 @@ export function useAI() {
     error.value = null
 
     try {
-      const response = await fetch(`${apiBase.value}/ai/session`, {
+      const response = await csrfFetch(`${apiBase.value}/ai/session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type, feelings, needs, scenario })
@@ -82,7 +84,7 @@ export function useAI() {
         content: m.content
       }))
 
-      const response = await fetch(`${apiBase.value}/ai/chat`, {
+      const response = await csrfFetch(`${apiBase.value}/ai/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -159,45 +161,55 @@ export function useAI() {
   }
 
   /**
-   * Load messages from localStorage (for persistence)
+   * Load messages from secure storage (for persistence)
    */
-  function loadFromStorage(sessionId) {
-    const stored = localStorage.getItem(`nvc_session_${sessionId}`)
-    if (stored) {
-      try {
-        const data = JSON.parse(stored)
+  async function loadFromStorage(sessionId) {
+    try {
+      const data = await secureStorage.getItem(`nvc_session_${sessionId}`)
+      if (data) {
         currentSessionId.value = sessionId
         messages.value = data.messages || []
         return true
-      } catch {
-        return false
+      }
+    } catch {
+      // Fallback to unencrypted storage for backward compatibility
+      const stored = localStorage.getItem(`nvc_session_${sessionId}`)
+      if (stored) {
+        try {
+          const data = JSON.parse(stored)
+          currentSessionId.value = sessionId
+          messages.value = data.messages || []
+          return true
+        } catch {
+          return false
+        }
       }
     }
     return false
   }
 
   /**
-   * Save messages to localStorage
+   * Save messages to secure storage
    */
-  function saveToStorage() {
+  async function saveToStorage() {
     if (!currentSessionId.value) return
-    localStorage.setItem(`nvc_session_${currentSessionId.value}`, JSON.stringify({
+    await secureStorage.setItem(`nvc_session_${currentSessionId.value}`, {
       sessionId: currentSessionId.value,
       messages: messages.value,
       savedAt: new Date().toISOString()
-    }))
+    })
     // Also update recent sessions index
-    updateRecentSessionsIndex(currentSessionId.value)
+    await updateRecentSessionsIndex(currentSessionId.value)
   }
 
   /**
    * Update the index of recent sessions
    */
-  function updateRecentSessionsIndex(sessionId) {
+  async function updateRecentSessionsIndex(sessionId) {
     const indexKey = 'nvc_recent_sessions'
     let recent = []
     try {
-      recent = JSON.parse(localStorage.getItem(indexKey) || '[]')
+      recent = await secureStorage.getItem(indexKey) || []
     } catch {
       recent = []
     }
@@ -214,27 +226,27 @@ export function useAI() {
     // Keep only last 10 sessions
     recent = recent.slice(0, 10)
 
-    localStorage.setItem(indexKey, JSON.stringify(recent))
+    await secureStorage.setItem(indexKey, recent)
   }
 
   /**
    * Get list of recent sessions
    */
-  function getRecentSessions() {
+  async function getRecentSessions() {
     try {
-      const recent = JSON.parse(localStorage.getItem('nvc_recent_sessions') || '[]')
-      return recent.map(item => {
-        const sessionData = localStorage.getItem(`nvc_session_${item.id}`)
+      const recent = await secureStorage.getItem('nvc_recent_sessions') || []
+      const results = []
+      for (const item of recent) {
+        const sessionData = await secureStorage.getItem(`nvc_session_${item.id}`)
         if (sessionData) {
-          const data = JSON.parse(sessionData)
-          return {
+          results.push({
             ...item,
-            messageCount: data.messages?.length || 0,
-            savedAt: data.savedAt
-          }
+            messageCount: sessionData.messages?.length || 0,
+            savedAt: sessionData.savedAt
+          })
         }
-        return item
-      }).filter(s => localStorage.getItem(`nvc_session_${s.id}`))
+      }
+      return results
     } catch {
       return []
     }
@@ -243,8 +255,8 @@ export function useAI() {
   /**
    * Clear old sessions (keep only recent ones)
    */
-  function clearOldSessions() {
-    const recent = getRecentSessions()
+  async function clearOldSessions() {
+    const recent = await getRecentSessions()
     const recentIds = new Set(recent.map(s => s.id))
 
     // Find and remove any sessions not in recent list
@@ -253,16 +265,21 @@ export function useAI() {
       if (key?.startsWith('nvc_session_') && key !== 'nvc_recent_sessions') {
         const sessionId = key.replace('nvc_session_', '')
         if (!recentIds.has(sessionId)) {
-          localStorage.removeItem(key)
+          secureStorage.removeItem(key)
         }
       }
     }
   }
 
-  // Auto-save when messages change
+  // Auto-save when messages change (debounced async)
+  let saveTimeout = null
   watch(messages, () => {
     if (currentSessionId.value && messages.value.length > 0) {
-      saveToStorage()
+      // Debounce saves to avoid excessive writes
+      if (saveTimeout) clearTimeout(saveTimeout)
+      saveTimeout = setTimeout(() => {
+        saveToStorage()
+      }, 500)
     }
   }, { deep: true })
 

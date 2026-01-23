@@ -9,6 +9,7 @@ import {
   getCheckIns
 } from '../services/database.js'
 import logger from '../utils/logger.js'
+import { VALIDATION, HTTP_STATUS } from '../config/constants.js'
 
 const router = Router()
 const progressLogger = logger.child({ module: 'progress' })
@@ -22,7 +23,7 @@ router.get('/', async (req, res) => {
     const { userId, guestId } = req.query
 
     if (!userId && !guestId) {
-      return res.status(400).json({ error: 'userId or guestId required' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'userId or guestId required' })
     }
 
     const progress = getProgress(userId || guestId)
@@ -30,7 +31,7 @@ router.get('/', async (req, res) => {
     res.json({ progress })
   } catch (error) {
     progressLogger.error('Get progress error', { error: error.message })
-    res.status(500).json({ error: 'Failed to get progress' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to get progress' })
   }
 })
 
@@ -43,11 +44,11 @@ router.post('/check-in', async (req, res) => {
     const { userId, guestId, feelings, needs, energyLevel, notes } = req.body
 
     if (!userId && !guestId) {
-      return res.status(400).json({ error: 'userId or guestId required' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'userId or guestId required' })
     }
 
     if (!feelings || !Array.isArray(feelings) || feelings.length === 0) {
-      return res.status(400).json({ error: 'At least one feeling required' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'At least one feeling required' })
     }
 
     const date = new Date().toISOString().split('T')[0]
@@ -73,7 +74,7 @@ router.post('/check-in', async (req, res) => {
     })
   } catch (error) {
     progressLogger.error('Save check-in error', { error: error.message })
-    res.status(500).json({ error: 'Failed to save check-in' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to save check-in' })
   }
 })
 
@@ -83,10 +84,10 @@ router.post('/check-in', async (req, res) => {
  */
 router.get('/check-ins', async (req, res) => {
   try {
-    const { userId, guestId, limit = 30, offset = 0 } = req.query
+    const { userId, guestId, limit = VALIDATION.CHECK_IN_LIMIT_DEFAULT, offset = 0 } = req.query
 
     if (!userId && !guestId) {
-      return res.status(400).json({ error: 'userId or guestId required' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'userId or guestId required' })
     }
 
     const checkIns = getCheckIns({
@@ -99,7 +100,7 @@ router.get('/check-ins', async (req, res) => {
     res.json({ checkIns })
   } catch (error) {
     progressLogger.error('Get check-ins error', { error: error.message })
-    res.status(500).json({ error: 'Failed to get check-ins' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to get check-ins' })
   }
 })
 
@@ -112,7 +113,7 @@ router.get('/insights', async (req, res) => {
     const { userId, guestId } = req.query
 
     if (!userId && !guestId) {
-      return res.status(400).json({ error: 'userId or guestId required' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'userId or guestId required' })
     }
 
     const progress = getProgress(userId || guestId)
@@ -167,7 +168,7 @@ router.get('/insights', async (req, res) => {
     res.json({ insights })
   } catch (error) {
     progressLogger.error('Get insights error', { error: error.message })
-    res.status(500).json({ error: 'Failed to get insights' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to get insights' })
   }
 })
 

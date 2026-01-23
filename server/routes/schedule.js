@@ -6,12 +6,10 @@ import { Router } from 'express'
 import { sendAppointmentNotification, sendAppointmentConfirmation } from '../services/email.js'
 import { saveAppointment } from '../services/database.js'
 import logger from '../utils/logger.js'
+import { EMAIL_REGEX, VALIDATION, HTTP_STATUS } from '../config/constants.js'
 
 const router = Router()
 const scheduleLogger = logger.child({ module: 'schedule' })
-
-// Email validation regex
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 router.post('/', async (req, res) => {
   try {
@@ -19,15 +17,15 @@ router.post('/', async (req, res) => {
 
     // Validation
     if (!service || !date || !time || !client || !client.email || !client.consent) {
-      return res.status(400).json({ error: 'Missing required fields' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Missing required fields' })
     }
 
     if (!EMAIL_REGEX.test(client.email)) {
-      return res.status(400).json({ error: 'Invalid email format' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Invalid email format' })
     }
 
-    if (client.message && client.message.length > 2000) {
-      return res.status(400).json({ error: 'Message too long (max 2000 characters)' })
+    if (client.message && client.message.length > VALIDATION.MESSAGE_MAX_LENGTH) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: `Message too long (max ${VALIDATION.MESSAGE_MAX_LENGTH} characters)` })
     }
 
     // Format appointment data
@@ -120,7 +118,7 @@ router.post('/', async (req, res) => {
     })
   } catch (error) {
     scheduleLogger.error('Scheduling error', { error: error.message })
-    res.status(500).json({
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({
       error: 'Failed to schedule appointment',
       message: 'Please try again or contact us directly'
     })

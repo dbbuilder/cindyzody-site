@@ -6,6 +6,7 @@
 import { Router } from 'express'
 import { randomUUID } from 'crypto'
 import logger from '../utils/logger.js'
+import { HTTP_STATUS, AI_CONFIG } from '../config/constants.js'
 
 const router = Router()
 const aiLogger = logger.child({ module: 'ai' })
@@ -110,7 +111,7 @@ router.post('/session', async (req, res) => {
     // Validate session type
     const validTypes = ['self-empathy', 'empathy', 'prep', 'scenario']
     if (!validTypes.includes(type)) {
-      return res.status(400).json({ error: 'Invalid session type' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Invalid session type' })
     }
 
     // Generate session ID
@@ -138,7 +139,7 @@ router.post('/session', async (req, res) => {
     })
   } catch (error) {
     aiLogger.error('Session API error', { error: error.message })
-    res.status(500).json({ error: 'Internal server error' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Internal server error' })
   }
 })
 
@@ -151,7 +152,7 @@ router.post('/chat', async (req, res) => {
     const { sessionId, message, context = {} } = req.body
 
     if (!message) {
-      return res.status(400).json({ error: 'Message is required' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Message is required' })
     }
 
     // Log request with auth status (for monitoring/debugging)
@@ -171,7 +172,7 @@ router.post('/chat', async (req, res) => {
     const apiKey = process.env.ANTHROPIC_API_KEY
     if (!apiKey) {
       aiLogger.error('ANTHROPIC_API_KEY not configured')
-      return res.status(500).json({ error: 'AI service not configured' })
+      return res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'AI service not configured' })
     }
 
     // Build conversation context
@@ -200,8 +201,8 @@ router.post('/chat', async (req, res) => {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1024,
+        model: AI_CONFIG.MODEL,
+        max_tokens: AI_CONFIG.MAX_TOKENS,
         system: systemPrompt,
         messages: messages.slice(-10)
       })
@@ -210,7 +211,7 @@ router.post('/chat', async (req, res) => {
     if (!response.ok) {
       const errorData = await response.text()
       aiLogger.error('Claude API error', { status: response.status, error: errorData })
-      return res.status(500).json({ error: 'AI service error' })
+      return res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'AI service error' })
     }
 
     const data = await response.json()
@@ -226,7 +227,7 @@ router.post('/chat', async (req, res) => {
     })
   } catch (error) {
     aiLogger.error('Chat API error', { error: error.message, stack: error.stack })
-    res.status(500).json({ error: 'Internal server error' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Internal server error' })
   }
 })
 
@@ -300,8 +301,8 @@ Respond in this exact JSON format:
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1024,
+        model: AI_CONFIG.MODEL,
+        max_tokens: AI_CONFIG.MAX_TOKENS,
         messages: [{ role: 'user', content: summaryPrompt }]
       })
     })
@@ -335,7 +336,7 @@ Respond in this exact JSON format:
     })
   } catch (error) {
     aiLogger.error('Session summary error', { error: error.message })
-    res.status(500).json({ error: 'Failed to generate summary' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to generate summary' })
   }
 })
 
@@ -393,5 +394,69 @@ function extractSuggestions(text) {
 
   return suggestions
 }
+
+/**
+ * Generate GOFNR goal plan
+ * POST /api/ai/goal-plan
+ */
+router.post('/goal-plan', async (req, res) => {
+  try {
+    const { situation } = req.body
+
+    if (!situation) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Situation is required' })
+    }
+
+    // Get API key from environment
+    const apiKey = process.env.ANTHROPIC_API_KEY
+    if (!apiKey) {
+      aiLogger.error('ANTHROPIC_API_KEY not configured')
+      return res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'AI service not configured' })
+    }
+
+    const goalPlanPrompt = `Create a personalized GOFNR (Goals, Observations, Feelings, Needs, Requests) communication plan for this situation:
+
+"${situation}"
+
+Provide a comprehensive HTML-formatted plan with these sections:
+1. Goal Clarity - Help identify connection, understanding, outcome, and process goals
+2. Observation Preparation - Guide them to describe facts without judgment
+3. Feelings Exploration - Suggest relevant feelings to explore
+4. Needs Discovery - Help identify underlying universal needs
+5. Request Formulation - Help craft clear, doable requests
+6. Conversation Tips - Practical advice for the dialogue
+
+Use clear headings (h2, h3), bullet points (ul, li), and emphasis (strong) for formatting.
+Keep the tone warm, supportive, and educational.`
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: AI_CONFIG.MODEL,
+        max_tokens: AI_CONFIG.MAX_TOKENS * 2, // Longer response for full plan
+        messages: [{ role: 'user', content: goalPlanPrompt }]
+      })
+    })
+
+    if (!response.ok) {
+      const errorData = await response.text()
+      aiLogger.error('Claude API error for goal-plan', { status: response.status, error: errorData })
+      return res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'AI service error' })
+    }
+
+    const data = await response.json()
+    const plan = data.content[0].text
+
+    res.json({ plan })
+  } catch (error) {
+    aiLogger.error('Goal plan API error', { error: error.message })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to generate plan' })
+  }
+})
 
 export default router

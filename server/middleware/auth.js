@@ -5,6 +5,7 @@
 
 import { createClerkClient } from '@clerk/backend'
 import logger from '../utils/logger.js'
+import { AUTH, RATE_LIMITS, HTTP_STATUS } from '../config/constants.js'
 
 const authLogger = logger.child({ module: 'auth' })
 
@@ -32,7 +33,7 @@ export async function optionalAuth(req, res, next) {
     const authHeader = req.headers.authorization
     const token = authHeader?.startsWith('Bearer ')
       ? authHeader.slice(7)
-      : req.cookies?.__session
+      : req.cookies?.[AUTH.SESSION_COOKIE]
 
     if (!token) {
       return next()
@@ -64,7 +65,7 @@ export async function requireAuth(req, res, next) {
   await optionalAuth(req, res, () => {})
 
   if (!req.isAuthenticated) {
-    return res.status(401).json({
+    return res.status(HTTP_STATUS.UNAUTHORIZED).json({
       error: 'Authentication required',
       message: 'Please sign in to access this feature'
     })
@@ -80,8 +81,8 @@ export async function requireAuth(req, res, next) {
 export function getAuthBasedRateLimit(req) {
   return {
     authenticated: req.isAuthenticated,
-    limit: req.isAuthenticated ? 30 : 10, // 30/min auth'd, 10/min anon
-    window: 60 * 1000 // 1 minute
+    limit: req.isAuthenticated ? RATE_LIMITS.AI.MAX_AUTHENTICATED : RATE_LIMITS.AI.MAX_ANONYMOUS,
+    window: RATE_LIMITS.AI.WINDOW_MS
   }
 }
 

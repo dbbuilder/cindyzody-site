@@ -293,6 +293,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { trackEvent } from '../utils/analytics'
+import { csrfFetch } from '../composables/useCsrf'
+import { secureStorage } from '../utils/secureStorage'
 
 // Props
 const props = defineProps({
@@ -517,13 +519,13 @@ const submitBooking = async () => {
       timestamp: new Date().toISOString()
     }
 
-    // Save to local storage as backup
-    const existingBookings = JSON.parse(localStorage.getItem('appointments') || '[]')
+    // Save to secure storage as backup (encrypted)
+    const existingBookings = await secureStorage.getItem('appointments') || []
     existingBookings.push(appointmentData)
-    localStorage.setItem('appointments', JSON.stringify(existingBookings))
+    await secureStorage.setItem('appointments', existingBookings)
 
-    // Try to submit to server
-    const response = await fetch('/api/schedule', {
+    // Try to submit to server with CSRF protection
+    const response = await csrfFetch('/api/schedule', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

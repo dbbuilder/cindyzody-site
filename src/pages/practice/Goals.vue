@@ -208,6 +208,7 @@
 <script setup>
 import { ref, nextTick } from 'vue'
 import { SparklesIcon, ArrowDownTrayIcon, ArrowRightIcon } from '@heroicons/vue/24/outline'
+import { csrfFetch } from '../../composables/useCsrf'
 
 const situationInput = ref('')
 const isGenerating = ref(false)
@@ -221,7 +222,7 @@ async function generatePlan() {
 
   try {
     // Call the AI API to generate a personalized plan
-    const response = await fetch('/api/ai/goal-plan', {
+    const response = await csrfFetch('/api/ai/goal-plan', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ situation: situationInput.value })

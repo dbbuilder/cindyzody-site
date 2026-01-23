@@ -46,6 +46,7 @@
 <script setup>
 import { ref } from 'vue'
 import { trackEvent } from '../utils/analytics'
+import { csrfFetch } from '../composables/useCsrf'
 
 const form = ref({
   firstName: '', lastName: '', email: '', phone: '', message: '', consent: false
@@ -58,7 +59,7 @@ const submit = async () => {
   loading.value = true; success.value = false; error.value = false
   const endpoint = import.meta.env.VITE_CONTACT_API || '/api/contact'
   try {
-    const res = await fetch(endpoint, {
+    const res = await csrfFetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form.value)

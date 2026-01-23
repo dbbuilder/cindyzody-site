@@ -12,6 +12,7 @@ import {
   updateProgressOnSession
 } from '../services/database.js'
 import logger from '../utils/logger.js'
+import { VALIDATION, HTTP_STATUS } from '../config/constants.js'
 
 const router = Router()
 const sessionsLogger = logger.child({ module: 'sessions' })
@@ -25,7 +26,7 @@ router.post('/', async (req, res) => {
     const { userId, guestId, type, scenarioId, feelings, needs } = req.body
 
     if (!userId && !guestId) {
-      return res.status(400).json({ error: 'userId or guestId required' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'userId or guestId required' })
     }
 
     const id = randomUUID()
@@ -49,7 +50,7 @@ router.post('/', async (req, res) => {
     })
   } catch (error) {
     sessionsLogger.error('Create session error', { error: error.message })
-    res.status(500).json({ error: 'Failed to create session' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to create session' })
   }
 })
 
@@ -59,10 +60,10 @@ router.post('/', async (req, res) => {
  */
 router.get('/', async (req, res) => {
   try {
-    const { userId, guestId, limit = 20, offset = 0 } = req.query
+    const { userId, guestId, limit = VALIDATION.SESSION_LIMIT_DEFAULT, offset = 0 } = req.query
 
     if (!userId && !guestId) {
-      return res.status(400).json({ error: 'userId or guestId required' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'userId or guestId required' })
     }
 
     const sessions = getSessions({
@@ -75,7 +76,7 @@ router.get('/', async (req, res) => {
     res.json({ sessions })
   } catch (error) {
     sessionsLogger.error('Get sessions error', { error: error.message })
-    res.status(500).json({ error: 'Failed to get sessions' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to get sessions' })
   }
 })
 
@@ -90,13 +91,13 @@ router.get('/:id', async (req, res) => {
     const session = getSession(id)
 
     if (!session) {
-      return res.status(404).json({ error: 'Session not found' })
+      return res.status(HTTP_STATUS.NOT_FOUND).json({ error: 'Session not found' })
     }
 
     res.json({ session })
   } catch (error) {
     sessionsLogger.error('Get session error', { error: error.message })
-    res.status(500).json({ error: 'Failed to get session' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to get session' })
   }
 })
 
@@ -111,7 +112,7 @@ router.put('/:id', async (req, res) => {
 
     const existing = getSession(id)
     if (!existing) {
-      return res.status(404).json({ error: 'Session not found' })
+      return res.status(HTTP_STATUS.NOT_FOUND).json({ error: 'Session not found' })
     }
 
     saveSession({
@@ -137,7 +138,7 @@ router.put('/:id', async (req, res) => {
     res.json({ message: 'Session updated' })
   } catch (error) {
     sessionsLogger.error('Update session error', { error: error.message })
-    res.status(500).json({ error: 'Failed to update session' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to update session' })
   }
 })
 
@@ -151,7 +152,7 @@ router.delete('/:id', async (req, res) => {
     const { userId } = req.query
 
     if (!userId) {
-      return res.status(400).json({ error: 'userId required' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'userId required' })
     }
 
     deleteSession(id, userId)
@@ -159,7 +160,7 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Session deleted' })
   } catch (error) {
     sessionsLogger.error('Delete session error', { error: error.message })
-    res.status(500).json({ error: 'Failed to delete session' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Failed to delete session' })
   }
 })
 

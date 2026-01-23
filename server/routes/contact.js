@@ -6,12 +6,13 @@ import { Router } from 'express'
 import { sendContactNotification, sendContactConfirmation } from '../services/email.js'
 import { saveContact } from '../services/database.js'
 import logger from '../utils/logger.js'
+import { EMAIL_REGEX, HTTP_STATUS } from '../config/constants.js'
 
 const router = Router()
 const contactLogger = logger.child({ module: 'contact' })
 
-// Email validation regex
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// Message character limit for contact form
+const CONTACT_MESSAGE_MAX_LENGTH = 5000
 
 router.post('/', async (req, res) => {
   try {
@@ -19,15 +20,15 @@ router.post('/', async (req, res) => {
 
     // Validation
     if (!email || !message || !consent) {
-      return res.status(400).json({ error: 'Missing required fields' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Missing required fields' })
     }
 
     if (!EMAIL_REGEX.test(email)) {
-      return res.status(400).json({ error: 'Invalid email format' })
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: 'Invalid email format' })
     }
 
-    if (message.length > 5000) {
-      return res.status(400).json({ error: 'Message too long (max 5000 characters)' })
+    if (message.length > CONTACT_MESSAGE_MAX_LENGTH) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({ error: `Message too long (max ${CONTACT_MESSAGE_MAX_LENGTH} characters)` })
     }
 
     const name = [firstName, lastName].filter(Boolean).join(' ') || 'Anonymous'
@@ -68,7 +69,7 @@ router.post('/', async (req, res) => {
     })
   } catch (error) {
     contactLogger.error('Contact form error', { error: error.message })
-    res.status(500).json({ error: 'Internal server error' })
+    res.status(HTTP_STATUS.INTERNAL_ERROR).json({ error: 'Internal server error' })
   }
 })
 

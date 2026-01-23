@@ -5,6 +5,7 @@
 
 import { ref, computed } from 'vue'
 import { useAuth } from './useAuth'
+import { csrfFetch } from './useCsrf'
 
 // API base
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
@@ -79,7 +80,7 @@ export function useProgress() {
     error.value = null
 
     try {
-      const response = await fetch(`${API_BASE}/progress/check-in`, {
+      const response = await csrfFetch(`${API_BASE}/progress/check-in`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

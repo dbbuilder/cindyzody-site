@@ -1077,6 +1077,7 @@ import {
 import { EmotionWheel, NeedsWheel, ChatInterface } from '../components/lib'
 import ScenarioCard from '../components/ScenarioCard.vue'
 import { useAI, useMockAI } from '../composables/useAI'
+import { csrfFetch } from '../composables/useCsrf'
 import { trackEvent } from '../utils/analytics'
 import scenariosData from '../data/scenarios.json'
 import { categoryGradients, categoryLabels } from '../lib/colors'
@@ -1131,7 +1132,7 @@ async function generateGOFNRPlan() {
   isGeneratingPlan.value = true
 
   try {
-    const response = await fetch('/api/ai/goal-plan', {
+    const response = await csrfFetch('/api/ai/goal-plan', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ situation: goal.value.situation })

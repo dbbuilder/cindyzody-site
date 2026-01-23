@@ -5,6 +5,7 @@
 
 import { ref, computed, watch } from 'vue'
 import { useAuth } from './useAuth'
+import { csrfFetch } from './useCsrf'
 
 // API base
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
@@ -43,7 +44,7 @@ export function useSession() {
     error.value = null
 
     try {
-      const response = await fetch(`${API_BASE}/sessions`, {
+      const response = await csrfFetch(`${API_BASE}/sessions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -85,7 +86,7 @@ export function useSession() {
     if (!currentSession.value?.id) return
 
     try {
-      const response = await fetch(`${API_BASE}/sessions/${currentSession.value.id}`, {
+      const response = await csrfFetch(`${API_BASE}/sessions/${currentSession.value.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates)
@@ -190,7 +191,7 @@ export function useSession() {
   async function deleteSession(sessionId) {
     try {
       const params = new URLSearchParams(identifier.value)
-      const response = await fetch(`${API_BASE}/sessions/${sessionId}?${params}`, {
+      const response = await csrfFetch(`${API_BASE}/sessions/${sessionId}?${params}`, {
         method: 'DELETE'
       })
 
