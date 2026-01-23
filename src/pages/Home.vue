@@ -396,14 +396,14 @@
           <div class="mt-8">
             <ScheduleAppointment variant="inline" />
           </div>
-          <div class="mt-6 flex justify-center space-x-6 text-sm text-gray-600">
-            <div class="flex items-center">
+          <div class="mt-6 flex flex-col items-center space-y-3 text-sm text-gray-600">
+            <div class="flex items-center justify-center">
               <svg class="h-4 w-4 text-brand-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
               Free consultation available
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center justify-center">
               <svg class="h-4 w-4 text-sage-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
