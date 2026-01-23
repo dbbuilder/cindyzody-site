@@ -2,7 +2,7 @@
   <div class="min-h-screen flex flex-col">
     <SplashScreen />
     <Header />
-    <main class="flex-1">
+    <main id="main-content" class="flex-1" tabindex="-1">
       <ErrorBoundary>
         <RouterView />
       </ErrorBoundary>

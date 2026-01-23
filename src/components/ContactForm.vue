@@ -1,44 +1,88 @@
 <template>
-  <form @submit.prevent="submit" class="space-y-4">
+  <form @submit.prevent="submit" class="space-y-4" aria-label="Contact form">
     <div class="grid gap-4 sm:grid-cols-2">
       <div>
-        <label class="block text-sm font-medium">First name</label>
-        <input v-model="form.firstName" required class="mt-1 block w-full rounded-md border-slate-300" />
+        <label for="contact-first-name" class="block text-sm font-medium">First name</label>
+        <input
+          id="contact-first-name"
+          v-model="form.firstName"
+          type="text"
+          required
+          autocomplete="given-name"
+          class="mt-1 block w-full rounded-md border-slate-300 focus:border-brand-500 focus:ring-brand-500"
+        />
       </div>
       <div>
-        <label class="block text-sm font-medium">Last name</label>
-        <input v-model="form.lastName" required class="mt-1 block w-full rounded-md border-slate-300" />
+        <label for="contact-last-name" class="block text-sm font-medium">Last name</label>
+        <input
+          id="contact-last-name"
+          v-model="form.lastName"
+          type="text"
+          required
+          autocomplete="family-name"
+          class="mt-1 block w-full rounded-md border-slate-300 focus:border-brand-500 focus:ring-brand-500"
+        />
       </div>
       <div class="sm:col-span-2">
-        <label class="block text-sm font-medium">Email</label>
-        <input v-model="form.email" type="email" required class="mt-1 block w-full rounded-md border-slate-300" />
+        <label for="contact-email" class="block text-sm font-medium">Email</label>
+        <input
+          id="contact-email"
+          v-model="form.email"
+          type="email"
+          required
+          autocomplete="email"
+          class="mt-1 block w-full rounded-md border-slate-300 focus:border-brand-500 focus:ring-brand-500"
+        />
       </div>
       <div class="sm:col-span-2">
-        <label class="block text-sm font-medium">Phone (optional)</label>
-        <input v-model="form.phone" class="mt-1 block w-full rounded-md border-slate-300" />
-      </div>
-      <div class="sm:col-span-2">
-        <label class="block text-sm font-medium">How can I help?</label>
-        <textarea v-model="form.message" rows="5" required class="mt-1 block w-full rounded-md border-slate-300"></textarea>
-      </div>
-      <div class="sm:col-span-2">
-        <label class="inline-flex items-center gap-2">
-          <input type="checkbox" v-model="form.consent" required class="rounded border-slate-300" />
-          <span class="text-sm">I consent to be contacted and agree to the privacy notice.</span>
+        <label for="contact-phone" class="block text-sm font-medium">
+          Phone <span class="text-slate-400 font-normal">(optional)</span>
         </label>
+        <input
+          id="contact-phone"
+          v-model="form.phone"
+          type="tel"
+          autocomplete="tel"
+          class="mt-1 block w-full rounded-md border-slate-300 focus:border-brand-500 focus:ring-brand-500"
+        />
+      </div>
+      <div class="sm:col-span-2">
+        <label for="contact-message" class="block text-sm font-medium">How can I help?</label>
+        <textarea
+          id="contact-message"
+          v-model="form.message"
+          rows="5"
+          required
+          class="mt-1 block w-full rounded-md border-slate-300 focus:border-brand-500 focus:ring-brand-500"
+        ></textarea>
+      </div>
+      <div class="sm:col-span-2">
+        <div class="flex items-start gap-2">
+          <input
+            id="contact-consent"
+            type="checkbox"
+            v-model="form.consent"
+            required
+            class="mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+          />
+          <label for="contact-consent" class="text-sm">
+            I consent to be contacted and agree to the <RouterLink to="/privacy" class="text-brand-600 hover:underline">privacy notice</RouterLink>.
+          </label>
+        </div>
       </div>
     </div>
 
-    <div class="flex items-center gap-4">
+    <div class="flex flex-wrap items-center gap-4">
       <button
         type="submit"
         :disabled="loading"
-        class="inline-flex items-center rounded-md bg-brand-600 px-6 py-3 text-white hover:bg-brand-700 disabled:opacity-50"
-      >        <span v-if="!loading">Send Inquiry</span>
+        class="inline-flex items-center rounded-md bg-brand-600 px-6 py-3 text-white hover:bg-brand-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+      >
+        <span v-if="!loading">Send Inquiry</span>
         <span v-else>Sending…</span>
       </button>
-      <p v-if="success" class="text-sm text-green-700">Thank you — I will respond shortly.</p>
-      <p v-if="error" class="text-sm text-red-700">Something went wrong. Please email <a href="mailto:cindyzody@gmail.com" class="underline">cindyzody@gmail.com</a>.</p>
+      <p v-if="success" class="text-sm text-green-700" role="status" aria-live="polite">Thank you — I will respond shortly.</p>
+      <p v-if="error" class="text-sm text-red-700" role="alert">Something went wrong. Please email <a href="mailto:cindyzody@gmail.com" class="underline">cindyzody@gmail.com</a>.</p>
     </div>
   </form>
 </template>

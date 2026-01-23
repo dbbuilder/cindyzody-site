@@ -28,46 +28,52 @@
 
     <!-- Step 1: Service Selection -->
     <div v-if="step === 1" class="space-y-4">
-      <h4 class="font-medium text-gray-900 mb-4">Select Session Type</h4>
-      <div class="space-y-3">
-        <div
+      <h4 id="service-selection-heading" class="font-medium text-gray-900 mb-4">Select Session Type</h4>
+      <div class="space-y-3" role="radiogroup" aria-labelledby="service-selection-heading">
+        <button
+          type="button"
           v-for="service in services"
           :key="service.id"
           @click="selectService(service)"
-          :class="['p-4 border rounded-lg cursor-pointer transition-all duration-200', selectedService?.id === service.id ? 'border-brand-500 bg-brand-50' : 'border-gray-200 hover:border-brand-300 hover:bg-brand-25']"
+          @keydown.enter.prevent="selectService(service)"
+          @keydown.space.prevent="selectService(service)"
+          role="radio"
+          :aria-checked="selectedService?.id === service.id"
+          :class="['w-full p-4 border rounded-lg text-left transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2', selectedService?.id === service.id ? 'border-brand-500 bg-brand-50' : 'border-gray-200 hover:border-brand-300 hover:bg-brand-25']"
         >
           <div class="flex items-center justify-between">
             <div>
-              <h5 class="font-medium text-gray-900">{{ service.name }}</h5>
+              <span class="font-medium text-gray-900">{{ service.name }}</span>
               <p class="text-sm text-gray-600 mt-1">{{ service.description }}</p>
               <div class="flex items-center mt-2 space-x-4 text-sm text-gray-500">
                 <span class="flex items-center">
-                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
-                  {{ service.duration }} min
+                  <span>{{ service.duration }} min</span>
                 </span>
                 <span class="flex items-center">
-                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                   </svg>
-                  {{ service.price }}
+                  <span>{{ service.price }}</span>
                 </span>
               </div>
             </div>
-            <div v-if="selectedService?.id === service.id" class="text-brand-600">
+            <div v-if="selectedService?.id === service.id" class="text-brand-600" aria-hidden="true">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
               </svg>
             </div>
           </div>
-        </div>
+        </button>
       </div>
       <div class="flex justify-end mt-6">
         <button
+          type="button"
           @click="nextStep"
           :disabled="!selectedService"
-          :class="['px-6 py-2 rounded-md font-medium transition-colors', selectedService ? 'bg-brand-600 text-white hover:bg-brand-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed']"
+          :class="['px-6 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2', selectedService ? 'bg-brand-600 text-white hover:bg-brand-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed']"
         >
           Continue
         </button>
@@ -79,37 +85,51 @@
       <div class="grid md:grid-cols-2 gap-6">
         <!-- Calendar -->
         <div>
-          <h4 class="font-medium text-gray-900 mb-4">Select Date</h4>
-          <div class="bg-white border border-gray-200 rounded-lg p-4">
+          <h4 id="date-selection-heading" class="font-medium text-gray-900 mb-4">Select Date</h4>
+          <div class="bg-white border border-gray-200 rounded-lg p-4" role="application" aria-labelledby="date-selection-heading">
             <!-- Calendar Header -->
             <div class="flex items-center justify-between mb-4">
-              <button @click="previousMonth" class="p-1 hover:bg-gray-100 rounded">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button
+                type="button"
+                @click="previousMonth"
+                class="p-1 hover:bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-brand-500"
+                aria-label="Previous month"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
               </button>
-              <h5 class="font-medium">{{ currentMonthYear }}</h5>
-              <button @click="nextMonth" class="p-1 hover:bg-gray-100 rounded">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <h5 class="font-medium" aria-live="polite">{{ currentMonthYear }}</h5>
+              <button
+                type="button"
+                @click="nextMonth"
+                class="p-1 hover:bg-gray-100 rounded focus:outline-none focus:ring-2 focus:ring-brand-500"
+                aria-label="Next month"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
               </button>
             </div>
 
             <!-- Calendar Grid -->
-            <div class="grid grid-cols-7 gap-1 mb-2">
-              <div v-for="day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" :key="day" class="text-center text-xs font-medium text-gray-500 py-2">
+            <div class="grid grid-cols-7 gap-1 mb-2" role="row">
+              <div v-for="day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" :key="day" class="text-center text-xs font-medium text-gray-500 py-2" role="columnheader" abbr="day">
                 {{ day }}
               </div>
             </div>
-            <div class="grid grid-cols-7 gap-1">
+            <div class="grid grid-cols-7 gap-1" role="grid" aria-label="Calendar">
               <button
+                type="button"
                 v-for="date in calendarDays"
                 :key="date.key"
                 @click="selectDate(date)"
                 :disabled="!date.available"
+                :aria-label="getDateAriaLabel(date)"
+                :aria-selected="date.selected"
+                :aria-current="date.isToday ? 'date' : undefined"
                 :class="[
-                  'w-8 h-8 text-sm rounded transition-colors',
+                  'w-8 h-8 text-sm rounded transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-inset',
                   date.isToday ? 'bg-blue-100 text-blue-600' : '',
                   date.selected ? 'bg-brand-600 text-white' : '',
                   date.available && !date.selected ? 'hover:bg-brand-50 text-gray-900' : '',
@@ -125,19 +145,22 @@
 
         <!-- Time Slots -->
         <div>
-          <h4 class="font-medium text-gray-900 mb-4">Available Times</h4>
-          <div v-if="selectedDate" class="space-y-2 max-h-64 overflow-y-auto">
+          <h4 id="time-selection-heading" class="font-medium text-gray-900 mb-4">Available Times</h4>
+          <div v-if="selectedDate" class="space-y-2 max-h-64 overflow-y-auto" role="listbox" aria-labelledby="time-selection-heading">
             <button
+              type="button"
               v-for="time in availableTimes"
               :key="time"
               @click="selectTime(time)"
-              :class="['w-full p-3 text-left border rounded-lg transition-colors', selectedTime === time ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-gray-200 hover:border-brand-300 hover:bg-brand-25']"
+              role="option"
+              :aria-selected="selectedTime === time"
+              :class="['w-full p-3 text-left border rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-inset', selectedTime === time ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-gray-200 hover:border-brand-300 hover:bg-brand-25']"
             >
               {{ formatTime(time) }}
             </button>
           </div>
-          <div v-else class="text-center py-8 text-gray-500">
-            <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div v-else class="text-center py-8 text-gray-500" aria-live="polite">
+            <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
             <p>Select a date to see available times</p>
@@ -146,13 +169,14 @@
       </div>
 
       <div class="flex justify-between">
-        <button @click="previousStep" class="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+        <button type="button" @click="previousStep" class="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
           Back
         </button>
         <button
+          type="button"
           @click="nextStep"
           :disabled="!selectedDate || !selectedTime"
-          :class="['px-6 py-2 rounded-md font-medium transition-colors', selectedDate && selectedTime ? 'bg-brand-600 text-white hover:bg-brand-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed']"
+          :class="['px-6 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2', selectedDate && selectedTime ? 'bg-brand-600 text-white hover:bg-brand-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed']"
         >
           Continue
         </button>
@@ -175,55 +199,59 @@
       </div>
 
       <!-- Contact Form -->
-      <form @submit.prevent="submitBooking" class="space-y-4">
+      <form @submit.prevent="submitBooking" class="space-y-4" aria-label="Booking details form">
         <div class="grid md:grid-cols-2 gap-4">
           <div>
-            <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+            <label for="scheduler-firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name <span class="text-red-500" aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
             <input
-              id="firstName"
+              id="scheduler-firstName"
               v-model="form.firstName"
               type="text"
               required
+              autocomplete="given-name"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             >
           </div>
           <div>
-            <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+            <label for="scheduler-lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name <span class="text-red-500" aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
             <input
-              id="lastName"
+              id="scheduler-lastName"
               v-model="form.lastName"
               type="text"
               required
+              autocomplete="family-name"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             >
           </div>
         </div>
 
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+          <label for="scheduler-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address <span class="text-red-500" aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
           <input
-            id="email"
+            id="scheduler-email"
             v-model="form.email"
             type="email"
             required
+            autocomplete="email"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
           >
         </div>
 
         <div>
-          <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+          <label for="scheduler-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number <span class="text-gray-400 font-normal">(optional)</span></label>
           <input
-            id="phone"
+            id="scheduler-phone"
             v-model="form.phone"
             type="tel"
+            autocomplete="tel"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
           >
         </div>
 
         <div>
-          <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message (Optional)</label>
+          <label for="scheduler-message" class="block text-sm font-medium text-gray-700 mb-1">Message <span class="text-gray-400 font-normal">(optional)</span></label>
           <textarea
-            id="message"
+            id="scheduler-message"
             v-model="form.message"
             rows="3"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
@@ -231,29 +259,30 @@
           ></textarea>
         </div>
 
-        <div class="flex items-center">
+        <div class="flex items-start">
           <input
-            id="consent"
+            id="scheduler-consent"
             v-model="form.consent"
             type="checkbox"
             required
-            class="h-4 w-4 text-brand-600 focus:ring-brand-500 border-gray-300 rounded"
+            class="mt-0.5 h-4 w-4 text-brand-600 focus:ring-brand-500 border-gray-300 rounded"
           >
-          <label for="consent" class="ml-2 block text-sm text-gray-700">
-            I agree to receive communication about this appointment *
+          <label for="scheduler-consent" class="ml-2 block text-sm text-gray-700">
+            I agree to receive communication about this appointment <span class="text-red-500" aria-hidden="true">*</span><span class="sr-only">(required)</span>
           </label>
         </div>
 
         <div class="flex justify-between pt-4">
-          <button @click="previousStep" type="button" class="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+          <button @click="previousStep" type="button" class="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
             Back
           </button>
           <button
             type="submit"
             :disabled="submitting || !isFormValid"
-            :class="['px-6 py-2 rounded-md font-medium transition-colors flex items-center', isFormValid && !submitting ? 'bg-brand-600 text-white hover:bg-brand-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed']"
+            :aria-busy="submitting"
+            :class="['px-6 py-2 rounded-md font-medium transition-colors flex items-center focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2', isFormValid && !submitting ? 'bg-brand-600 text-white hover:bg-brand-700' : 'bg-gray-200 text-gray-400 cursor-not-allowed']"
           >
-            <svg v-if="submitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+            <svg v-if="submitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" aria-hidden="true">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
@@ -264,8 +293,8 @@
     </div>
 
     <!-- Success State -->
-    <div v-if="step === 4" class="text-center py-8">
-      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+    <div v-if="step === 4" class="text-center py-8" role="status" aria-live="polite">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4" aria-hidden="true">
         <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
         </svg>
@@ -275,15 +304,15 @@
         Thank you! Your appointment has been scheduled. You'll receive a confirmation email shortly.
       </p>
       <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 text-left max-w-md mx-auto">
-        <h5 class="font-medium text-gray-900 mb-2">Appointment Details</h5>
-        <div class="space-y-1 text-sm text-gray-600">
-          <p><strong>Service:</strong> {{ selectedService?.name }}</p>
-          <p><strong>Date:</strong> {{ formatDate(selectedDate) }}</p>
-          <p><strong>Time:</strong> {{ formatTime(selectedTime) }}</p>
-          <p><strong>Duration:</strong> {{ selectedService?.duration }} minutes</p>
-        </div>
+        <h4 class="font-medium text-gray-900 mb-2">Appointment Details</h4>
+        <dl class="space-y-1 text-sm text-gray-600">
+          <div><dt class="inline font-semibold">Service:</dt> <dd class="inline">{{ selectedService?.name }}</dd></div>
+          <div><dt class="inline font-semibold">Date:</dt> <dd class="inline">{{ formatDate(selectedDate) }}</dd></div>
+          <div><dt class="inline font-semibold">Time:</dt> <dd class="inline">{{ formatTime(selectedTime) }}</dd></div>
+          <div><dt class="inline font-semibold">Duration:</dt> <dd class="inline">{{ selectedService?.duration }} minutes</dd></div>
+        </dl>
       </div>
-      <button @click="resetScheduler" class="px-6 py-2 bg-brand-600 text-white rounded-md hover:bg-brand-700 transition-colors">
+      <button type="button" @click="resetScheduler" class="px-6 py-2 bg-brand-600 text-white rounded-md hover:bg-brand-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
         Book Another Appointment
       </button>
     </div>
@@ -505,6 +534,24 @@ const formatDate = (date) => {
     month: 'long',
     day: 'numeric'
   })
+}
+
+const getDateAriaLabel = (dateObj) => {
+  const dateStr = dateObj.date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric'
+  })
+  if (!dateObj.available) {
+    return `${dateStr}, not available`
+  }
+  if (dateObj.selected) {
+    return `${dateStr}, selected`
+  }
+  if (dateObj.isToday) {
+    return `${dateStr}, today`
+  }
+  return dateStr
 }
 
 const submitBooking = async () => {
