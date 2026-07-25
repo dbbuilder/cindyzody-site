@@ -1048,7 +1048,8 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, nextTick, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import {
   HeartIcon,
   StarIcon,
@@ -1449,6 +1450,20 @@ async function startSession() {
     console.error('Failed to start session:', err)
   }
 }
+
+// Deep-link support: the header "AI Practice" CTA (/practice?tab=ai) and the
+// homepage "Try AI Practice" buttons should open the AI tool directly.
+const route = useRoute()
+onMounted(() => {
+  const tab = Array.isArray(route.query.tab) ? route.query.tab[0] : route.query.tab
+  if (!tab) return
+  if (tab === 'ai' || tab === 'practice') {
+    startSession()
+    activeTab.value = 'practice'
+  } else if (['goals', 'observations', 'feelings', 'needs', 'request', 'scenarios'].includes(tab)) {
+    activeTab.value = tab
+  }
+})
 
 // End current session
 function endSession() {

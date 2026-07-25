@@ -63,7 +63,7 @@ export const VALIDATION = {
 
 // AI Configuration
 export const AI_CONFIG = {
-  MODEL: 'claude-sonnet-4-20250514',
+  MODEL: 'claude-sonnet-4-5-20250929',
   MAX_TOKENS: 1024,
   TEMPERATURE: 0.7,
   MAX_HISTORY_TOKENS: 2000,

@@ -94,7 +94,7 @@
                       </svg>
                     </RouterLink>
                     <RouterLink
-                      to="/practice"
+                      to="/practice?tab=ai"
                       class="inline-flex items-center justify-center rounded-md border border-brand-300 bg-white px-6 py-3 text-base font-medium text-brand-700 shadow-sm hover:bg-brand-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 transition-colors"
                     >
                       Try AI Practice
@@ -112,7 +112,7 @@
 
             <!-- Hero Stats/Info Side (Desktop) + Mobile Profile Photo -->
             <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-5 lg:flex lg:items-center">
-              <div class="relative mx-auto w-full rounded-lg lg:max-w-sm xl:max-w-md">
+              <div class="relative mx-auto w-full rounded-lg lg:mt-20 lg:max-w-sm xl:max-w-md">
                 <!-- Profile Photo (Mobile Only) -->
                 <div class="relative mb-6 lg:hidden">
                   <div class="mx-auto w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
@@ -336,7 +336,7 @@
           </p>
           <div class="mt-8">
             <RouterLink
-              to="/practice"
+              to="/practice?tab=ai"
               class="inline-flex items-center rounded-md bg-brand-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 transition-colors"
             >
               Try AI Practice

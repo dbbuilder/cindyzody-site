@@ -89,7 +89,10 @@ const routes = [
   { path: '/resources', component: Resources },
   { path: '/contact', component: Contact },
   { path: '/privacy', component: Privacy },
-  { path: '/auth/callback', component: AuthCallback }
+  { path: '/auth/callback', component: AuthCallback },
+
+  // Catch-all: redirect unknown/stale URLs home instead of rendering a blank page
+  { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 
 export default createRouter({

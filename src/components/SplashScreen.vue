@@ -4,7 +4,7 @@
       v-if="visible"
       class="fixed inset-0 z-[100] flex items-center justify-center bg-stone-50"
     >
-      <div class="relative flex items-center justify-center" style="width: 500px; height: 200px;">
+      <div class="relative flex items-center justify-center w-full max-w-[500px] h-[200px]">
         <!-- Feelings circle (pink/rose) -->
         <div
           class="absolute w-36 h-36 rounded-full flex items-center justify-center transition-all duration-1000 ease-out"
