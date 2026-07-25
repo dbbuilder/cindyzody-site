@@ -25,3 +25,7 @@ ios/App/DerivedData
 
 # Generated PDFs
 pdfs/
+.vercel
+
+# Local tooling artifacts
+.playwright-mcp/
