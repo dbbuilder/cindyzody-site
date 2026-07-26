@@ -1,6 +1,6 @@
 <template>
   <section class="py-14">
-    <div class="mx-auto max-w-5xl px-4">
+    <div class="mx-auto max-w-3xl px-4">
       <!-- Breadcrumb -->
       <nav class="mb-6 text-sm">
         <RouterLink to="/practice" class="text-brand-600 hover:text-brand-700">Practice</RouterLink>
@@ -110,7 +110,7 @@
         </div>
       </div>
 
-      <div class="prose prose-slate max-w-none">
+      <div class="prose prose-slate">
         <h1>Goals: The Foundation of Intentional Communication</h1>
 
         <p class="lead text-xl text-slate-600">Before diving into observation, feelings, and needs, take time to clarify what you're actually trying to achieve. Clear goals keep you grounded when emotions run high.</p>

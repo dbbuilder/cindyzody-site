@@ -1,6 +1,6 @@
 <template>
   <section class="py-14">
-    <div class="mx-auto max-w-5xl px-4">
+    <div class="mx-auto max-w-3xl px-4">
       <!-- Breadcrumb -->
       <nav class="mb-6 text-sm">
         <RouterLink to="/practice" class="text-brand-600 hover:text-brand-700">Practice</RouterLink>
@@ -8,7 +8,7 @@
         <span class="text-slate-600">Observation</span>
       </nav>
 
-      <div class="prose prose-slate max-w-none">
+      <div class="prose prose-slate">
         <h1>Observation: Seeing Without Judging</h1>
 
         <p class="lead text-xl text-slate-600">The first step of the NVC process is describing what you actually see or hear—the concrete facts—without mixing in evaluation, interpretation, or judgment.</p>

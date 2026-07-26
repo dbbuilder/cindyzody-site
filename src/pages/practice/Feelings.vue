@@ -1,6 +1,6 @@
 <template>
   <section class="py-14">
-    <div class="mx-auto max-w-5xl px-4">
+    <div class="mx-auto max-w-3xl px-4">
       <!-- Breadcrumb -->
       <nav class="mb-6 text-sm">
         <RouterLink to="/practice" class="text-brand-600 hover:text-brand-700">Practice</RouterLink>
@@ -8,7 +8,7 @@
         <span class="text-slate-600">Feelings</span>
       </nav>
 
-      <div class="prose prose-slate max-w-none">
+      <div class="prose prose-slate">
         <h1>Feelings: The Language of Your Inner World</h1>
 
         <p class="lead text-xl text-slate-600">Feelings are messengers from your needs. Learning to identify and express them accurately opens the door to deeper self-understanding and more connecting communication.</p>

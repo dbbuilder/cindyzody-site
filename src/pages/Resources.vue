@@ -12,7 +12,7 @@
       <div class="mb-16">
         <h2 class="text-2xl font-semibold mb-8 text-center">Essential Reading</h2>
         <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition duration-300">
             <div class="text-center mb-4">
               <div class="w-24 h-32 bg-gradient-to-b from-red-500 to-red-600 rounded mx-auto mb-3 flex items-center justify-center shadow-lg">
                 <img 
@@ -70,7 +70,7 @@
             </div>
           </div>
 
-          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition duration-300">
             <div class="text-center mb-4">
               <div class="w-24 h-32 bg-gradient-to-b from-blue-500 to-blue-600 rounded mx-auto mb-3 flex items-center justify-center shadow-lg">
                 <img 
@@ -128,7 +128,7 @@
             </div>
           </div>
 
-          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition duration-300">
             <div class="text-center mb-4">
               <div class="w-24 h-32 bg-gradient-to-b from-green-500 to-green-600 rounded mx-auto mb-3 flex items-center justify-center shadow-lg">
                 <img 
@@ -192,7 +192,7 @@
       <div class="mb-16">
         <h2 class="text-2xl font-semibold mb-8 text-center">Online Resources</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow border-brand-200">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition duration-300 border-brand-200">
             <div class="mb-4">
               <div class="w-12 h-12 bg-brand-100 rounded-lg mb-3 flex items-center justify-center">
                 <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,7 +213,7 @@
             </RouterLink>
           </div>
 
-          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition duration-300">
             <div class="mb-4">
               <div class="w-12 h-12 bg-brand-100 rounded-lg mb-3 flex items-center justify-center">
                 <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,7 +235,7 @@
             </a>
           </div>
 
-          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition duration-300">
             <div class="mb-4">
               <div class="w-12 h-12 bg-blue-100 rounded-lg mb-3 flex items-center justify-center">
                 <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,7 +257,7 @@
             </a>
           </div>
 
-          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition duration-300">
             <div class="mb-4">
               <div class="w-12 h-12 bg-green-100 rounded-lg mb-3 flex items-center justify-center">
                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -279,7 +279,7 @@
             </a>
           </div>
 
-          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition duration-300">
             <div class="mb-4">
               <div class="w-12 h-12 bg-purple-100 rounded-lg mb-3 flex items-center justify-center">
                 <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,7 +301,7 @@
             </a>
           </div>
 
-          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition duration-300">
             <div class="mb-4">
               <div class="w-12 h-12 bg-orange-100 rounded-lg mb-3 flex items-center justify-center">
                 <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,7 +323,7 @@
             </a>
           </div>
 
-          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl border shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition duration-300">
             <div class="mb-4">
               <div class="w-12 h-12 bg-teal-100 rounded-lg mb-3 flex items-center justify-center">
                 <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -20,7 +20,7 @@
       <div class="flex flex-wrap gap-2 justify-center mb-10">
         <button
           @click="selectedCategory = 'all'"
-          class="px-5 py-2.5 rounded-full text-sm font-medium transition-all"
+          class="px-5 py-2.5 rounded-full text-sm font-medium transition active:scale-[0.97]"
           :class="selectedCategory === 'all'
             ? 'bg-brand-600 text-white shadow-md'
             : 'bg-white text-slate-600 hover:bg-brand-50 border border-slate-200'"
@@ -31,7 +31,7 @@
           v-for="cat in categories"
           :key="cat.id"
           @click="selectedCategory = cat.id"
-          class="px-5 py-2.5 rounded-full text-sm font-medium transition-all inline-flex items-center gap-2"
+          class="px-5 py-2.5 rounded-full text-sm font-medium transition active:scale-[0.97] inline-flex items-center gap-2"
           :class="selectedCategory === cat.id
             ? `${cat.activeBg} text-white shadow-md`
             : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'"
