@@ -2,5 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Smooth font rendering */
-html { scroll-behavior: smooth }
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Let Fraunces/Inter adjust their optical size to the rendered size */
+    font-optical-sizing: auto;
+  }
+
+  body {
+    /* macOS renders text heavier than intended; normalize once on the root */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Missing weights/styles should fail visibly, not get faked */
+    font-synthesis: none;
+  }
+
+  /* Headings use the display serif; body/UI inherit Inter from preflight */
+  h1, h2, h3, h4 {
+    font-family: theme('fontFamily.serif');
+    letter-spacing: -0.02em; /* large serif type looks tighter and more intentional */
+    text-wrap: balance;      /* even out multi-line headings */
+  }
+
+  p {
+    text-wrap: pretty;       /* avoid single-word orphans on the last line */
+  }
+
+  /* Branded text selection (sage-tinted, stays legible) */
+  ::selection {
+    background: theme('colors.brand.100');
+    color: theme('colors.brand.900');
+  }
+}

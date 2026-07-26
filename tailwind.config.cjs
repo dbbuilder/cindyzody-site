@@ -19,6 +19,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        // Body/UI: clean, legible humanist sans
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        // Display/headings: warm optical serif
+        serif: ['Fraunces', 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'serif']
+      },
       colors: {
         // Primary nature green palette
         brand: {

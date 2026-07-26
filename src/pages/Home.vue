@@ -30,7 +30,7 @@
       <!-- Floating Profile Photo (Desktop) -->
       <div class="hidden lg:block absolute top-8 right-8 xl:right-16 z-20">
         <div class="relative">
-          <div class="w-32 h-32 xl:w-40 xl:h-40 rounded-full overflow-hidden border-4 border-white shadow-xl">
+          <div class="w-32 h-32 xl:w-40 xl:h-40 rounded-full overflow-hidden border-4 border-white shadow-xl ring-1 ring-black/10">
             <img src="/images/cindy-profile.jpg" alt="Cindy Zody" class="w-full h-full object-cover" />
           </div>
           <!-- Decorative elements around photo -->
@@ -76,7 +76,7 @@
                   /></div>
 
                 <!-- Description -->
-                <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                <p class="mt-3 max-w-xl text-base text-gray-600 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                   Transform your relationships through Non-Violent Communication (NVC) and Internal Family Systems (IFS).
                   Expert facilitation for individuals, couples, families, and organizations.
                 </p>
@@ -86,7 +86,7 @@
                   <div class="flex flex-col sm:flex-row gap-3">
                     <RouterLink
                       to="/contact"
-                      class="inline-flex items-center justify-center rounded-md bg-brand-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 transition-colors"
+                      class="inline-flex items-center justify-center rounded-md bg-brand-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 transition active:scale-[0.96]"
                     >
                       Schedule Consultation
                       <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,7 +95,7 @@
                     </RouterLink>
                     <RouterLink
                       to="/practice?tab=ai"
-                      class="inline-flex items-center justify-center rounded-md border border-brand-300 bg-white px-6 py-3 text-base font-medium text-brand-700 shadow-sm hover:bg-brand-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 transition-colors"
+                      class="inline-flex items-center justify-center rounded-md border border-brand-300 bg-white px-6 py-3 text-base font-medium text-brand-700 shadow-sm hover:bg-brand-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 transition active:scale-[0.96]"
                     >
                       Try AI Practice
                       <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +115,7 @@
               <div class="relative mx-auto w-full rounded-lg lg:mt-20 lg:max-w-sm xl:max-w-md">
                 <!-- Profile Photo (Mobile Only) -->
                 <div class="relative mb-6 lg:hidden">
-                  <div class="mx-auto w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg">
+                  <div class="mx-auto w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-lg ring-1 ring-black/10">
                     <img src="/images/cindy-profile.jpg" alt="Cindy Zody" class="w-full h-full object-cover" />
                   </div>
                   <!-- Decorative elements around photo -->
