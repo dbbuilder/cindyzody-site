@@ -36,7 +36,7 @@
       </div>
       <div class="sm:col-span-2">
         <label for="contact-phone" class="block text-sm font-medium">
-          Phone <span class="text-slate-400 font-normal">(optional)</span>
+          Phone <span class="text-slate-500 font-normal">(optional)</span>
         </label>
         <input
           id="contact-phone"

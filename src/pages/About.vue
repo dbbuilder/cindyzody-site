@@ -81,7 +81,7 @@
     <div class="mx-auto max-w-4xl px-4">
       <h2 class="text-3xl font-bold text-center mb-12">My Journey</h2>
 
-      <div class="prose prose-lg prose-slate max-w-none">
+      <div class="prose prose-lg prose-slate mx-auto">
         <p>
           My path to this work wasn't straightforward. Like many people, I struggled with conflict
           for years—sometimes avoiding it entirely, other times engaging in ways that left everyone

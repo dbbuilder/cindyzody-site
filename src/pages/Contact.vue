@@ -2,7 +2,7 @@
   <section class="py-14">
     <div class="mx-auto max-w-4xl px-4">
       <h1 class="text-3xl font-bold">Contact</h1>
-      <p class="mt-2 text-slate-600">Schedule a consultation or send me a message. You may also call
+      <p class="mt-2 max-w-2xl text-slate-600">Schedule a consultation or send me a message. You may also call
         <a href="tel:+12069925992" class="underline">(206) 992-5992</a> or email
         <a href="mailto:cindyzody@gmail.com" class="underline">cindyzody@gmail.com</a>.
       </p>

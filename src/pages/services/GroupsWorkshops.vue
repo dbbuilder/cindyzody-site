@@ -1,6 +1,6 @@
 <template>
   <section class="py-14">
-    <div class="mx-auto max-w-5xl px-4">
+    <div class="mx-auto max-w-3xl px-4">
       <!-- Breadcrumb -->
       <nav class="mb-6 text-sm">
         <RouterLink to="/services" class="text-brand-600 hover:text-brand-700">Services</RouterLink>
@@ -8,7 +8,7 @@
         <span class="text-slate-600">Groups & Workshops</span>
       </nav>
 
-      <div class="prose prose-slate max-w-none">
+      <div class="prose prose-slate">
         <h1>Groups & Workshops</h1>
 
         <p class="lead text-xl text-slate-600">Community learning experiences that combine teaching, practice, and peer support—from introductory workshops to ongoing practice circles.</p>

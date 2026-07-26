@@ -1,6 +1,6 @@
 <template>
   <section class="py-14">
-    <div class="mx-auto max-w-5xl px-4">
+    <div class="mx-auto max-w-3xl px-4">
       <!-- Breadcrumb -->
       <nav class="mb-6 text-sm">
         <RouterLink to="/approach" class="text-brand-600 hover:text-brand-700">Approach</RouterLink>
@@ -8,7 +8,7 @@
         <span class="text-slate-600">Mutually Satisfying Outcomes</span>
       </nav>
 
-      <div class="prose prose-slate max-w-none">
+      <div class="prose prose-slate">
         <h1>Mutually Satisfying Outcomes</h1>
 
         <p class="lead text-xl text-slate-600">The destination of this work—creating agreements that honor everyone's needs, where no one wins at another's expense and solutions feel genuinely good to all involved.</p>

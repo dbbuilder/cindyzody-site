@@ -1,6 +1,6 @@
 <template>
   <section class="py-14">
-    <div class="mx-auto max-w-5xl px-4">
+    <div class="mx-auto max-w-3xl px-4">
       <!-- Breadcrumb -->
       <nav class="mb-6 text-sm">
         <RouterLink to="/approach" class="text-brand-600 hover:text-brand-700">Approach</RouterLink>
@@ -8,7 +8,7 @@
         <span class="text-slate-600">Conflict Resolution</span>
       </nav>
 
-      <div class="prose prose-slate max-w-none">
+      <div class="prose prose-slate">
         <h1>Conflict Resolution</h1>
 
         <p class="lead text-xl text-slate-600">Moving from opposition to collaboration by listening for the needs beneath positions—discovering that most conflicts dissolve when both people feel genuinely heard.</p>

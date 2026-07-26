@@ -1,6 +1,6 @@
 <template>
   <section class="py-14">
-    <div class="mx-auto max-w-5xl px-4">
+    <div class="mx-auto max-w-3xl px-4">
       <!-- Breadcrumb -->
       <nav class="mb-6 text-sm">
         <RouterLink to="/approach" class="text-brand-600 hover:text-brand-700">Approach</RouterLink>
@@ -8,7 +8,7 @@
         <span class="text-slate-600">Internal Family Systems</span>
       </nav>
 
-      <div class="prose prose-slate max-w-none">
+      <div class="prose prose-slate">
         <h1>Internal Family Systems (IFS)</h1>
 
         <p class="lead text-xl text-slate-600">A compassionate approach that meets our inner parts with curiosity rather than judgment—discovering that even our most troublesome patterns are trying to help us.</p>

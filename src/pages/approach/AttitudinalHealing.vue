@@ -1,6 +1,6 @@
 <template>
   <section class="py-14">
-    <div class="mx-auto max-w-5xl px-4">
+    <div class="mx-auto max-w-3xl px-4">
       <!-- Breadcrumb -->
       <nav class="mb-6 text-sm">
         <RouterLink to="/approach" class="text-brand-600 hover:text-brand-700">Approach</RouterLink>
@@ -8,7 +8,7 @@
         <span class="text-slate-600">Attitudinal Healing</span>
       </nav>
 
-      <div class="prose prose-slate max-w-none">
+      <div class="prose prose-slate">
         <h1>Attitudinal Healing</h1>
 
         <p class="lead text-xl text-slate-600">A practice of shifting from fear-based reactions to love-centered choices—recognizing that we can choose peace regardless of external circumstances.</p>
