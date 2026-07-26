@@ -39,7 +39,7 @@
       <!-- Loading state -->
       <div v-if="isLoading" class="space-y-6">
         <div class="grid sm:grid-cols-3 gap-4">
-          <div v-for="n in 3" :key="n" class="bg-white rounded-xl border p-6 animate-pulse">
+          <div v-for="n in 3" :key="n" class="bg-white rounded-xl border shadow-sm p-6 animate-pulse">
             <div class="h-4 bg-slate-200 rounded w-20 mb-2"></div>
             <div class="h-8 bg-slate-200 rounded w-16"></div>
           </div>
@@ -49,40 +49,40 @@
       <template v-else>
         <!-- Stats Overview -->
         <div class="grid sm:grid-cols-3 gap-4 mb-8">
-          <div class="bg-white rounded-xl border p-6">
+          <div class="bg-white rounded-xl border shadow-sm p-6">
             <div class="flex items-center gap-3 mb-2">
               <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
                 <FireIcon class="w-5 h-5 text-amber-600" />
               </div>
               <div>
                 <p class="text-sm text-slate-500">Current Streak</p>
-                <p class="text-2xl font-bold">{{ progress?.currentStreak || 0 }} <span class="text-sm font-normal text-slate-500">days</span></p>
+                <p class="text-2xl font-bold tabular-nums">{{ progress?.currentStreak || 0 }} <span class="text-sm font-normal text-slate-500">days</span></p>
               </div>
             </div>
             <p class="text-xs text-slate-500">Longest: {{ progress?.longestStreak || 0 }} days</p>
           </div>
 
-          <div class="bg-white rounded-xl border p-6">
+          <div class="bg-white rounded-xl border shadow-sm p-6">
             <div class="flex items-center gap-3 mb-2">
               <div class="w-10 h-10 bg-brand-100 rounded-full flex items-center justify-center">
                 <SparklesIcon class="w-5 h-5 text-brand-600" />
               </div>
               <div>
                 <p class="text-sm text-slate-500">Total Sessions</p>
-                <p class="text-2xl font-bold">{{ progress?.totalSessions || 0 }}</p>
+                <p class="text-2xl font-bold tabular-nums">{{ progress?.totalSessions || 0 }}</p>
               </div>
             </div>
             <p class="text-xs text-slate-500">AI practice sessions completed</p>
           </div>
 
-          <div class="bg-white rounded-xl border p-6">
+          <div class="bg-white rounded-xl border shadow-sm p-6">
             <div class="flex items-center gap-3 mb-2">
               <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
                 <HeartIcon class="w-5 h-5 text-purple-600" />
               </div>
               <div>
                 <p class="text-sm text-slate-500">Check-ins</p>
-                <p class="text-2xl font-bold">{{ progress?.totalCheckIns || 0 }}</p>
+                <p class="text-2xl font-bold tabular-nums">{{ progress?.totalCheckIns || 0 }}</p>
               </div>
             </div>
             <p class="text-xs text-slate-500">Daily emotional check-ins</p>
@@ -116,7 +116,7 @@
         <div class="mb-8">
           <h2 class="text-xl font-semibold mb-4">Your Insights</h2>
 
-          <div v-if="insights.length === 0" class="bg-white rounded-xl border p-8 text-center">
+          <div v-if="insights.length === 0" class="bg-white rounded-xl border shadow-sm p-8 text-center">
             <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <LightBulbIcon class="w-6 h-6 text-slate-400" />
             </div>
@@ -126,7 +126,7 @@
 
           <div v-else class="grid sm:grid-cols-2 gap-4">
             <!-- Top Feelings -->
-            <div v-if="topFeelingsInsight" class="bg-white rounded-xl border p-6">
+            <div v-if="topFeelingsInsight" class="bg-white rounded-xl border shadow-sm p-6">
               <div class="flex items-center gap-2 mb-4">
                 <HeartIcon class="w-5 h-5 text-rose-500" />
                 <h3 class="font-semibold">{{ topFeelingsInsight.title }}</h3>
@@ -140,7 +140,7 @@
                   <div class="flex-1">
                     <div class="flex justify-between text-sm mb-1">
                       <span>{{ getFeelingLabel(feeling.id) }}</span>
-                      <span class="text-slate-500">{{ feeling.count }}x</span>
+                      <span class="text-slate-500 tabular-nums">{{ feeling.count }}x</span>
                     </div>
                     <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
                       <div
@@ -154,7 +154,7 @@
             </div>
 
             <!-- Top Needs -->
-            <div v-if="topNeedsInsight" class="bg-white rounded-xl border p-6">
+            <div v-if="topNeedsInsight" class="bg-white rounded-xl border shadow-sm p-6">
               <div class="flex items-center gap-2 mb-4">
                 <StarIcon class="w-5 h-5 text-brand-500" />
                 <h3 class="font-semibold">{{ topNeedsInsight.title }}</h3>
@@ -168,7 +168,7 @@
                   <div class="flex-1">
                     <div class="flex justify-between text-sm mb-1">
                       <span>{{ getNeedLabel(need.id) }}</span>
-                      <span class="text-slate-500">{{ need.count }}x</span>
+                      <span class="text-slate-500 tabular-nums">{{ need.count }}x</span>
                     </div>
                     <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
                       <div
@@ -182,7 +182,7 @@
             </div>
 
             <!-- Streak Achievement -->
-            <div v-if="streakInsight" class="bg-white rounded-xl border p-6">
+            <div v-if="streakInsight" class="bg-white rounded-xl border shadow-sm p-6">
               <div class="flex items-center gap-2 mb-4">
                 <FireIcon class="w-5 h-5 text-amber-500" />
                 <h3 class="font-semibold">{{ streakInsight.title }}</h3>
@@ -191,7 +191,7 @@
             </div>
 
             <!-- Milestone -->
-            <div v-if="milestoneInsight" class="bg-white rounded-xl border p-6">
+            <div v-if="milestoneInsight" class="bg-white rounded-xl border shadow-sm p-6">
               <div class="flex items-center gap-2 mb-4">
                 <TrophyIcon class="w-5 h-5 text-yellow-500" />
                 <h3 class="font-semibold">{{ milestoneInsight.title }}</h3>
@@ -214,7 +214,7 @@
             </button>
           </div>
 
-          <div v-if="checkIns.length === 0" class="bg-white rounded-xl border p-8 text-center">
+          <div v-if="checkIns.length === 0" class="bg-white rounded-xl border shadow-sm p-8 text-center">
             <p class="text-slate-600">No check-ins yet. Start tracking your daily feelings above!</p>
           </div>
 
@@ -222,7 +222,7 @@
             <div
               v-for="(checkIn, idx) in displayedCheckIns"
               :key="checkIn.id || idx"
-              class="bg-white rounded-xl border p-4"
+              class="bg-white rounded-xl border shadow-sm p-4"
             >
               <div class="flex items-start justify-between mb-2">
                 <span class="text-sm text-slate-500">{{ formatCheckInDate(checkIn.date) }}</span>

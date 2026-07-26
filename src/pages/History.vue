@@ -71,7 +71,7 @@
         <div
           v-for="session in sessions"
           :key="session.id"
-          class="bg-white rounded-xl border hover:shadow-md transition-shadow"
+          class="bg-white rounded-xl border shadow-sm hover:shadow-md transition-shadow"
         >
           <div class="p-6">
             <div class="flex justify-between items-start mb-4">
