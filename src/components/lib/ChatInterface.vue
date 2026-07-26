@@ -367,7 +367,7 @@ defineExpose({
         <button
           @click="sendMessage"
           :disabled="!inputText.trim() || isActuallyTyping"
-          class="flex-shrink-0 w-10 h-10 bg-brand-600 text-white rounded-lg flex items-center justify-center hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          class="flex-shrink-0 w-10 h-10 bg-brand-600 text-white rounded-lg flex items-center justify-center hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition active:scale-[0.96]"
         >
           <PaperAirplaneIcon v-if="!isActuallyTyping" class="w-5 h-5" />
           <StopIcon v-else class="w-5 h-5" />

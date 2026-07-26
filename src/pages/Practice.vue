@@ -16,9 +16,9 @@
             v-for="tab in tabs"
             :key="tab.id"
             @click="activeTab = tab.id"
-            class="px-4 py-2 rounded-md font-medium text-sm transition-all"
+            class="px-4 py-2 rounded-md font-medium text-sm transition active:scale-[0.97]"
             :class="activeTab === tab.id
-              ? 'bg-white shadow text-slate-900'
+              ? 'bg-white shadow-sm ring-1 ring-black/5 text-slate-900'
               : 'text-slate-600 hover:text-slate-900'"
           >
             <component :is="tab.icon" class="w-4 h-4 inline-block mr-1.5 -mt-0.5" />
@@ -79,7 +79,7 @@
                   <button
                     @click="generateGOFNRPlan"
                     :disabled="!goal.situation.trim()"
-                    class="inline-flex items-center bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="inline-flex items-center bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition active:scale-[0.97] font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <SparklesIcon class="w-4 h-4 mr-2" />
                     Build My GOFNR Roadmap
@@ -134,7 +134,7 @@
             <button
               @click="downloadGOFNRPDF"
               :disabled="isDownloadingPDF"
-              class="inline-flex items-center bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors font-medium text-sm disabled:opacity-70"
+              class="inline-flex items-center bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition active:scale-[0.97] font-medium text-sm disabled:opacity-70"
             >
               <template v-if="isDownloadingPDF">
                 <div class="w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -153,7 +153,7 @@
             </button>
             <button
               @click="activeTab = 'observations'"
-              class="inline-flex items-center bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors font-medium text-sm"
+              class="inline-flex items-center bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition active:scale-[0.97] font-medium text-sm"
             >
               Continue to Observations
               <ArrowRightIcon class="w-4 h-4 ml-1" />
@@ -196,7 +196,7 @@
             <button
               v-if="observation.initial.trim()"
               @click="activeTab = 'feelings'"
-              class="inline-flex items-center bg-brand-600 text-white px-3 py-1.5 rounded-lg hover:bg-brand-700 transition-colors font-medium text-sm"
+              class="inline-flex items-center bg-brand-600 text-white px-3 py-1.5 rounded-lg hover:bg-brand-700 transition active:scale-[0.97] font-medium text-sm"
             >
               Continue to <span class="text-white font-bold ml-1">F</span>eelings
               <ArrowRightIcon class="w-4 h-4 ml-1" />
@@ -286,7 +286,7 @@
             <button
               v-if="selectedFeelings.length > 0"
               @click="proceedToNeeds"
-              class="inline-flex items-center bg-brand-600 text-white px-3 py-1.5 rounded-lg hover:bg-brand-700 transition-colors font-medium text-sm"
+              class="inline-flex items-center bg-brand-600 text-white px-3 py-1.5 rounded-lg hover:bg-brand-700 transition active:scale-[0.97] font-medium text-sm"
             >
               Continue to <span class="text-white font-bold ml-1">N</span>eeds
               <ArrowRightIcon class="w-4 h-4 ml-1" />
@@ -342,7 +342,7 @@
             <button
               v-if="selectedNeeds.length > 0"
               @click="activeTab = 'request'"
-              class="inline-flex items-center bg-brand-600 text-white px-3 py-1.5 rounded-lg hover:bg-brand-700 transition-colors font-medium text-sm"
+              class="inline-flex items-center bg-brand-600 text-white px-3 py-1.5 rounded-lg hover:bg-brand-700 transition active:scale-[0.97] font-medium text-sm"
             >
               Continue to <span class="text-white font-bold ml-1">R</span>equest
               <ArrowRightIcon class="w-4 h-4 ml-1" />
@@ -558,7 +558,7 @@
               <button
                 @click="downloadGOFNRPDF"
                 :disabled="isDownloadingPDF"
-                class="inline-flex items-center bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors font-medium text-sm"
+                class="inline-flex items-center bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition active:scale-[0.97] font-medium text-sm"
               >
                 <ArrowDownTrayIcon class="w-4 h-4 mr-2" />
                 Download Summary PDF
